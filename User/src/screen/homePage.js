@@ -10,9 +10,13 @@ import styles from '../style/homeStyle';
 import ProfilBar from '../component/profilBar/profilBar';
 import SearchingBar from '../component/searchingBar/searchingBar';
 import { Image, Icon } from 'react-native-elements';
+import DetailPage from '../subScreen/subHome/detailPage';
 
 const HomePage = ({ navigation }) => {
 
+    const toDetail = () => {
+        navigation.navigate('DetailPage', {})
+    }
 
     return (
         <SafeAreaView style={styles.color}>
@@ -46,7 +50,10 @@ const HomePage = ({ navigation }) => {
                         <View>
                             <Text style={styles.listTextTitle}>Teleskop Mahal Oail</Text>
                             <Text style={styles.listTextsub}>Stok : 10</Text>
-                            <Text style={styles.listTextsub}>Detail alat...</Text>
+                            <Text
+                                style={styles.listTextsub}
+                                onPress={toDetail}
+                            >Detail alat...</Text>
                         </View>
                     </View>
 
