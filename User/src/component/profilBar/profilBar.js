@@ -4,7 +4,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import styles from './style_profil_bar';
+import styles from './styleProfilBar';
 import { Avatar } from "@react-native-material/core";
 
 const ProfilBar = () => {
