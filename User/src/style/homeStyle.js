@@ -54,8 +54,7 @@ const styles = StyleSheet.create({
         //justifyContent: 'center',
         flex: 0.8,
         color: 'black'
-        //alignItems: 'center',
-        //justifyContent: 'center',
+
     },
     textBarcount: {
         fontSize: 12,
