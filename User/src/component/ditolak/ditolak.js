@@ -9,7 +9,7 @@ const Ditolak = () => {
     return (
         <View style={styles.listButtonall}>
             <View style={styles.listButton}>
-                <Text style={styles.textBarcount}>Ditolak</Text>
+                <Text style={styles.textBarcount}>Tolak</Text>
             </View>
         </View>
     )

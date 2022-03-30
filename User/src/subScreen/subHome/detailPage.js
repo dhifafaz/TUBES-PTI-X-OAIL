@@ -8,7 +8,7 @@ import {
     ScrollView
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
-import styles from '../../style/detailStyle';
+import styles from './detailStyle';
 
 const DetailPage = ({ navigation }) => {
     return (

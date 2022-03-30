@@ -20,9 +20,16 @@ const PengembalianPage = ({ navigation }) => {
         <SafeAreaView style={styles.color}>
             <ScrollView>
                 <View style={styles.margin}>
+
                     <Text style={styles.textKatalog}>Pengembalian</Text>
                     <View style={styles.enter40} />
                     <ProfilBar />
+                    <View style={styles.enter40} />
+                    <View style={styles.ambilView}>
+                        <TouchableOpacity style={styles.ambilTouch}>
+                            <Text style={styles.ambilText}>Kembalikan</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.enter30} />
 
                     <View style={styles.listView}>
@@ -37,11 +44,6 @@ const PengembalianPage = ({ navigation }) => {
                         </View>
                     </View>
                     <View style={styles.enter40} />
-                    <TouchableOpacity style={styles.botton} onPress={() => {
-                        console.log('matap');
-                    }}>
-                        <Text style={styles.textBarcount}>Kembalikan</Text>
-                    </TouchableOpacity>
                 </View>
             </ScrollView>
 

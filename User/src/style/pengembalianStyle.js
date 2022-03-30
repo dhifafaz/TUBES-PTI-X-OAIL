@@ -83,6 +83,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
+    ambilView: {
+        //backgroundColor: 'red',
+        height: 40,
+        width: '100%',
+        flexDirection: 'row-reverse'
+    },
+    ambilTouch: {
+        width: 130,
+        height: '100%',
+        backgroundColor: '#FF0000',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    ambilText: {
+        fontSize: 18,
+        fontFamily: 'Ubuntu-Bold',
+        color: '#ECECEC'
+    },
 
 })
 

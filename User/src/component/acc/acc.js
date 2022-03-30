@@ -9,7 +9,7 @@ const Acc = () => {
     return (
         <View style={styles.listButtonall}>
             <View style={styles.listButton}>
-                <Text style={styles.textBarcount}>Acc</Text>
+                <Text style={styles.textBarcount}>Terima</Text>
             </View>
         </View>
     )
