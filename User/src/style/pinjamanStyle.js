@@ -78,10 +78,45 @@ const styles = StyleSheet.create({
     },
     botton: {
         height: 20,
-        backgroundColor: '#151D3B',
+        backgroundColor: '#4B8BD4',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
+    },
+    ambilView: {
+        //backgroundColor: 'red',
+        height: 40,
+        width: '100%',
+        flexDirection: 'row-reverse'
+    },
+    ambilTouch: {
+        width: 90,
+        height: '100%',
+        backgroundColor: '#47C947',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    ambilText: {
+        fontSize: 18,
+        fontFamily: 'Ubuntu-Bold',
+        color: '#ECECEC'
+    },
+    tidakAda: {
+        height: 400,
+        width: '100%',
+        //backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    zonktImage: {
+        //backgroundColor: 'red',
+        height: 180,
+        width: 277,
+        margin: 10,
+        borderRadius: 10,
+
     },
 
 })

@@ -66,7 +66,7 @@ const HomePage = ({ navigation }) => {
                                     size={15} />
                             </View>
 
-                            <Text style={styles.textBarcount}>0</Text>
+                            <Text style={styles.textBarcounter}>0</Text>
 
                             <View style={styles.listButtonRight}>
                                 <Icon
