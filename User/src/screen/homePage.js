@@ -5,6 +5,7 @@ import {
     View,
     ActivityIndicator,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
 import styles from '../style/homeStyle';
 import ProfilBar from '../component/profilBar/profilBar';
@@ -16,6 +17,9 @@ const HomePage = ({ navigation }) => {
 
     const toDetail = () => {
         navigation.navigate('DetailPage', {})
+    }
+    const toTotalPinjaman = () => {
+        navigation.navigate('PinjamTotal', {})
     }
 
     return (
@@ -29,14 +33,14 @@ const HomePage = ({ navigation }) => {
                 <ProfilBar />
                 <View style={styles.enter30} />
                 <View style={styles.viewEnd}>
-                    <View style={styles.viewBarCount}>
+                    <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
 
                         <Text style={styles.Viewcountertext}>Total Pinjam</Text>
 
                         <View style={styles.viewBarColorcount}>
                             <Text style={styles.textBarcount}>0</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.enter20} />
 
