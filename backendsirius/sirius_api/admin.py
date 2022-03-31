@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import UserProfile
 from .models import UserCore
+from .models import Alat
+from .models import Instansi
+from .models import OrderLog
+from .models import LogBook
 # from .models import PetugasProfile
 # Register your models here.
 from django import forms
@@ -63,7 +67,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('is_staff',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('nama', 'profile_pic',)}),
+        ('Personal info', {'fields': ('nama', 'profile_pic', 'date_joined')}),
         ('Permissions', {'fields': ('is_staff', 'role', 'is_active', 'groups', 'user_permissions', 'is_superuser', 'is_admin')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -79,9 +83,14 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 class UserDetail(admin.ModelAdmin):
-    inlines = ()
     list_display = ('user', 'prodi_unit_institusi','alamat', 'KTP_KTM', 'status_verifikasi')
 
+class AlatDetail(admin.ModelAdmin):
+    list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat')
 
 admin.site.register(UserCore, UserAdmin)
 admin.site.register(UserProfile, UserDetail)
+admin.site.register(Alat, AlatDetail)
+admin.site.register(Instansi)
+admin.site.register(OrderLog)
+admin.site.register(LogBook)
