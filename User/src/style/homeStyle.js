@@ -59,6 +59,12 @@ const styles = StyleSheet.create({
     textBarcount: {
         fontSize: 12,
         fontFamily: 'Ubuntu-Bold',
+        color: '#ECECEC'
+        //color: '',
+    },
+    textBarcounter: {
+        fontSize: 12,
+        fontFamily: 'Ubuntu-Bold',
         color: 'black'
         //color: '',
     },

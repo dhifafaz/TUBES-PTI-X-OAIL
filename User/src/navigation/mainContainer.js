@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Screens
 import HomePage from '../screen/homePage';
@@ -20,8 +21,7 @@ const MainContainer = ({ navigation }) => {
             screenOptions={{
                 tabBarActiveTintColor: '#151D3B',
                 headerShown: false,
-                tabBarStyle: { position: 'absolute' },
-                tabBarStyle: { height: 70, backgroundColor: '#ECECEC', },
+                tabBarStyle: { height: 70, backgroundColor: '#ECECEC', position: 'absolute' },
             }}
 
         >
@@ -30,33 +30,33 @@ const MainContainer = ({ navigation }) => {
                 name="Katalog"
                 component={HomePage}
                 options={{
-                    tabBarIcon: () => (
-                        <Icon name='home' size={30} />
-                    )
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={30} />
+                    ),
                 }} />
             <Tab.Screen
                 name="Pinjaman"
                 component={PinjamanPage}
                 options={{
-                    tabBarIcon: () => (
-                        <Icon name='move-to-inbox' size={30} />
-                    )
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="inbox-arrow-down" color={color} size={30} />
+                    ),
                 }} />
             <Tab.Screen
                 name="Pengembalian"
                 component={PengembalianPage}
                 options={{
-                    tabBarIcon: () => (
-                        <Icon name='assignment-return' size={30} />
-                    )
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="clipboard-arrow-left" color={color} size={30} />
+                    ),
                 }} />
             <Tab.Screen
                 name="Profil"
                 component={ProfilPage}
                 options={{
-                    tabBarIcon: () => (
-                        <Icon name='account-circle' size={30} />
-                    )
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="account" color={color} size={30} />
+                    ),
                 }} />
         </Tab.Navigator>
     )

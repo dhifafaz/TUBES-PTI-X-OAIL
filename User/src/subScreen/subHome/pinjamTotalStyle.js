@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 const styles = StyleSheet.create({
     color: {
         backgroundColor: '#151D3B',
@@ -12,6 +13,10 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu-Bold',
         color: '#ECECEC',
     },
+    row: {
+        //paddingRight: 10,
+        flexDirection: "row",
+    },
     enter40: {
         height: 40,
     },
@@ -20,6 +25,37 @@ const styles = StyleSheet.create({
     },
     enter20: {
         height: 20,
+    },
+    listImage: {
+        height: 190,
+        width: '100%',
+        borderRadius: 10,
+    },
+    textDetail: {
+        fontSize: 18,
+        fontFamily: 'Ubuntu-Bold',
+        color: '#ECECEC',
+    },
+    textsub: {
+        fontSize: 14,
+        fontFamily: 'Ubuntu-Bold',
+        color: '#ECECEC',
+        textAlign: 'justify'
+    },
+    paragrafView: {
+        height: 200,
+        width: '100%',
+        backgroundColor: '#ECECEC',
+        borderRadius: 10,
+        padding: 10,
+    },
+    calenderView: {
+        height: 40,
+        width: '100%',
+        backgroundColor: '#ECECEC',
+        borderRadius: 10,
+        padding: 10,
+        flexDirection: 'row',
     },
     listView: {
         height: 100,
@@ -69,41 +105,25 @@ const styles = StyleSheet.create({
         borderRadius: 10,
 
     },
-
+    checkbox: {
+        //width: '100%',
+        backgroundColor: '#151D3B',
+        borderColor: '#151D3B',
+        padding: 0,
+        margin: 0,
+    },
+    botton: {
+        height: 40,
+        backgroundColor: '#4B8BD4',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
     textBarcount: {
         fontSize: 18,
         fontFamily: 'Ubuntu-Bold',
         color: '#ECECEC'
         //color: '',
     },
-    botton: {
-        height: 40,
-        backgroundColor: '#FF0000',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-    ambilView: {
-        //backgroundColor: 'red',
-        height: 40,
-        width: '100%',
-        flexDirection: 'row-reverse'
-    },
-    ambilTouch: {
-        width: 130,
-        height: '100%',
-        backgroundColor: '#FF0000',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
-    ambilText: {
-        fontSize: 18,
-        fontFamily: 'Ubuntu-Bold',
-        color: '#ECECEC'
-    },
-
 })
-
 export default styles;
