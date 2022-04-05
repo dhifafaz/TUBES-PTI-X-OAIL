@@ -17,3 +17,6 @@ class AlatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alat
         fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan')
+        
+        
+# class 

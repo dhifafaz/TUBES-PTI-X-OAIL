@@ -81,3 +81,4 @@ class AlatsCounter(APIView):
                         .annotate(alat_rusak_total=Count('kondisi_alat',filter=Q(kondisi_alat='RT')))
                         .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses peminjaman'))))
         return Response({"data_alat" : alat_list, "ketersediaan_alat" : result_list}, status=status.HTTP_200_OK)
+    
