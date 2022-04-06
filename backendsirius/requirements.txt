@@ -8,6 +8,7 @@ django-cors-headers==3.11.0
 django-debug-toolbar==3.2.4
 django-rest-knox==4.2.0
 djangorestframework==3.13.1
+drf-writable-nested==0.6.3
 mysqlclient==2.1.0
 Pillow==9.0.1
 pycparser==2.21

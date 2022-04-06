@@ -11,11 +11,17 @@ from django.db.models import Count, Q
 
 from .models import (
     Alat,
+    UserCore,
+    UserProfile,
+    OrderLog,
 )
 from .serializers import (
     AlatSerializer,
+    UserCoreSerializer,
+    UserProfileSerializer,
+    OrderSerializer,
 )
-# from rest_framework import viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -25,24 +31,12 @@ from rest_framework.decorators import APIView
 # from rest_framework.permissions import IsAuthenticated
 # from rest_framework.parsers import MultiPartParser, FormParser
 
-# class AlatCounter(viewsets.ModelViewSet):
-#     queryset =  Alat.objects.all()
-#     serializer_class = AlatSerializer
-#     http_method_names = ['get']
+class UserView(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'put', 'patch', 'head', 'options']
+    queryset = UserCore.objects.all()
+    serializer_class = UserCoreSerializer
 
-#     def list(self, request, *args, **kwargs):
-#         queryset = self.filter_queryset(self.get_queryset())
-#         # result_list = list(queryset.values('nama_alat').annotate(jumlah_alat=Count('nama_alat')))
-#         result_list = list(queryset.values('nama_alat').annotate(jumlah_alat_tersedia=Count('status_alat',filter=Q(status_alat='tersedia'))).annotate(jumlah_alat_dipinjam=Count('status_alat',filter=Q(status_alat='dipinjam'))))
-#         return Response(result_list)
-
-#     def retrieve(self, request, pk=None):
-#         queryset = Alat.objects.all()
-#         alat = get_object_or_404(queryset, pk=pk)
-#         serializer = AlatSerializer(alat)
-#         return Response(serializer.data)
-        
-
+    
 class AlatsCounter(APIView):
     # authentication_classes = (TokenAuthentication,)
     # permission_classes = (IsAuthenticated,)
@@ -82,3 +76,4 @@ class AlatsCounter(APIView):
                         .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses peminjaman'))))
         return Response({"data_alat" : alat_list, "ketersediaan_alat" : result_list}, status=status.HTTP_200_OK)
     
+
