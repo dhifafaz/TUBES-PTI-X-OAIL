@@ -42,8 +42,6 @@ class UserCoreSerializer(WritableNestedModelSerializer, serializers.ModelSeriali
             profile_instance = instance.profiles
             profile_data = validated_data.pop('profiles')
             profile_serializer.update(profile_instance, profile_data)
-        # else:
-        #     UserProfile.objects.create(user=instance, **validated_data)
 
         return super(UserCoreSerializer, self).update(instance, validated_data)
     

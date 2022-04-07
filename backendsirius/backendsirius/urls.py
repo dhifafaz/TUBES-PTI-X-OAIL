@@ -15,15 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
-# import debug_toolbar
+from django.contrib.auth import views as auth_views
+# from rest_framework.authtoken.views import obtain_auth_token
+import debug_toolbar
 from django.conf import settings
 from django.urls import include, path
 
+admin.site.site_header  =  "Silahkan masuk admin Sirius"  
+admin.site.site_title  =  "Sirius admin site"
+admin.site.index_title  =  "Sirius Admin"
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('sirius_api/', include('sirius_api.urls')),
-    # path('__debug__/', include(debug_toolbar.urls)),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]
 
 from django.conf import settings
