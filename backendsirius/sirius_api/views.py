@@ -36,6 +36,17 @@ class UserView(viewsets.ModelViewSet):
     queryset = UserCore.objects.all()
     serializer_class = UserCoreSerializer
 
+
+class AlatsList(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'head', 'options']
+    queryset = Alat.objects.all()
+    serializer_class = AlatSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', 'id_alat')
+        serializer = AlatSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
     
 class AlatsCounter(APIView):
     # authentication_classes = (TokenAuthentication,)
@@ -46,7 +57,7 @@ class AlatsCounter(APIView):
     # http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', '-id_alat')
+        queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', 'id_alat')
         serializer = AlatSerializer(queryset, many=True)
         alat_list = []
         nama_alats = []

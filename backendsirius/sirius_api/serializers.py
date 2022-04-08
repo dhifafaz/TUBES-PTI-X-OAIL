@@ -11,10 +11,19 @@ from .models import (
 )
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from django.contrib.auth.hashers import make_password
+
+
 class AlatSerializer(serializers.ModelSerializer):
+    # instansi 
     class Meta:
         model = Alat
         fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan')
+        
+        
+class InstansiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instansi
+        fields = ('nama_instansi', 'alamat_instansi', 'kontak_instansi', 'logo_instansi')
         
 class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSerializer):
     class Meta:
@@ -34,6 +43,7 @@ class UserCoreSerializer(WritableNestedModelSerializer, serializers.ModelSeriali
         user_data = UserCore.objects.create(**validated_data)
         UserProfile.objects.create(user=user_data, **profile_data)
         return user_data
+    
     
     def update(self, instance, validated_data, partial=True):
         
