@@ -1,4 +1,4 @@
-#!/home/dhifaf/Documents/TUBES-PTI-X-OAIL/env/bin/python
+#!/home/farras/Project/PTI-OAIL/TUBES-PTI-X-OAIL/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
