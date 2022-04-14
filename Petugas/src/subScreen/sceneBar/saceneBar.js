@@ -34,14 +34,21 @@ const ScenePage = ({ navigation }) => {
                     </Text>
                 </View>
                 <View style={styles.enter30} />
-                <QRCodeScanner
-                    onRead={onSuccess}
-                    flashMode={RNCamera.Constants.FlashMode.torch}
-                    containerStyle={{ marginVertical: 70 }}
-                    buttonPositive='ok'
-                    cameraContainerStyle={{ borderRadius: 10 }}
-                />
+
+
                 <View style={styles.scenView}>
+                    <View style={styles.scaneBar}>
+                        <QRCodeScanner
+                            onRead={onSuccess}
+
+                            flashMode={RNCamera.Constants.FlashMode.torch}
+                            containerStyle={{ height: 30 }}
+                            cameraContainerStyle={{ height: 20 }}
+                            cameraStyle={{ height: 20 }}
+                            buttonPositive='ok'
+                            cameraContainerStyle={{ borderRadius: 10 }}
+                        />
+                    </View>
                     <View style={styles.enter10} />
 
                     <Text style={styles.sceneText}>

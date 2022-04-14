@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     scaneBar: {
-        //height: 270,
-        //width: 270,
+        height: 270,
+        width: 270,
         borderRadius: 10,
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        overflow: 'hidden',
     },
     sceneText: {
         fontSize: 14,
