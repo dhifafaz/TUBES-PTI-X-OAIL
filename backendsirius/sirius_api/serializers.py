@@ -59,3 +59,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderLog
         fields = '__all__'
+        
+    # def update(self, instance, validated_data, partial=True):
+    #     if validated_data.get('status_order') is not None:
+    #         instance.status_order = validated_data.get('status_order')
+    #         instance.save()
+    #     return instance

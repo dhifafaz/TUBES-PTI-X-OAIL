@@ -21,7 +21,7 @@ from .serializers import (
     UserProfileSerializer,
     OrderSerializer,
 )
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -50,7 +50,9 @@ class AlatsList(viewsets.ModelViewSet):
     
 class AlatsCounter(APIView):
     # authentication_classes = (TokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
     # parser_classes = (MultiPartParser, FormParser)
     # queryset =  Alat.objects.all()
     # serializer_class = AlatSerializer
@@ -88,3 +90,21 @@ class AlatsCounter(APIView):
         return Response({"data_alat" : alat_list, "ketersediaan_alat" : result_list}, status=status.HTTP_200_OK)
     
 
+class OrderLogView(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'put', 'head', 'options']
+    queryset = OrderLog.objects.all()
+    serializer_class = OrderSerializer
+    
+    def list(self, request, *args, **kwargs):
+        queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
+        serializer = OrderSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+    
+    
+class OrderLogPerUser(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'put', 'head', 'options']
+    

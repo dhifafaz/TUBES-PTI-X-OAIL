@@ -5,11 +5,13 @@ from .views import (
     AlatsCounter,
     UserView,
     AlatsList,
+    OrderLogView,
 )
 
 router  = DefaultRouter()
 router.register('user', UserView, basename='user')
 router.register('pinjam_alat', AlatsList, basename='pinjam_alat')
+router.register('order_log', OrderLogView, basename='order_log')
 
 urlpatterns = [
     # path('',Index),

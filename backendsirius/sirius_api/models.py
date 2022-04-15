@@ -115,9 +115,9 @@ class Instansi(models.Model):
         return self.nama_instansi
 
 class OrderLog(models.Model):
-    tanggal_peminjaman = models.DateTimeField()
-    tanggal_pengembalian = models.DateTimeField()
-    tanggal_update_data = models.DateTimeField(auto_now=True)
+    tanggal_peminjaman = models.DateTimeField(blank=True)
+    tanggal_pengembalian = models.DateTimeField(blank=True)
+    tanggal_update_data = models.DateTimeField(auto_now=True, blank=True)
     status_order = models.CharField(max_length=50, default='peminjaman')
     alasan_meminjam = models.TextField(max_length=1000)
     keterangan_ditolak = models.TextField(max_length=1000, blank=True)
@@ -138,3 +138,4 @@ class LogBook(models.Model):
 
     def __str__(self):
         return self.catatan
+    
