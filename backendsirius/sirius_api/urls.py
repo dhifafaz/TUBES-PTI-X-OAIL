@@ -5,15 +5,22 @@ from .views import (
     AlatsCounter,
     UserView,
     AlatsList,
+    OrderLogView,
+    UserRegister,
+    UserLogin
 )
 
 router  = DefaultRouter()
-router.register('user', UserView, basename='user')
+router.register('lihat_users', UserView, basename='lihat_users')
+router.register('register_user', UserRegister, basename='register_user')
 router.register('pinjam_alat', AlatsList, basename='pinjam_alat')
+router.register('order_log', OrderLogView, basename='order_log')
+router.register('login_user', UserLogin, basename='login_user')
 
 urlpatterns = [
     # path('',Index),
     path('', include(router.urls)),
     path('katalog/', AlatsCounter.as_view()),
+    # path('register-user/', UserRegister.as_view()),
     # path('pinjam-alat/', AlatsList.as_view()),
 ]
