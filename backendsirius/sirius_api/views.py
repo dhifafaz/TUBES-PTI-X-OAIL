@@ -60,6 +60,9 @@ class UserLogin(viewsets.ModelViewSet):
         })
 
 class UserView(viewsets.ModelViewSet):
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
     http_method_names = ['get', 'put', 'patch', 'head', 'options']
     queryset = UserCore.objects.all()
     serializer_class = UserCoreSerializer
@@ -68,7 +71,9 @@ class AlatsList(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'head', 'options']
     queryset = Alat.objects.all()
     serializer_class = AlatSerializer
-    
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
     def list(self, request, *args, **kwargs):
         queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', 'id_alat')
         serializer = AlatSerializer(queryset, many=True)
@@ -77,9 +82,9 @@ class AlatsList(viewsets.ModelViewSet):
     
 class AlatsCounter(APIView):
     # authentication_classes = (TokenAuthentication,)
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
     # parser_classes = (MultiPartParser, FormParser)
     # queryset =  Alat.objects.all()
     # serializer_class = AlatSerializer
@@ -118,6 +123,9 @@ class AlatsCounter(APIView):
     
 
 class OrderLogView(viewsets.ModelViewSet):
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
     http_method_names = ['get', 'post', 'put', 'head', 'options']
     queryset = OrderLog.objects.all()
     serializer_class = OrderSerializer
@@ -133,5 +141,8 @@ class OrderLogView(viewsets.ModelViewSet):
     
     
 class OrderLogPerUser(viewsets.ModelViewSet):
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
     http_method_names = ['get', 'post', 'put', 'head', 'options']
     
