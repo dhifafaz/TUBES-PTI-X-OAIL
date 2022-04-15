@@ -1,4 +1,5 @@
 
+from re import A
 from venv import create
 from rest_framework import serializers
 from .models import (
@@ -11,7 +12,7 @@ from .models import (
 )
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from django.contrib.auth.hashers import make_password
-
+from django.contrib.auth import authenticate
 
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
@@ -54,6 +55,16 @@ class UserCoreSerializer(WritableNestedModelSerializer, serializers.ModelSeriali
             profile_serializer.update(profile_instance, profile_data)
 
         return super(UserCoreSerializer, self).update(instance, validated_data)
+    
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+    
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Incorrect Credentials")
     
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:

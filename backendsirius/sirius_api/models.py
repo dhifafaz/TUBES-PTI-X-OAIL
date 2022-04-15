@@ -115,6 +115,7 @@ class Instansi(models.Model):
         return self.nama_instansi
 
 class OrderLog(models.Model):
+    token_order = models.CharField(max_length=100, blank=True)
     tanggal_peminjaman = models.DateTimeField(blank=True)
     tanggal_pengembalian = models.DateTimeField(blank=True)
     tanggal_update_data = models.DateTimeField(auto_now=True, blank=True)
