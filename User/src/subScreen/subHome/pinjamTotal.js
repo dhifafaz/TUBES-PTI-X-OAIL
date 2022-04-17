@@ -13,6 +13,8 @@ import { Image, Icon, CheckBox } from 'react-native-elements';
 import styles from './pinjamTotalStyle';
 import ProfilBar from '../../component/profilBar/profilBar';
 import DatePicker from 'react-native-date-picker'
+import { useRoute } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 
 const PinjamTotal = ({ navigation }) => {
     const [text, onChangeText] = React.useState("");
@@ -21,6 +23,9 @@ const PinjamTotal = ({ navigation }) => {
     const [date, setDate] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
     const [textDate, setTextDate] = React.useState('Tanggal Pengembalian')
+
+    const route = useRoute().params
+    const { dataKatalog, totalCounter, ip } = useSelector(state => state.userReducer);
 
     return (
         <SafeAreaView style={styles.color}>
@@ -77,17 +82,35 @@ const PinjamTotal = ({ navigation }) => {
                     Alat Yang Dipinjam
                 </Text>
                 <View style={styles.enter20} />
-                <View style={styles.listView}>
+                <FlatList
+                    data={dataKatalog['data_alat']}
+                    scrollEnabled={false}
+                    scrollToIndex={false}
+                    renderItem={({ item, index, sparators }) => {
+                        let Ipgambar = ip + item.gambar_alat;
+                        if (route.counter[index] >= 1) {
+                            return (
+                                <View>
+                                    <View style={styles.listView}>
 
-                    <Image source={require('../../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                    <View style={styles.listboxtext}>
-                        <View>
-                            <Text style={styles.listTextTitle}>Teleskop Mahal Oail</Text>
-                            <Text style={styles.listTextsub}>Jumlah : 1</Text>
+                                        <Image source={{ uri: Ipgambar }} style={styles.listImage} />
+                                        <View style={styles.listboxtext}>
+                                            <View>
+                                                <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
+                                                <Text style={styles.listTextsub}>Jumlah : {route.counter[index]}</Text>
 
-                        </View>
-                    </View>
-                </View>
+                                            </View>
+                                        </View>
+
+                                    </View>
+                                    <View style={styles.enter20} />
+                                </View>
+                            )
+                        }
+                    }}
+                    keyExtractor={item => item.id}
+                />
+
                 <View style={styles.enter30} />
 
                 <CheckBox
