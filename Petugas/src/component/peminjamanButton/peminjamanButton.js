@@ -7,16 +7,26 @@ import {
     FlatList,
     ScrollView,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    Pressable,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const PeminjamanButton = () => {
+    const navigation = useNavigation();
+
+    const toDetailPeminjaman = () => {
+        navigation.navigate('DetailPeminjaman', {})
+    }
+
     return (
-        <TouchableOpacity style={styles.listBotton}>
+        <Pressable style={styles.listBotton} onPress={toDetailPeminjaman}>
             <Text style={styles.listTextBotton}>Peminjaman</Text>
-        </TouchableOpacity>
+
+        </Pressable>
     )
 }
+
 const styles = StyleSheet.create({
     listBotton: {
         width: 90,
