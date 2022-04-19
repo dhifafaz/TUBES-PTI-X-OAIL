@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     color: {
         backgroundColor: '#151D3B',
         flex: 1,
+        height: "80%",
     },
     margin: {
         margin: 20,
