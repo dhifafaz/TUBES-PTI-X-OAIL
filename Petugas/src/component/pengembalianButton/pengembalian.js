@@ -6,15 +6,23 @@ import {
     ActivityIndicator,
     FlatList,
     ScrollView,
-    TouchableOpacity,
+    Pressable,
     StyleSheet
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const PengembalianButton = () => {
+
+    const navigation = useNavigation();
+
+    const toDetailPengembalian = () => {
+        navigation.navigate('DetailPengembalian', {})
+    }
+
     return (
-        <TouchableOpacity style={styles.listBotton}>
-            <Text style={styles.listTextBotton}>Pengambalian</Text>
-        </TouchableOpacity>
+        <Pressable style={styles.listBotton} onPress={toDetailPengembalian}>
+            <Text style={styles.listTextBotton}>Pengembalian</Text>
+        </Pressable>
     )
 }
 const styles = StyleSheet.create({
