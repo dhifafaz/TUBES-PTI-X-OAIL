@@ -1,6 +1,8 @@
 export const GET_DATA_KATALOG = 'SET_DATA_KATALOG';
 export const COUNTER = 'COUNTER';
 export const TOTAL_COUNTER = 'TOTAL_COUNTER'
+export const ADD_COUNTER = 'ADD_COUNTER'
+export const DELETE_COUNTER = 'DELETE_COUNTER'
 
 export const getDataKatalog = () => {
     try {
