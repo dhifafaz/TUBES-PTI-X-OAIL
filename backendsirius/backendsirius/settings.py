@@ -97,7 +97,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
         'NAME': 'sirius-oail',  
-        'USER': 'root',  
+        'USER': 'root',  ip
         'PASSWORD': '',  
         'HOST': '127.0.0.1',  
         'PORT': '3300',  
