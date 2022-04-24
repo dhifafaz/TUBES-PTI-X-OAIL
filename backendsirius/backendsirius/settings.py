@@ -27,11 +27,20 @@ SECRET_KEY = 'django-insecure-151!8f1hee_^o^o(gte-fqq-y(0ma@i&ba2am41+w++4^b6-lg
 DEBUG = True
 
 ALLOWED_HOSTS=['*']
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:8000",
 # ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+# CORS_ORIGIN_WHITELIST = [
+#     '*',
+# ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://1889-140-213-64-250.ngrok.io/',
+    'https://1889-140-213-64-250.ngrok.io/'
+    ]
 # Application definition
 
 INSTALLED_APPS = [
@@ -97,8 +106,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
         'NAME': 'sirius-oail',  
-        'USER': 'root',  ip
-        'PASSWORD': '',  
+        'USER': 'root', 
+        'PASSWORD': '',
         'HOST': '127.0.0.1',  
         'PORT': '3300',  
         'OPTIONS': {  

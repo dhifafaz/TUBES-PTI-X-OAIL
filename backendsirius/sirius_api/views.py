@@ -34,7 +34,7 @@ from knox.models import AuthToken
 # from rest_framework.parsers import MultiPartParser, FormParser
 
 class UserRegister(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'head', 'options']
+    http_method_names = ['get', 'post', 'put','head', 'options']
     queryset = UserCore.objects.all()
     serializer_class = UserCoreSerializer
     def create(self, request, *args, **kwargs):
