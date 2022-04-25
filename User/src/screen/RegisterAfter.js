@@ -51,6 +51,35 @@ const RegisterAfter = ({ navigation }) => {
     //     }
     // })
 
+    useEffect(() => {
+
+        async function fetchMyAPI() {
+            if (text.profile_pic != null && text.profiles['KTP_KTM'] != null) {
+                console.log('masuk handle masukkkkk database')
+                let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/40/').toLowerCase()
+                //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
+                console.log(ipMasuk)
+                return await fetch(
+                    ipMasuk,
+                    {
+                        method: 'patch',
+                        body: JSON.stringify(text),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+
+                ).then(response => response.json())
+                    .then(response => console.log(response))
+                    .catch(error => console.log(error))
+            }
+        }
+        fetchMyAPI()
+
+
+
+    })
+
     const option = {
         title: 'Pilih KTP',
         type: 'library',
@@ -114,13 +143,16 @@ const RegisterAfter = ({ navigation }) => {
             console.error(e);
         }
 
-        let imageProfileRef = await firebase.storage().ref('/profile_picture/' + fileName)
-        await imageProfileRef.getDownloadURL().then((url) => {
-            setText(text => ({
-                ...text, profile_pic: url
-            }));
-            //setUploadPhoto(url)
-        }).catch((e) => console.log('getting downloadURL of image error => ', e))
+        setTimeout(() => {
+            let imageProfileRef = firebase.storage().ref('/profile_picture/' + fileName)
+            imageProfileRef.getDownloadURL().then((url) => {
+                setText(text => ({
+                    ...text, profile_pic: url
+                }));
+                console.log('ini FOTO JANCUK')
+                //setUploadPhoto(url)
+            }).catch((e) => console.log('getting downloadURL of image error => ', e))
+        }, 1000)
 
 
     }
@@ -148,17 +180,19 @@ const RegisterAfter = ({ navigation }) => {
             console.error(e);
         }
 
-        let imageKTPRef = await firebase.storage().ref('/ktp_ktm/' + fileName)
-        await imageKTPRef.getDownloadURL().then((url) => {
-            setText(text => ({
-                ...text,
-                profiles: {
-                    ...text.profiles, KTP_KTM: url
-                }
-            }));
-            //setUploadKTP(url)
-        }).catch((e) => console.log('getting downloadURL of image error => ', e))
-
+        setTimeout(() => {
+            let imageKTPRef = firebase.storage().ref('/ktp_ktm/' + fileName)
+            imageKTPRef.getDownloadURL().then((url) => {
+                setText(text => ({
+                    ...text,
+                    profiles: {
+                        ...text.profiles, KTP_KTM: url
+                    }
+                }));
+                console.log('ini KTP jancuk')
+                //setUploadKTP(url)
+            }).catch((e) => console.log('getting downloadURL of image error => ', e))
+        }, 2000)
 
     }
 
@@ -192,31 +226,10 @@ const RegisterAfter = ({ navigation }) => {
 
     const insertData = () => {
 
+
+
         uploadKTP()
         uploadPhoto()
-        // if (filenameKTP != null && filenamePicture != null) {
-        //     console.log('masuk handle flie')
-        //     handleFilePic()
-        // }
-        setTimeout(() => {
-            console.log('masuk handle masukkkkk database')
-            let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/40/').toLowerCase()
-            //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
-            console.log(ipMasuk)
-            return fetch(
-                ipMasuk,
-                {
-                    method: 'patch',
-                    body: JSON.stringify(text),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-
-            ).then(response => response.json())
-                .then(response => console.log(response))
-                .catch(error => console.log(error))
-        }, 5000);
         // if (readyUploadKTP != null && readyUploadPhoto != null) {
         //     console.log('masuk handle masukkkkk database')
         //     let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/40/').toLowerCase()
@@ -239,8 +252,7 @@ const RegisterAfter = ({ navigation }) => {
     }
 
 
-
-
+    console.log(text);
 
 
     return (
