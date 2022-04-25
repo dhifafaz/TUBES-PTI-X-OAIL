@@ -31,14 +31,14 @@ class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSeria
     class Meta:
         model = UserProfile
         # KTP_KTM = Base64ImageField()
-        KTP_KTM = serializers.ImageField(max_length=None, use_url=True)
+        # KTP_KTM = serializers.ImageField(max_length=None, use_url=True)
         fields = ('prodi_unit_institusi', 'alamat', 'NRK_NIK_NIP_NIM', 'KTP_KTM', 'status_verifikasi')
     
         
 class UserCoreSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     profiles = UserProfileSerializer(many=False)
     # profile_pic = Base64ImageField()
-    profile_pic = serializers.ImageField(max_length=None, use_url=True)
+    # profile_pic = serializers.ImageField(max_length=None, use_url=True)
     
     class Meta:
         model = UserCore
