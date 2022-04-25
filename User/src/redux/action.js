@@ -3,6 +3,7 @@ export const COUNTER = 'COUNTER';
 export const TOTAL_COUNTER = 'TOTAL_COUNTER'
 export const ADD_COUNTER = 'ADD_COUNTER'
 export const DELETE_COUNTER = 'DELETE_COUNTER'
+export const IS_LOADING = 'IS_LOADING'
 
 export const getDataKatalog = () => {
     try {
@@ -36,4 +37,9 @@ export const getCounter = (counter) => ({
 export const getTotal = (total) => ({
     type: TOTAL_COUNTER,
     data: total,
+})
+
+export const getLoading = (loading) => ({
+    type: IS_LOADING,
+    data: loading
 })

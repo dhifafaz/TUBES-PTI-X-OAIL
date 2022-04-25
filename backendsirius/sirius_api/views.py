@@ -50,7 +50,7 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 
 class UserRegister(viewsets.ModelViewSet):
-    http_method_names = ['get', 'post', 'put','head', 'options']
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
     queryset = UserCore.objects.all()
     serializer_class = UserCoreSerializer
     def create(self, request, *args, **kwargs):

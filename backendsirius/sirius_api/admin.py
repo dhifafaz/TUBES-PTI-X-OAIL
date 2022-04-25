@@ -10,6 +10,9 @@ from .models import LogBook
 from django import forms
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.utils.html import format_html
+from django.contrib import admin
+
 
 # from customauth.models import MyUser
 
@@ -55,7 +58,8 @@ class UserChangeForm(forms.ModelForm):
     def clean_password(self):
         return self.initial["password"]
 
-class UserAdmin(BaseUserAdmin):
+@admin.display(description="profile_pic")
+class UserAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
@@ -63,10 +67,10 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'nama', 'role', 'profile_pic', 'is_active', 'is_superuser', 'is_staff', 'last_login')
-    list_filter = ('is_staff',)
+    list_display = ('email', 'nama', 'role', 'profile_picture', 'is_active', 'is_superuser', 'is_staff', 'last_login')
+    list_filter = ('is_staff','role')
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        ('Credentials', {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('nama', 'profile_pic', 'date_joined')}),
         ('Permissions', {'fields': ('is_staff', 'role', 'is_active', 'groups', 'user_permissions', 'is_superuser', 'is_admin')}),
     )
@@ -79,14 +83,29 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
     search_fields = ('email', 'nama')
-    ordering = ('email', 'nama', 'is_staff', 'role')
     filter_horizontal = ()
+    readonly_fields = ('profile_pic', )
+    list_per_page = 10
+    def profile_picture(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.profile_pic)
 
+@admin.display(description="KTP_atau_KTM")
 class UserDetail(admin.ModelAdmin):
-    list_display = ('user', 'prodi_unit_institusi','alamat', 'KTP_KTM', 'status_verifikasi')
+    list_display = ('user', 'prodi_unit_institusi','alamat', 'KTP_atau_KTM', 'status_verifikasi')
+    fieldsets = (
+        ('User Detail', {'fields': ('user', 'prodi_unit_institusi','alamat', 'KTP_atau_KTM', 'status_verifikasi')}),
+    )
+    readonly_fields = ('KTP_atau_KTM', )
+    search_fields = ('user', 'prodi_unit_institusi', 'alamat')
+    list_filter = ('status_verifikasi', 'prodi_unit_institusi')
+    filter_horizontal = ()
+    list_per_page = 10
+    def KTP_atau_KTM(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.KTP_KTM)
 
 class AlatDetail(admin.ModelAdmin):
-    list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat')
+    list_per_page = 10
+    list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat', 'gambar_alat', 'instansi')
 
 admin.site.register(UserCore, UserAdmin)
 admin.site.register(UserProfile, UserDetail)

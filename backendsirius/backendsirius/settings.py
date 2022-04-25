@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
+from rest_framework.settings import api_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,19 +32,23 @@ ALLOWED_HOSTS=['*']
 # ALLOWED_HOSTS += '192.168.43.140'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
-CSRF_TRUSTED_ORIGINS = [
-    'https://sirius-oail.loca.lt/',
-    'http://localhost:8000',
-    'http://sirius-oail.loca.lt/'
-]
 # CORS_ORIGIN_WHITELIST = []
 #     '*'
 # ]
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:8000",
-#     "http://192.168.43.140:8000",
-#     "https://sirius-oail.loca.lt"
+#     "http://192.168.43.140:8000"
 # ]
+
+# Setting Token KNOX
+REST_KNOX = {
+  'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
+  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+  'TOKEN_TTL': None,
+  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+  'TOKEN_LIMIT_PER_USER': None,
+  'AUTO_REFRESH': False,
+}
 
 # Application definition
 
