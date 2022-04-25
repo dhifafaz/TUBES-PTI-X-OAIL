@@ -21,7 +21,8 @@ class UserCore(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    profile_pic = models.ImageField(upload_to='profile_pic/', default='default.png')
+    # profile_pic = models.ImageField(upload_to='profile_pic/', default='default.png')
+    profile_pic = models.URLField(max_length=300, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     role = models.CharField(max_length=30, choices=ROLE)
     nama = models.CharField(max_length=100, blank=True)
@@ -64,7 +65,8 @@ class UserProfile(models.Model):
     prodi_unit_institusi = models.CharField(max_length=100)
     alamat = models.CharField(max_length=200)
     NRK_NIK_NIP_NIM = models.CharField(max_length=30)
-    KTP_KTM = models.ImageField(upload_to='ktp_ktm/', blank=True)
+    # KTP_KTM = models.ImageField(upload_to='ktp_ktm/', blank=True)
+    KTP_KTM = models.URLField(max_length=300, blank=True)
     status_verifikasi = models.CharField(max_length=50, default='0', choices=VERIFIED)
 
     def __str__(self):

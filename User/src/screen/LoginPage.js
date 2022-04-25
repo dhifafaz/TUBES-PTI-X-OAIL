@@ -8,7 +8,15 @@ import {
 } from 'react-native';
 import styles from '../style/LoginPageStyles';
 import { Image, } from 'react-native-elements';
-const Login = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+
+const Login = () => {
+
+  const navigation = useNavigation();
+
+  const toRegister = () => {
+    navigation.navigate('Register', {})
+  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -87,7 +95,7 @@ const Login = ({ navigation }) => {
         <TouchableOpacity
           style={styles.reset}
           onPress={navigation.navigate('Login')}>
-          <Text style={styles.reset}>Daftar</Text>
+          <Text style={styles.reset} onPress={toRegister}>Daftar</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

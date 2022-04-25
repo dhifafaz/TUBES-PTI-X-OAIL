@@ -13,10 +13,17 @@ import { Image, } from 'react-native-elements';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useRoute } from '@react-navigation/native';
 import storage, { firebase } from '@react-native-firebase/storage';
+import AppLoader from '../component/loading/apploader';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLoading } from '../redux/action';
+import { useNavigation } from '@react-navigation/native';
 
+const RegisterAfter = () => {
 
-const RegisterAfter = ({ navigation }) => {
+    const navigation = useNavigation();
 
+    const { isloading } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
 
 
     const route = useRoute().params
@@ -27,11 +34,7 @@ const RegisterAfter = ({ navigation }) => {
     const [readyUploadKTP, setUploadKTP] = useState(null);
     const [readyUploadPhoto, setUploadPhoto] = useState(null);
 
-    const [uploading, setUploading] = useState(false);
     const [transferred, setTransferred] = useState(0);
-
-    const [filenameKTP, setFileNameKTP] = useState(null);
-    const [filenamePicture, setFileNamePicture] = useState(null);
 
 
     const [text, setText] = useState({
@@ -44,19 +47,16 @@ const RegisterAfter = ({ navigation }) => {
         }
     })
 
-    // const [imagetag, setImagetag] = useState({
-    //     profile_pic: imagePicker2,
-    //     profiles: {
-    //         KTP_KTM: imagePicker,
-    //     }
-    // })
 
     useEffect(() => {
 
+
         async function fetchMyAPI() {
             if (text.profile_pic != null && text.profiles['KTP_KTM'] != null) {
+
+                //dispatch(getLoading(false))
                 console.log('masuk handle masukkkkk database')
-                let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/40/').toLowerCase()
+                let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/' + route.id + '/').toLowerCase()
                 //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
                 console.log(ipMasuk)
                 return await fetch(
@@ -72,6 +72,11 @@ const RegisterAfter = ({ navigation }) => {
                 ).then(response => response.json())
                     .then(response => console.log(response))
                     .catch(error => console.log(error))
+                    .finally(() => {
+                        dispatch(getLoading(false))
+                        navigation.navigate('Login', {})
+                    }
+                    )
             }
         }
         fetchMyAPI()
@@ -196,59 +201,12 @@ const RegisterAfter = ({ navigation }) => {
 
     }
 
-    // const handleFilePic = () => {
-    //     let imageProfileRef = firebase.storage().ref('/profile_picture/' + filenamePicture)
-    //     imageProfileRef.getDownloadURL().then((url) => {
-    //         setUploadPhoto(url)
-    //     }).catch((e) => console.log('getting downloadURL of image error => ', e))
-
-    //     let imageKTPRef = firebase.storage().ref('/ktp_ktm/' + filenameKTP)
-    //     imageKTPRef.getDownloadURL().then((url) => {
-    //         setUploadKTP(url)
-    //     }).catch((e) => console.log('getting downloadURL of image error => ', e))
-
-
-    //     if (readyUploadKTP != null && readyUploadPhoto != null) {
-    //         console.log(readyUploadKTP)
-    //         setText(text => ({
-    //             ...text,
-    //             profiles: {
-    //                 ...text.profiles, KTP_KTM: readyUploadKTP
-    //             }
-    //         }));
-    //         console.log(text)
-    //         console.log(readyUploadPhoto)
-    //         setText(text => ({
-    //             ...text, profile_pic: readyUploadPhoto
-    //         }));
-    //     }
-    // }
-
     const insertData = () => {
 
 
-
+        dispatch(getLoading(true))
         uploadKTP()
         uploadPhoto()
-        // if (readyUploadKTP != null && readyUploadPhoto != null) {
-        //     console.log('masuk handle masukkkkk database')
-        //     let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/40/').toLowerCase()
-        //     //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
-        //     console.log(ipMasuk)
-        //     return fetch(
-        //         ipMasuk,
-        //         {
-        //             method: 'patch',
-        //             body: JSON.stringify(text),
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //         }
-
-        //     ).then(response => response.json())
-        //         .then(response => console.log(response))
-        //         .catch(error => console.log(error))
-        // }
     }
 
 
@@ -256,53 +214,56 @@ const RegisterAfter = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                <View style={styles.logo}>
-                    <Image
-                        source={require('../assets/images/logo.png')}
-                        style={styles.logoImage}
-                    />
-                </View>
-                <View style={styles.input}>
+        <>
+            <SafeAreaView style={styles.container}>
+                <ScrollView style={styles.scrollView}>
+                    <View style={styles.logo}>
+                        <Image
+                            source={require('../assets/images/logo.png')}
+                            style={styles.logoImage}
+                        />
+                    </View>
+                    <View style={styles.input}>
 
-                    <View style={styles.inputArea1}>
-                        <TouchableOpacity style={styles.touch} onPress={openGalery}>
-                            <Text style={styles.textPic}>Pilih</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.textdest}>{imagePicker != null ? imagePicker['uri'].substring(imagePicker['uri'].lastIndexOf('/') + 1) : 'KTP/KTM'}</Text>
+                        <View style={styles.inputArea1}>
+                            <TouchableOpacity style={styles.touch} onPress={openGalery}>
+                                <Text style={styles.textPic}>Pilih</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.textdest}>{imagePicker != null ? imagePicker['uri'].substring(imagePicker['uri'].lastIndexOf('/') + 1) : 'KTP/KTM'}</Text>
+                        </View>
+
+                        <View style={styles.inputArea1} >
+                            <TouchableOpacity style={styles.touch} onPress={openGalery2}>
+                                <Text style={styles.textPic}>Pilih</Text>
+
+                            </TouchableOpacity>
+                            <Text style={styles.textdest}>{imagePicker2 != null ? imagePicker2['uri'].substring(imagePicker2['uri'].lastIndexOf('/') + 1) : 'Pas Foto'}</Text>
+                        </View>
+
                     </View>
 
-                    <View style={styles.inputArea1} >
-                        <TouchableOpacity style={styles.touch} onPress={openGalery2}>
-                            <Text style={styles.textPic}>Pilih</Text>
-
-                        </TouchableOpacity>
-                        <Text style={styles.textdest}>{imagePicker2 != null ? imagePicker2['uri'].substring(imagePicker2['uri'].lastIndexOf('/') + 1) : 'Pas Foto'}</Text>
-                    </View>
-
-                </View>
-
-                <TouchableOpacity
-                    style={styles.masukButton}
-                    //onPress={insertData}
-                    onPress={insertData}
-                >
-                    <Text style={styles.buttonText1}>Daftar</Text>
-                </TouchableOpacity>
-
-                <View style={styles.forgetPass}>
-                    <Text style={styles.forget}>Sudah Memiliki Akun ?</Text>
                     <TouchableOpacity
-                        style={styles.reset}
-
+                        style={styles.masukButton}
+                        //onPress={insertData}
+                        onPress={insertData}
                     >
-                        <Text style={styles.reset}>Masuk</Text>
+                        <Text style={styles.buttonText1}>Daftar</Text>
                     </TouchableOpacity>
-                    <View style={{ height: 40 }} />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+
+                    <View style={styles.forgetPass}>
+                        <Text style={styles.forget}>Sudah Memiliki Akun ?</Text>
+                        <TouchableOpacity
+                            style={styles.reset}
+
+                        >
+                            <Text style={styles.reset}>Masuk</Text>
+                        </TouchableOpacity>
+                        <View style={{ height: 40 }} />
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+            {isloading ? <AppLoader /> : null}
+        </>
     )
 }
 export default RegisterAfter

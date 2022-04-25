@@ -94,7 +94,7 @@ function UploadScreen() {
     );
 }
 
-const tryUpload = () => {
+const TryUpload = () => {
     return (
         <>
             <StatusBar barStyle="dark-content" />
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default tryUpload;
+export default TryUpload;

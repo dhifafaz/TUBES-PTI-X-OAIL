@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   SafeAreaView,
@@ -12,12 +12,20 @@ import { Image, } from 'react-native-elements';
 
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from '@react-navigation/native';
+import { getLoading } from '../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
+import AppLoader from '../component/loading/apploader';
 
 const Register = () => {
 
   const navigation = useNavigation();
+  const { isloading } = useSelector(state => state.userReducer);
+  const dispatch = useDispatch()
 
-  const [id, setId] = useState('');
+  const toLogin = () => {
+    navigation.navigate('Login', {})
+  }
+
   const [userData, setUserData] = useState(null)
 
   const [akhir, setAkhir] = useState('mahasiswa');
@@ -54,12 +62,30 @@ const Register = () => {
 
 
 
+  // useEffect(() => {
 
 
 
-  const insertData = () => {
+  //   if (userData != null && userData.user != null) {
 
-    return fetch(
+  //     console.log(userData.user.id)
+
+  //     return navigation.navigate("RegisterAfter", {
+  //       id: userData.user.id
+  //     })
+  //   }
+
+
+
+
+  // })
+
+
+  const insertData = async () => {
+
+    dispatch(getLoading(true))
+
+    return await fetch(
       'http://192.168.43.140:8000/sirius_api/register_user/',
       {
         method: 'post',
@@ -73,24 +99,16 @@ const Register = () => {
       // .then(response => console.log(response))
       .then((json) => setUserData(json))
       .catch(error => console.log(error))
-  }
-
-  const toResgisterAfter = () => {
-
-    insertData()
-
-
-
-    if (userData != null && userData.user != null) {
-
-      console.log(userData.user.id)
-
-      navigation.navigate("RegisterAfter", {
-        id: userData.user.id
+      .finally(() => {
+        dispatch(getLoading(false))
+        console.log(userData.user.id)
+        navigation.navigate("RegisterAfter", {
+          id: userData.user.id
+        })
       })
-    }
-
   }
+
+
 
   // console.log(text)
 
@@ -165,7 +183,7 @@ const Register = () => {
 
         <TouchableOpacity
           style={styles.masukButton}
-          onPress={toResgisterAfter}
+          onPress={insertData}
         >
           <Text style={styles.buttonText1}>Selanjutnya</Text>
         </TouchableOpacity>
@@ -176,7 +194,7 @@ const Register = () => {
             style={styles.reset}
 
           >
-            <Text style={styles.reset}>Masuk</Text>
+            <Text style={styles.reset} onPress={toLogin}>Masuk</Text>
           </TouchableOpacity>
           <View style={{ height: 40 }} />
         </View>

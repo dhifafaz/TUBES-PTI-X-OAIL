@@ -36,14 +36,14 @@ const App = () => {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="Login" component={Login} /> */}
-          {/* <Stack.Screen name="Register" component={Register} /> */}
-          {/* <Stack.Screen name="tryUpload" component={tryUpload} /> */}
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="tryUpload" component={tryUpload} />
           <Stack.Screen name="RegisterAfter" component={RegisterAfter} />
-          {/* <Stack.Screen name="MainContainer" component={MainContainer} />
+          <Stack.Screen name="MainContainer" component={MainContainer} />
           <Stack.Screen name="DetailPage" component={DetailPage} />
           <Stack.Screen name="CatatanAlat" component={CatatanAlat} />
-          <Stack.Screen name="PinjamTotal" component={PinjamTotal} /> */}
+          <Stack.Screen name="PinjamTotal" component={PinjamTotal} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
