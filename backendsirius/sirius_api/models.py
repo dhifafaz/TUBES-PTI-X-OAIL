@@ -73,6 +73,16 @@ class UserProfile(models.Model):
         return  self.user.nama
 
 
+class Instansi(models.Model):
+    nama_instansi = models.CharField(max_length=200)
+    alamat_instansi = models.CharField(max_length=200)
+    kontak_instansi = models.CharField(max_length=200)
+    logo_instansi = models.ImageField(upload_to='logo_instansi/')
+
+    def __str__(self):
+        return self.nama_instansi
+
+
 class Alat(models.Model):
     STATUS = (
         ('tersedia', 'Tersedia'),
@@ -101,20 +111,10 @@ class Alat(models.Model):
     kondisi_alat = models.CharField(max_length=200, choices=CONDITION)
     tanggal_masuk = models.DateTimeField()   
     keterangan = models.TextField(max_length=500)
-    
+    instansi = models.ForeignKey(Instansi, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.nama_alat
 
-
-class Instansi(models.Model):
-    nama_instansi = models.CharField(max_length=200)
-    alamat_instansi = models.CharField(max_length=200)
-    kontak_instansi = models.CharField(max_length=200)
-    logo_instansi = models.ImageField(upload_to='logo_instansi/')
-    id_alat = models.ForeignKey(Alat, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nama_instansi
 
 class OrderLog(models.Model):
     token_order = models.CharField(max_length=100, blank=True)

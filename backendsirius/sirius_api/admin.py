@@ -68,7 +68,7 @@ class UserAdmin(admin.ModelAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('email', 'nama', 'role', 'profile_picture', 'is_active', 'is_superuser', 'is_staff', 'last_login')
-    list_filter = ('is_staff',)
+    list_filter = ('is_staff','role')
     fieldsets = (
         ('Credentials', {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('nama', 'profile_pic', 'date_joined')}),
@@ -83,9 +83,9 @@ class UserAdmin(admin.ModelAdmin):
         ),
     )
     search_fields = ('email', 'nama')
-    ordering = ('email', 'nama', 'is_staff', 'role')
     filter_horizontal = ()
     readonly_fields = ('profile_pic', )
+    list_per_page = 10
     def profile_picture(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.profile_pic)
 
@@ -96,11 +96,15 @@ class UserDetail(admin.ModelAdmin):
         ('User Detail', {'fields': ('user', 'prodi_unit_institusi','alamat', 'KTP_atau_KTM', 'status_verifikasi')}),
     )
     readonly_fields = ('KTP_atau_KTM', )
-
+    search_fields = ('user', 'prodi_unit_institusi', 'alamat')
+    list_filter = ('status_verifikasi', 'prodi_unit_institusi')
+    filter_horizontal = ()
+    list_per_page = 10
     def KTP_atau_KTM(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.KTP_KTM)
 
 class AlatDetail(admin.ModelAdmin):
+    list_per_page = 10
     list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat', 'gambar_alat')
 
 admin.site.register(UserCore, UserAdmin)
