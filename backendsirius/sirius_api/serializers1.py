@@ -13,7 +13,6 @@ from .models import (
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from drf_extra_fields.fields import Base64ImageField
 
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
@@ -30,16 +29,11 @@ class InstansiSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        # KTP_KTM = Base64ImageField()
-        KTP_KTM = serializers.ImageField(max_length=None, use_url=True)
         fields = ('prodi_unit_institusi', 'alamat', 'NRK_NIK_NIP_NIM', 'KTP_KTM', 'status_verifikasi')
     
         
 class UserCoreSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
     profiles = UserProfileSerializer(many=False)
-    # profile_pic = Base64ImageField()
-    profile_pic = serializers.ImageField(max_length=None, use_url=True)
-    
     class Meta:
         model = UserCore
         fields = ('id', 'email', 'nama', 'password', 'profile_pic', 'role', 'profiles')   
