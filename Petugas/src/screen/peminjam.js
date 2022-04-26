@@ -20,75 +20,77 @@ import DigunakanButton from '../component/digunakanButton/digunakan';
 const PeminjamanPage = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.color}>
-            <View style={styles.margin}>
-                <View style={styles.katalog}>
-                    <Text style={styles.textKatalog}>Daftar Peminjman</Text>
-                </View>
+            <ScrollView style={styles.margin}>
+                <View >
+                    <View style={styles.katalog}>
+                        <Text style={styles.textKatalog}>Daftar Peminjaman</Text>
+                    </View>
 
-                <View style={styles.enter40} />
+                    <View style={styles.enter40} />
 
-                <ProfilBar />
-                <View style={styles.enter30} />
+                    <ProfilBar />
+                    <View style={styles.enter30} />
 
-                <SearchingBar />
-                <View style={styles.enter30} />
+                    <SearchingBar />
+                    <View style={styles.enter30} />
 
-                <View style={styles.listView}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                    <View style={styles.listView}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                            <View style={styles.listViewText}>
+                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
+                                <Text style={styles.listText}>119201213</Text>
+                            </View>
+                        </View>
                         <View style={styles.listViewText}>
-                            <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                            <Text style={styles.listText}>119201213</Text>
+                            <PeminjamanButton />
                         </View>
                     </View>
-                    <View style={styles.listViewText}>
-                        <PeminjamanButton />
-                    </View>
-                </View>
-                <View style={styles.enter20} />
-                <View style={styles.listView}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                    <View style={styles.enter20} />
+                    <View style={styles.listView}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                            <View style={styles.listViewText}>
+                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
+                                <Text style={styles.listText}>119201213</Text>
+                            </View>
+                        </View>
                         <View style={styles.listViewText}>
-                            <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                            <Text style={styles.listText}>119201213</Text>
+                            <PengambilanButton />
                         </View>
                     </View>
-                    <View style={styles.listViewText}>
-                        <PengambilanButton />
-                    </View>
-                </View>
-                <View style={styles.enter20} />
+                    <View style={styles.enter20} />
 
-                <View style={styles.listView}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                    <View style={styles.listView}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                            <View style={styles.listViewText}>
+                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
+                                <Text style={styles.listText}>119201213</Text>
+                            </View>
+                        </View>
                         <View style={styles.listViewText}>
-                            <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                            <Text style={styles.listText}>119201213</Text>
+                            <PengembalianButton />
                         </View>
                     </View>
-                    <View style={styles.listViewText}>
-                        <PengembalianButton />
-                    </View>
-                </View>
-                <View style={styles.enter20} />
+                    <View style={styles.enter20} />
 
-                <View style={styles.listView}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                    <View style={styles.listView}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                            <View style={styles.listViewText}>
+                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
+                                <Text style={styles.listText}>119201213</Text>
+                            </View>
+                        </View>
                         <View style={styles.listViewText}>
-                            <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                            <Text style={styles.listText}>119201213</Text>
+                            <DigunakanButton />
                         </View>
                     </View>
-                    <View style={styles.listViewText}>
-                        <DigunakanButton />
-                    </View>
-                </View>
-                <View style={styles.enter20} />
+                    <View style={styles.enter20} />
 
-            </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

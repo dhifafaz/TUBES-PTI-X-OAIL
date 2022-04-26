@@ -10,13 +10,17 @@ import {
     StyleSheet,
     Pressable,
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 const ScanButton = () => {
-    
+    const navigation = useNavigation();
+
+    const toScan = () => {
+        navigation.navigate('ScenePage', {})
+    }
 
     return (
-        <Pressable style={styles.listBotton} onPress={()=>{console.log('holla')}}>
+        <Pressable style={styles.listBotton} onPress={toScan}>
             <Text style={styles.listTextBotton}>Scan</Text>
         </Pressable>
     )
