@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
+from rest_framework.settings import api_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,10 +29,26 @@ SECRET_KEY = 'django-insecure-151!8f1hee_^o^o(gte-fqq-y(0ma@i&ba2am41+w++4^b6-lg
 DEBUG = True
 
 ALLOWED_HOSTS=['*']
+# ALLOWED_HOSTS += '192.168.43.140'
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+# CORS_ORIGIN_WHITELIST = []
+#     '*'
+# ]
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:8000",
+#     "http://192.168.43.140:8000"
 # ]
+
+# Setting Token KNOX
+REST_KNOX = {
+  'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
+  'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+  'TOKEN_TTL': None,
+  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+  'TOKEN_LIMIT_PER_USER': None,
+  'AUTO_REFRESH': False,
+}
 
 # Application definition
 
@@ -60,6 +78,8 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -129,6 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 INTERNAL_IPS = [
     "127.0.0.1",
+    "192.168.43.140"
 ]
 
 LOGOUT_REDIRECT_URL = '/admin'
@@ -146,6 +167,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# APPEND_SLASH = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

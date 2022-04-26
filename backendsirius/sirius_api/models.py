@@ -21,7 +21,8 @@ class UserCore(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    profile_pic = models.ImageField(upload_to='profile_pic/', default='default.png')
+    # profile_pic = models.ImageField(upload_to='profile_pic/', default='default.png')
+    profile_pic = models.URLField(max_length=300, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     role = models.CharField(max_length=30, choices=ROLE)
     nama = models.CharField(max_length=100, blank=True)
@@ -64,11 +65,22 @@ class UserProfile(models.Model):
     prodi_unit_institusi = models.CharField(max_length=100)
     alamat = models.CharField(max_length=200)
     NRK_NIK_NIP_NIM = models.CharField(max_length=30)
-    KTP_KTM = models.ImageField(upload_to='ktp_ktm/', blank=True)
+    # KTP_KTM = models.ImageField(upload_to='ktp_ktm/', blank=True)
+    KTP_KTM = models.URLField(max_length=300, blank=True)
     status_verifikasi = models.CharField(max_length=50, default='0', choices=VERIFIED)
 
     def __str__(self):
         return  self.user.nama
+
+
+class Instansi(models.Model):
+    nama_instansi = models.CharField(max_length=200)
+    alamat_instansi = models.CharField(max_length=200)
+    kontak_instansi = models.CharField(max_length=200)
+    logo_instansi = models.ImageField(upload_to='logo_instansi/')
+
+    def __str__(self):
+        return self.nama_instansi
 
 
 class Alat(models.Model):
@@ -99,25 +111,16 @@ class Alat(models.Model):
     kondisi_alat = models.CharField(max_length=200, choices=CONDITION)
     tanggal_masuk = models.DateTimeField()   
     keterangan = models.TextField(max_length=500)
-    
+    instansi = models.ForeignKey(Instansi, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.nama_alat
 
 
-class Instansi(models.Model):
-    nama_instansi = models.CharField(max_length=200)
-    alamat_instansi = models.CharField(max_length=200)
-    kontak_instansi = models.CharField(max_length=200)
-    logo_instansi = models.ImageField(upload_to='logo_instansi/')
-    id_alat = models.ForeignKey(Alat, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nama_instansi
-
 class OrderLog(models.Model):
-    tanggal_peminjaman = models.DateTimeField()
-    tanggal_pengembalian = models.DateTimeField()
-    tanggal_update_data = models.DateTimeField(auto_now=True)
+    token_order = models.CharField(max_length=100, blank=True)
+    tanggal_peminjaman = models.DateTimeField(blank=True)
+    tanggal_pengembalian = models.DateTimeField(blank=True)
+    tanggal_update_data = models.DateTimeField(auto_now=True, blank=True)
     status_order = models.CharField(max_length=50, default='peminjaman')
     alasan_meminjam = models.TextField(max_length=1000)
     keterangan_ditolak = models.TextField(max_length=1000, blank=True)
@@ -138,3 +141,4 @@ class LogBook(models.Model):
 
     def __str__(self):
         return self.catatan
+    

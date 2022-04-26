@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "710016230428",
+    "project_id": "sirius-images",
+    "storage_bucket": "sirius-images.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710016230428:android:e871e4d1783a31cbaaabd9",
+        "android_client_info": {
+          "package_name": "com.oail.sirius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOG3qLckCSAyjvEXM4Uw71enbpSZlWmbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710016230428:android:f96c5d70d1e3a226aaabd9",
+        "android_client_info": {
+          "package_name": "com.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOG3qLckCSAyjvEXM4Uw71enbpSZlWmbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710016230428:android:f4c94b4ef0a3b7f5aaabd9",
+        "android_client_info": {
+          "package_name": "com.usersirius"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOG3qLckCSAyjvEXM4Uw71enbpSZlWmbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710016230428-2tjpgs66f6ud9funcqnf065ulaevie74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

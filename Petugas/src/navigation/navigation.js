@@ -16,11 +16,19 @@ const Tab = createBottomTabNavigator();
 const MainContainer = ({ navigation }) => {
     return (
         <Tab.Navigator
-
             screenOptions={{
                 tabBarActiveTintColor: '#151D3B',
                 headerShown: false,
-                tabBarStyle: { height: 70, backgroundColor: '#ECECEC', position: 'absolute' },
+                tabBarStyle: { 
+                    height: 70, 
+                    backgroundColor: '#ECECEC', 
+                    position: 'absolute',
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30, 
+                    },
+                tabBarLabelStyle: {
+                    
+                }
             }}
 
         >
