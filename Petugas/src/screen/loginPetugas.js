@@ -5,8 +5,9 @@ import {
   View, 
   TextInput, 
   TouchableOpacity } from 'react-native';
-import styles from '../style/loginPageStyles';
+import styles from '../style/LoginPageStyles';
 import { Image,  } from 'react-native-elements';
+
 const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>

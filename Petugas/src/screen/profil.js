@@ -13,12 +13,13 @@ import styles from '../style/profilStyle';
 import { Icon } from 'react-native-elements';
 
 
+
 const ProfilPage = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.color}>
-            <ScrollView>
-                <View style={styles.margin}>
+            <ScrollView style={styles.margin}>
+                <View >
                    <Text style={styles.textKatalog}>Profil</Text> 
                    <View style={styles.imageProfile}> 
                        <Image source={require('../assets/images/profil.jpg')} style={styles.image}/>
@@ -27,14 +28,22 @@ const ProfilPage = ({ navigation }) => {
                        <View style={styles.card}>
                            <Text style={styles.title}>Data Pribadi</Text>
                            <View>
-                               <Text style={styles.isiText}>Dapa</Text>
-                                <Text style={styles.isiText}>Staff OAIL</Text>
+                                <Text style={styles.title2}>Nama Lengkap</Text>
+                                <View style={styles.inputArea}>
+                                    <Text style={styles.isiText}>Dapa</Text>
+                                </View>
+                                <Text style={styles.title2}>Peran</Text>
+                                <View style={styles.inputArea}>
+                                    <Text style={styles.isiText}>Petugas</Text>
+                                </View>
+                                
                            </View>
                        </View>
                         <View style={styles.card}>
                             <Text style={styles.title}>Keamanan</Text>
                             <View>
-                                <View style={styles.button2}>
+                                <Text style={styles.title2}>Email</Text>
+                                <View style={styles.inputArea}>
                                     <Text style={styles.theText}>dapa1945@gmail.com</Text>
                                     <Pressable onPress={() => {
                                         console.log('pencil');
@@ -42,7 +51,8 @@ const ProfilPage = ({ navigation }) => {
                                         <Icon name="pencil" type='entypo' size={20}/>
                                     </Pressable>
                                 </View>
-                                <View style={styles.button2}>
+                                <Text style={styles.title2}>Password</Text>
+                                <View style={styles.inputArea}>
                                     <Text style={styles.theText}>********</Text>
                                     <Pressable onPress={() => {
                                         console.log('pencil');
@@ -51,22 +61,7 @@ const ProfilPage = ({ navigation }) => {
                                     </Pressable>
                                 </View>
                             </View>
-                        </View>
-                        <View style={styles.card}>
-                            <Text style={styles.title}>Lainnya</Text>
-                            <View>
-                                <Pressable style={styles.button} onPress={() => {
-                                    console.log('mantap');
-                                }}>
-                                    <Text style={styles.theText}>Lainnya</Text>
-                                </Pressable>
-                                <Pressable style={styles.button} onPress={() => {
-                                    console.log('mantap');
-                                }}>
-                                    <Text style={styles.theText}>Masukkan</Text>
-                                </Pressable>
-                            </View>
-                        </View>
+                        </View>                        
                    </View>
                    <View>
                         <Pressable style={styles.buttonOut} onPress={() => {

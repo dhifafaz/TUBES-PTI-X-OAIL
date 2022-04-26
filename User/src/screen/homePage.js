@@ -13,6 +13,7 @@ import SearchingBar from '../component/searchingBar/searchingBar';
 import { Image, Icon } from 'react-native-elements';
 import { getCounter, getDataKatalog, getTotal } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 
 let temporaty = []
@@ -90,6 +91,7 @@ const HomePage = ({ navigation }) => {
 }
 
 const Katalog = (props) => {
+    const navigation = useNavigation();
 
     const { dataKatalog, counter, totalCounter, ip } = useSelector(state => state.userReducer);
 
@@ -106,6 +108,16 @@ const Katalog = (props) => {
     //         }
     //     })
     // }, [index])
+    const toTotalPinjaman = () => {
+        if (totalCounter >= 1) {
+            navigation.navigate('PinjamTotal', {
+                counter: temporaty
+            })
+        }
+        else { }
+
+
+    }
 
     const item = props.items
     const index = props.indexs

@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     margin: {
-        margin: 20,
+        marginHorizontal: 20,
+        marginBottom: 60,
+        marginTop: 20,
     },
     textKatalog: {
         fontSize: 24,
