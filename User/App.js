@@ -12,6 +12,8 @@ import Login from './src/screen/LoginPage';
 import { Provider } from 'react-redux';
 import { Store } from './src/redux/store';
 import tryUpload from './src/screen/tryUpload';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import auth from '@react-native-firebase/auth';
 
