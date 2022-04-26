@@ -4,6 +4,8 @@ export const TOTAL_COUNTER = 'TOTAL_COUNTER'
 export const ADD_COUNTER = 'ADD_COUNTER'
 export const DELETE_COUNTER = 'DELETE_COUNTER'
 export const IS_LOADING = 'IS_LOADING'
+export const DATA_USER = 'DATA_USER'
+
 
 export const getDataKatalog = () => {
     try {
@@ -42,4 +44,9 @@ export const getTotal = (total) => ({
 export const getLoading = (loading) => ({
     type: IS_LOADING,
     data: loading
+})
+
+export const getDataUser = (token) => ({
+    type: DATA_USER,
+    data: token
 })
