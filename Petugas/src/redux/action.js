@@ -1,0 +1,1 @@
+export const GET_DATA_KATALOG = 'SET_DATA_KATALOG';
