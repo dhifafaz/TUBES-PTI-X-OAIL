@@ -8,14 +8,18 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     TouchableOpacity,
+    KeyboardAvoidingView,
 } from 'react-native';
 
 
 const TheButton = () => {
-    const [terimaSelected, setTerimaSelected] = useState(false);
-    const [tolakSelected, setTolakSelected] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     
+    const [status,setStatus] = useState();
+    const setStatusFilter = status => {
+        setStatus(status)
+    }
+
     return (
         <>
         <Modal
@@ -27,31 +31,38 @@ const TheButton = () => {
                 setModalVisible(!modalVisible);
             }}
         >
-            <TouchableWithoutFeedback
-                    onPress={() => setModalVisible(!modalVisible) }
-            >
-                <View style={styles.modal}>
-                    <TextInput 
-                        style={styles.note}
-                        placeholder="Catatan ..."
-                        multiline={true}
-                    />
-                </View> 
-                
-            </TouchableWithoutFeedback>
-            
+            <KeyboardAvoidingView 
+                behavior="position"
+                enable>
+                    <TouchableWithoutFeedback
+                        onPress={() => setModalVisible(!modalVisible)}
+                    >
+                        <View style={styles.modal}>
+                            <TextInput
+                                style={styles.note}
+                                placeholder="Catatan ..."
+                                multiline={true}
+                            />
+                            <Pressable style={styles.button} onPress={() => {
+                                console.log('KIRIM');
+                            }}>
+                                <Text style={styles.buttonText}>Kirim</Text>
+                            </Pressable>
+                        </View>
+
+                    </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>        
         </Modal>
 
         <Pressable 
-        style={[terimaSelected ? styles.terimaButton : styles.defaultButton]}
-        onPress={() => setTerimaSelected(!terimaSelected)}>
-            <Text style={[terimaSelected ? styles.selectedText :styles.textButton]}>Terima</Text>
+            style={[status === 'Terima' ? styles.terimaButton : styles.defaultButton]}
+            onPress={() => setStatusFilter('Terima')}>
+            <Text style={[status === 'Terima' ? styles.selectedText :styles.textButton]}>Terima</Text>
         </Pressable>
-            <Pressable style={[tolakSelected ? styles.tolakButton : styles.defaultButton]  }
-                onPress={() => {setModalVisible(!modalVisible); setTolakSelected(!tolakSelected);}}
-                
-                >
-                <Text style={[tolakSelected ? styles.selectedText : styles.textButton]}>Tolak</Text>
+        <Pressable 
+            style={[status === 'Tolak' ? styles.tolakButton : styles.defaultButton]  }
+                onPress={() => { setModalVisible(!modalVisible); setStatusFilter('Tolak');}}>
+                <Text style={[status === 'Tolak' ? styles.selectedText : styles.textButton]}>Tolak</Text>
         </Pressable>
         </> 
     )
@@ -101,7 +112,9 @@ const styles = StyleSheet.create({
     note: {
         backgroundColor: "#CDCDCD",
         borderRadius: 10,
-        padding: 10,        
+        padding: 10,
+        minHeight: "30%",        
+        marginBottom: 20, 
     },
     button: {
         backgroundColor: "#4B8BD4",

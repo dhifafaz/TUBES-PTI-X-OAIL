@@ -6,7 +6,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     margin: {
-        margin: 20,
+        marginHorizontal: 20,
+        marginBottom: 60,
+        marginTop: 20,
     },
     textKatalog: {
         fontSize: 24,
@@ -31,30 +33,34 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu-Bold',
         fontSize: 18,
         color: '#ECECEC',
+        marginBottom: 15,
+    },
+    title2: {
+        fontFamily: 'Ubuntu-Light',
+        fontSize: 16,
+        color: '#ECECEC',
         marginBottom: 5,
+    },
+    inputArea: {
+        backgroundColor: '#ECECEC',
+        borderRadius: 10,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        height: 50,
+        width: '100%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent:"space-between"
     },
     isiText: {
         fontFamily: 'Ubuntu-Light',
         fontSize: 16,
-        backgroundColor: '#ECECEC',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 2,
     },
     button: {
         backgroundColor: '#ECECEC',
         padding: 10,
         borderRadius: 5,
         marginBottom: 2,
-    },
-    button2: {
-        backgroundColor: '#ECECEC',
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 2,
-        justifyContent: "space-between",
-        flexDirection: "row",
-        alignItems: 'center',
     },
     theText: {
         fontFamily: 'Ubuntu-Light',
@@ -66,6 +72,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
+        marginBottom: 20,
     },
     outText: {
         fontFamily: 'Ubuntu-Bold',
