@@ -12,17 +12,12 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.html import format_html
 from django.contrib import admin
-
-
 # from customauth.models import MyUser
-
-
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
     class Meta:
         model = UserCore
         fields = ('email', 'nama')
@@ -43,7 +38,6 @@ class UserCreationForm(forms.ModelForm):
             user.save()
         return user
 
-
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField(
         help_text="Raw passwords are not stored, so there is no way to see "
@@ -61,7 +55,7 @@ class UserChangeForm(forms.ModelForm):
 @admin.display(description="profile_pic")
 class UserAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
-    form = UserChangeForm
+    change_form = UserChangeForm
     add_form = UserCreationForm
 
     # The fields to be used in displaying the User model.
@@ -70,8 +64,8 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'nama', 'role', 'profile_picture', 'is_active', 'is_superuser', 'is_staff', 'last_login')
     list_filter = ('is_staff','role')
     fieldsets = (
-        ('Credentials', {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('nama', 'profile_pic', 'date_joined')}),
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('nama', 'profile_picture', 'date_joined')}),
         ('Permissions', {'fields': ('is_staff', 'role', 'is_active', 'groups', 'user_permissions', 'is_superuser', 'is_admin')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -84,7 +78,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     search_fields = ('email', 'nama')
     filter_horizontal = ()
-    readonly_fields = ('profile_pic', )
+    readonly_fields = ('profile_picture', )
     list_per_page = 10
     def profile_picture(self, obj):
         return format_html("<a href='{url}'>{url}</a>", url=obj.profile_pic)
