@@ -15,7 +15,7 @@ from .models import (
     UserProfile,
     OrderLog,
 )
-from .serializers import (
+from .serializers1 import (
     AlatSerializer,
     UserCoreSerializer,
     UserProfileSerializer,
@@ -29,9 +29,25 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import APIView
 from knox.models import AuthToken
+import pyrebase
+import os
 # from rest_framework.authentication import TokenAuthentication
 # from rest_framework.permissions import IsAuthenticated
 # from rest_framework.parsers import MultiPartParser, FormParser
+
+config = {
+    "apiKey": "AIzaSyCSedZNHkBrY5UBUFUhPQUyfLfT4TlDlcQ",
+    "authDomain": "http://sirius-images.firebaseapp.com/",
+    "projectId": "sirius-images",
+    "storageBucket": "http://sirius-images.appspot.com/",
+    "messagingSenderId": "710016230428",
+    "appId": "1:710016230428:web:fbc3840c9cd7a86baaabd9",
+    "measurementId": "G-SJZPNGSQ0B",
+    "databaseURL": ""
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 
 class UserRegister(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'head', 'options']
@@ -45,6 +61,8 @@ class UserRegister(viewsets.ModelViewSet):
             "user": UserCoreSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
+        
+        
 
 class UserLogin(viewsets.ModelViewSet):
     http_method_names = ['post', 'head', 'options']

@@ -22,7 +22,7 @@ class UserCore(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     # profile_pic = models.ImageField(upload_to='profile_pic/', default='default.png')
-    profile_pic = models.URLField(max_length=300, blank=True)
+    profile_pic = models.URLField(max_length=300, blank=True, default='https://firebasestorage.googleapis.com/v0/b/sirius-images.appspot.com/o/profil_default_pic%2Fdefault.png?alt=media&token=56d074be-2ed8-4707-93bc-ae167b49c931')
     updated_at = models.DateTimeField(auto_now=True)
     role = models.CharField(max_length=30, choices=ROLE)
     nama = models.CharField(max_length=100, blank=True)
@@ -101,6 +101,15 @@ class Alat(models.Model):
         ('perawatan', 'Perawatan'),
         ('lain-lain', 'Lain-Lain'),
     )
+    BORROW =(
+        ('1', 'Bisa'),
+        (0, 'Tidak Bisa'),
+    )
+    LEVEL = (
+        ('1','Umum - Mahasiswa - Dosen'),
+        ('2','Mahasiswa - Dosen'),
+        ('3','Dosen'),
+    )
     id_alat = models.CharField(max_length=30, primary_key=True)
     nama_alat = models.CharField(max_length=200)
     deskripsi = models.TextField(max_length=1000)
@@ -112,6 +121,8 @@ class Alat(models.Model):
     tanggal_masuk = models.DateTimeField()   
     keterangan = models.TextField(max_length=500)
     instansi = models.ForeignKey(Instansi, on_delete=models.CASCADE, blank=True, null=True)
+    bisa_dipinjam = models.CharField(max_length=2, blank=True, default=0, choices=BORROW)
+    level_peminjam = models.CharField(max_length=2, blank=True, default=1, choices=LEVEL)
     def __str__(self):
         return self.nama_alat
 
