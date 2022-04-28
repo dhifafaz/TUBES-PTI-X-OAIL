@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   SafeAreaView,
@@ -9,17 +9,57 @@ import {
 import styles from '../style/LoginPageStyles';
 import { Image, } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
 
   const navigation = useNavigation();
 
+  const [id, setId] = useState(null)
+  const [token, setToken] = useState(null)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [checkToken, setCheckToken] = useState(null)
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+
+  const getData = () => {
+    try {
+      AsyncStorage.getItem('token').then(value => {
+        if (value != null) {
+          navigation.navigate('MainContainer')
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const setData = async () => {
+    if (checkToken != null) {
+      try {
+        var user = {
+          id: checkToken.user['id'],
+          token: checkToken.token
+        }
+        await AsyncStorage.setItem('token', JSON.stringify(user));
+        navigation.navigate('MainContainer')
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+
+
   const toRegister = () => {
     navigation.navigate('Register', {})
   }
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const loginUser = (credentials) => {
 
@@ -30,19 +70,16 @@ const Login = () => {
       },
       body: JSON.stringify(credentials)
     }).then(response => response.json())
-      .then(response => console.log(response))
+      .then(response => {
+        setCheckToken(response)
+        console.log(response)
+      })
       .catch(error => console.log(error))
+      .finally(() => setData())
 
   };
 
-  // const handleLogin = () => {
-  //   const token = loginUser({
-  //     email,
-  //     password
-  //   });
-
-  //   console.log(token)
-  // }
+  //console.log(checkToken.user['id'])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,11 +107,11 @@ const Login = () => {
       <TouchableOpacity
         style={styles.masukButton}
         onPress={() => {
-          const token = loginUser({
+
+          loginUser({
             email,
             password
-          });
-          console.log(token)
+          })
 
 
         }}
