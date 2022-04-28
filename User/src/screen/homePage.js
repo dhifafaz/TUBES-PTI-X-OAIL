@@ -99,25 +99,6 @@ const Katalog = (props) => {
 
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch({
-    //         type: 'ADD_COUNTER',
-    //         payload: {
-    //             label: hitung,
-    //             id: dataKatalog["data_alat"][index]['id_alat']
-    //         }
-    //     })
-    // }, [index])
-    const toTotalPinjaman = () => {
-        if (totalCounter >= 1) {
-            navigation.navigate('PinjamTotal', {
-                counter: temporaty
-            })
-        }
-        else { }
-
-
-    }
 
     const item = props.items
     const index = props.indexs

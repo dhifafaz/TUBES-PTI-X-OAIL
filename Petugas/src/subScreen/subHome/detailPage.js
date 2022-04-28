@@ -9,8 +9,16 @@ import {
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import styles from './detailStyle';
+import { useRoute } from '@react-navigation/native';
+import { getDataKatalog } from '../../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
 
 const DetailPage = ({ navigation }) => {
+    const { dataKatalog, counter, totalCounter, ip } = useSelector(state => state.userReducer);
+    const route = useRoute().params
+
+
+    let Ipgambar = ip + dataKatalog["data_alat"][route.index]['gambar_alat'];
     return (
         <SafeAreaView style={styles.color}>
             <ScrollView style={styles.margin}>
@@ -21,12 +29,12 @@ const DetailPage = ({ navigation }) => {
                     </Text>
                 </View>
                 <View style={styles.enter30} />
-                <Image source={require('../../assets/images/pixel_google.jpg')} style={styles.listImage} />
+                <Image source={{ uri: Ipgambar }} style={styles.listImage} />
                 <View style={styles.enter20} />
-                <Text style={styles.textDetail}>Teleskop Mahal OAIL</Text>
+                <Text style={styles.textDetail}>{dataKatalog["ketersediaan_alat"][route.index]['nama_alat']}</Text>
                 <View style={styles.enter20} />
                 <Text style={styles.textsub}>
-                    Teleskop atau teropong adalah sebuah instrumen pengamatan yang berfungsi mengumpulkan radiasi elektromagnetik dan sekaligus membentuk citra dari benda yang diamati Teleskop merupakan alat paling penting dalam pengamatan astronomi. Jenis teleskop (biasanya optik) yang dipakai untuk maksud bukan astronomis antara lain adalah transit, monokular, binokular, lensa kamera, atau keker. Teleskop memperbesar ukuran sudut benda, dan juga kecerahannya.
+                    {dataKatalog["data_alat"][route.index]['deskripsi']}
                 </Text>
             </ScrollView>
         </SafeAreaView>
