@@ -39,11 +39,16 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField(
-        help_text="Raw passwords are not stored, so there is no way to see "
-                "this user's password, but you can change the password "
-                "using <a href=\"../password/\">this form</a>."
-    )
+    # password = ReadOnlyPasswordHashField(
+    #     help_text="Raw passwords are not stored, so there is no way to see "
+    #             "this user's password, but you can change the password "
+    #             "using <a href=\"../password/\">this form</a>."
+    # )
+    password = ReadOnlyPasswordHashField(label=("Password"), help_text=(
+        "Raw passwords are not stored, so there is no way to see "
+        "this user's password, but you can change the password " 
+        "using <a href=\"../password/\">this form</a>."))      
+
 
     class Meta:
         model = UserCore
@@ -55,9 +60,9 @@ class UserChangeForm(forms.ModelForm):
 @admin.display(description="profile_pic")
 class UserAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
-    change_form = UserChangeForm
+    
     add_form = UserCreationForm
-
+    change_form = UserChangeForm
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
