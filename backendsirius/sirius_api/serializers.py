@@ -13,7 +13,7 @@ from .models import (
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
-from drf_extra_fields.fields import Base64ImageField
+# from drf_extra_fields.fields import Base64ImageField
 
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
