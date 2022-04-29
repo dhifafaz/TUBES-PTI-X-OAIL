@@ -104,7 +104,7 @@ class UserDetail(admin.ModelAdmin):
 
 class AlatDetail(admin.ModelAdmin):
     list_per_page = 10
-    list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat', 'gambar_alat', 'instansi')
+    list_display = ('id_alat','nama_alat', 'lokasi_alat', 'kategori_alat', 'kondisi_alat', 'gambar_alat', 'instansi', 'bisa_dipinjam', 'level_peminjam')
 
 admin.site.register(UserCore, UserAdmin)
 admin.site.register(UserProfile, UserDetail)

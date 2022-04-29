@@ -15,7 +15,7 @@ from .models import (
     UserProfile,
     OrderLog,
 )
-from .serializers1 import (
+from .serializers import (
     AlatSerializer,
     UserCoreSerializer,
     UserProfileSerializer,
@@ -109,7 +109,7 @@ class AlatsCounter(APIView):
     # http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', 'id_alat')
+        queryset = Alat.objects.filter(Q(status_alat='tersedia')).filter(Q(bisa_dipinjam='1')).filter(Q(kondisi_alat='B') | Q(kondisi_alat='RS')).order_by('nama_alat', 'id_alat')
         serializer = AlatSerializer(queryset, many=True)
         alat_list = []
         nama_alats = []
@@ -126,6 +126,8 @@ class AlatsCounter(APIView):
                     'kondisi_alat': item['kondisi_alat'],
                     'tanggal_masuk': item['tanggal_masuk'],
                     'keterangan': item['keterangan'],
+                    'bisa_dipinjam': item['bisa_dipinjam'],
+                    'level_peminjam': item['level_peminjam'],
                 }
                 if key == 'nama_alat':
                     if item[key] not in nama_alats:

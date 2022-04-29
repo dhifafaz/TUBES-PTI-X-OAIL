@@ -118,11 +118,12 @@ class Alat(models.Model):
     kategori_alat = models.CharField(max_length=80, choices=CATEGORY)
     lokasi_alat = models.CharField(max_length=200)
     kondisi_alat = models.CharField(max_length=200, choices=CONDITION)
-    tanggal_masuk = models.DateTimeField()   
+    tanggal_masuk = models.DateTimeField()
     keterangan = models.TextField(max_length=500)
     instansi = models.ForeignKey(Instansi, on_delete=models.CASCADE, blank=True, null=True)
     bisa_dipinjam = models.CharField(max_length=2, blank=True, default=0, choices=BORROW)
     level_peminjam = models.CharField(max_length=2, blank=True, default=1, choices=LEVEL)
+    
     def __str__(self):
         return self.nama_alat
 
