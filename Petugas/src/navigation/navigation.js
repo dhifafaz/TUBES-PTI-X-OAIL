@@ -16,11 +16,18 @@ const Tab = createBottomTabNavigator();
 const MainContainer = ({ navigation }) => {
     return (
         <Tab.Navigator
-
             screenOptions={{
                 tabBarActiveTintColor: '#151D3B',
                 headerShown: false,
-                tabBarStyle: { height: 70, backgroundColor: '#ECECEC', position: 'absolute' },
+                tabBarStyle: { 
+                    height: 70, 
+                    backgroundColor: '#ECECEC', 
+                    position: 'absolute',
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30, 
+                },
+                tabBarShowLabel: false,
+                tabBarHideOnKeyboard: true,
             }}
 
         >
@@ -30,7 +37,7 @@ const MainContainer = ({ navigation }) => {
                 component={KatalogPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={30} />
+                        <MaterialCommunityIcons name="home" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -38,7 +45,7 @@ const MainContainer = ({ navigation }) => {
                 component={PeminjamanPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="inbox-arrow-down" color={color} size={30} />
+                        <MaterialCommunityIcons name="inbox-arrow-down" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -46,7 +53,7 @@ const MainContainer = ({ navigation }) => {
                 component={RiwayatPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="text-box-search" color={color} size={30} />
+                        <MaterialCommunityIcons name="text-box-search" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -54,7 +61,7 @@ const MainContainer = ({ navigation }) => {
                 component={ProfilPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={30} />
+                        <MaterialCommunityIcons name="account" color={color} size={35} />
                     ),
                 }} />
         </Tab.Navigator>
