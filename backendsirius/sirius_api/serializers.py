@@ -1,6 +1,3 @@
-
-from re import A
-from venv import create
 from rest_framework import serializers
 from .models import (
     UserCore,
@@ -15,18 +12,19 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 # from drf_extra_fields.fields import Base64ImageField
 
-class AlatSerializer(serializers.ModelSerializer):
-    # instansi 
-    class Meta:
-        model = Alat
-        fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan')
-        
         
 class InstansiSerializer(serializers.ModelSerializer):
     class Meta:
         model = Instansi
-        fields = ('nama_instansi', 'alamat_instansi', 'kontak_instansi', 'logo_instansi')
+        fields = ('nama_instansi', 'alamat_instansi', 'kontak_instansi', 'logo_instansi')    
         
+class AlatSerializer(serializers.ModelSerializer):
+    # instansi 
+    # instansi = InstansiSerializer(many=False)
+    class Meta:
+        model = Alat
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan', 'bisa_dipinjam', 'level_peminjam')
+
 class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSerializer):
     class Meta:
         model = UserProfile
