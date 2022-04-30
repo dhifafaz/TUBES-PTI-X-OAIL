@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#151D3B',
+        backgroundColor: '#151D3B',
         flex: 1,
     },
     logo: {
@@ -10,17 +10,17 @@ const styles = StyleSheet.create({
         marginTop: 100,
         marginBottom: 70,
     },
-    logoImage:{        
+    logoImage: {
         width: 175,
         height: 66
     },
     input: {
         marginHorizontal: 20,
-        marginBottom: 30,        
+        marginBottom: 30,
     },
     inputArea: {
         backgroundColor: '#ECECEC',
-        borderRadius: 10,        
+        borderRadius: 10,
         marginBottom: 10,
         paddingHorizontal: 10,
     },
@@ -29,17 +29,22 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         backgroundColor: '#4B8BD4',
         paddingVertical: 10,
-        borderRadius: 10,        
+        borderRadius: 10,
     },
     buttonText: {
         fontWeight: "bold",
         fontSize: 18,
         color: '#151D3B',
     },
+    buttonText1: {
+        fontWeight: "bold",
+        fontSize: 18,
+        color: '#ECECEC',
+    },
     forgetPass: {
-        flexDirection: "row",  
-        marginTop: 10, 
-        justifyContent: 'center',            
+        flexDirection: "row",
+        marginTop: 10,
+        justifyContent: 'center',
     },
     forget: {
         color: '#ECECEC',
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginRight: 10,
     },
-    reset:{
+    reset: {
         color: '#4B8BD4',
         fontSize: 14,
         fontWeight: 'bold',
@@ -55,5 +60,5 @@ const styles = StyleSheet.create({
     },
 })
 
-export default styles; 
+export default styles;
 
