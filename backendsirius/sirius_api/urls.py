@@ -7,7 +7,8 @@ from .views import (
     AlatsList,
     OrderLogView,
     UserRegister,
-    UserLogin
+    UserLogin,
+    LogBookView
 )
 
 router  = DefaultRouter()
@@ -16,6 +17,7 @@ router.register('register_user', UserRegister, basename='register_user')
 router.register('pinjam_alat', AlatsList, basename='pinjam_alat')
 router.register('order_log', OrderLogView, basename='order_log')
 router.register('login_user', UserLogin, basename='login_user')
+router.register('logbook', LogBookView, basename='logbook')
 
 urlpatterns = [
     # path('',Index),

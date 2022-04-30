@@ -80,3 +80,9 @@ class OrderSerializer(serializers.ModelSerializer):
     #         instance.status_order = validated_data.get('status_order')
     #         instance.save()
     #     return instance
+    
+
+class LogBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogBook
+        fields = '__all__'

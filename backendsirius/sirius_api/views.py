@@ -14,6 +14,7 @@ from .models import (
     UserCore,
     UserProfile,
     OrderLog,
+    LogBook,
 )
 from .serializers import (
     AlatSerializer,
@@ -21,6 +22,7 @@ from .serializers import (
     UserProfileSerializer,
     OrderSerializer,
     UserLoginSerializer,
+    LogBookSerializer,
 )
 from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
@@ -164,5 +166,12 @@ class OrderLogPerUser(viewsets.ModelViewSet):
     # permission_classes = [
     #     permissions.IsAuthenticated,
     # ]
-    http_method_names = ['get', 'post', 'put', 'head', 'options']
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+    
+
+class LogBookView(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+    queryset = LogBook.objects.all()
+    serializer_class = LogBookSerializer
+    
     
