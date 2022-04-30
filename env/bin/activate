@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/dhifaf/Documents/TUBES-PTI-X-OAIL/env"
+VIRTUAL_ENV="/home/farras/Project/PTI-OAIL/TUBES-PTI-X-OAIL/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

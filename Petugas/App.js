@@ -13,7 +13,6 @@ import { Provider } from 'react-redux';
 import { Store } from './src/redux/store';
 
 
-
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -21,8 +20,8 @@ const App = () => {
     <Provider store={Store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="MainContainer" component={MainContainer} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="MainContainer" component={MainContainer} />
           <Stack.Screen name="DetailPage" component={DetailPage} />
           <Stack.Screen name="DetailRiwayatPage" component={DetailRiwayatPage} />
           <Stack.Screen name="ScenePage" component={ScenePage} />
