@@ -7,20 +7,20 @@ import {
 import styles from './styleProfilBar';
 import { Avatar } from "@react-native-material/core";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getDataUser } from '../../redux/action';
+import { getDataUser, getUserBanget } from '../../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 
 const ProfilBar = () => {
-    const { data_user } = useSelector(state => state.userReducer);
+    const { data_user, userBanget } = useSelector(state => state.userReducer);
     const [id, setId] = useState('')
+    const [isStop, setIsStope] = useState(false)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         getData()
         getDataUSER()
-
-    })
+    }, [])
 
     const getDataUSER = async () => {
         let ip = 'http://192.168.43.140:8000/sirius_api/lihat_users/' + id + '/'
@@ -43,7 +43,8 @@ const ProfilBar = () => {
                 .then(value => {
                     if (value != null) {
                         let user = JSON.parse(value)
-                        setId(user.id)
+                        // setId(user.id)
+                        dispatch(getUserBanget(user.id))
                         //console.log(id)
                     }
                 })
@@ -55,11 +56,11 @@ const ProfilBar = () => {
     return (
         <View style={styles.viewAvatar}>
             <View>
-                <Avatar size={60} image={{ uri: data_user.profile_pic }} />
+                <Avatar size={60} image={{ uri: userBanget.profile_pic }} />
             </View>
             <View style={styles.textViewAvatar}>
-                <Text style={styles.textAvatar}>{data_user.nama}</Text>
-                <Text style={styles.textAvatar}>{data_user.role}</Text>
+                <Text style={styles.textAvatar}>{userBanget.nama}</Text>
+                <Text style={styles.textAvatar}>{userBanget.role}</Text>
             </View>
 
         </View>

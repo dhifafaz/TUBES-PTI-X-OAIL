@@ -11,14 +11,15 @@ import styles from '../style/homeStyle';
 import ProfilBar from '../component/profilBar/profilBar';
 import SearchingBar from '../component/searchingBar/searchingBar';
 import { Image, Icon } from 'react-native-elements';
-import { getCounter, getDataKatalog, getTotal } from '../redux/action';
+import { getCounter, getDataKatalog, getTotal, getLoading } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import AppLoader from '../component/loading/apploader';
 
 
 let temporaty = []
 const HomePage = ({ navigation }) => {
-    const { dataKatalog, totalCounter, ip } = useSelector(state => state.userReducer);
+    const { dataKatalog, totalCounter, ip, isloading } = useSelector(state => state.userReducer);
 
 
     const toTotalPinjaman = () => {
@@ -36,6 +37,7 @@ const HomePage = ({ navigation }) => {
 
 
     useEffect(() => {
+
         dispatch(getDataKatalog())
         console.log(ip)
     }, [])
@@ -43,49 +45,52 @@ const HomePage = ({ navigation }) => {
 
     return (
 
-        <SafeAreaView style={styles.color}>
+        <>
+            <SafeAreaView style={styles.color}>
 
-            <View style={styles.margin}>
-                <View style={styles.katalog}>
-                    <Text style={styles.textKatalog}>Katalog</Text>
+                <View style={styles.margin}>
+                    <View style={styles.katalog}>
+                        <Text style={styles.textKatalog}>Katalog</Text>
+                    </View>
+                    <View style={styles.enter40} />
+
+                    <ProfilBar />
+                    <View style={styles.enter30} />
+                    <View style={styles.viewEnd}>
+                        <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
+
+                            <Text style={styles.Viewcountertext}>Total Pinjam</Text>
+
+                            <View style={styles.viewBarColorcount}>
+                                <Text style={styles.textBarcount}>{totalCounter}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.enter20} />
+
+
+                    <SearchingBar />
+                    <View style={styles.enter30} />
+
+                    <FlatList
+
+                        data={dataKatalog['data_alat']}
+                        renderItem={({ item, index, separators }) => {
+
+                            return (
+                                <Katalog items={item} indexs={index} />
+                            )
+                        }
+                        }
+                        keyExtractor={item => item.id_alat}
+
+                    />
+
                 </View>
-                <View style={styles.enter40} />
 
-                <ProfilBar />
-                <View style={styles.enter30} />
-                <View style={styles.viewEnd}>
-                    <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
-
-                        <Text style={styles.Viewcountertext}>Total Pinjam</Text>
-
-                        <View style={styles.viewBarColorcount}>
-                            <Text style={styles.textBarcount}>{totalCounter}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.enter20} />
-
-
-                <SearchingBar />
-                <View style={styles.enter30} />
-
-                <FlatList
-
-                    data={dataKatalog['data_alat']}
-                    renderItem={({ item, index, separators }) => {
-
-                        return (
-                            <Katalog items={item} indexs={index} />
-                        )
-                    }
-                    }
-                    keyExtractor={item => item.id_alat}
-
-                />
-
-            </View>
-
-        </SafeAreaView>
+            </SafeAreaView>
+            {isloading ? <AppLoader /> : null}
+        </>
 
     )
 }

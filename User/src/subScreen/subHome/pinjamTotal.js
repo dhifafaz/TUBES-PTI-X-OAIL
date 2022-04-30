@@ -25,7 +25,7 @@ const PinjamTotal = () => {
 
     const dispatch = useDispatch()
     const route = useRoute().params
-    const { dataKatalog, totalCounter, ip, isloading, data_user } = useSelector(state => state.userReducer);
+    const { dataKatalog, totalCounter, ip, isloading, data_user, userBanget } = useSelector(state => state.userReducer);
     ///
     const [checkMasuk, setCheckMasuk] = React.useState(false);
     const [check, onChangeCheck] = React.useState(false);
@@ -48,11 +48,11 @@ const PinjamTotal = () => {
         keterangan_ditolak: '',
         catatan_kelengkapan_alat: '',
         //id_alat: idAlat,
-        id_user: data_user.id,
+        id_user: userBanget.id,
     })
 
     const randomToken = () => {
-        return Math.floor(Date.now() * Math.random());
+        return Math.floor(Date.now() * Math.random()).toString();
     }
     let temporarty = true
 
@@ -74,6 +74,7 @@ const PinjamTotal = () => {
 
     const submit = async () => {
         dispatch(getLoading(true))
+        let tokenRendom = Math.floor(Date.now() * Math.random()).toString()
         for (let i = 0; i < len; i++) {
             console.log('ini looping ke ' + i)
             if (route.counter[i] >= 1) {
@@ -81,7 +82,7 @@ const PinjamTotal = () => {
                     //setIdAlat(dataKatalog["data_alat"][i]['id_alat'])
                     //console.log(dataKatalog["data_alat"][i]['id_alat'])
                     let fixposting = {
-                        token_order: Math.floor(Date.now() * Math.random()).toString(),
+                        token_order: tokenRendom,
                         tanggal_peminjaman: '2022-04-08T10:18:00+07:00',
                         tanggal_pengembalian: posting.tanggal_pengembalian,
                         status_order: 'Proses',
@@ -89,7 +90,7 @@ const PinjamTotal = () => {
                         keterangan_ditolak: '',
                         catatan_kelengkapan_alat: posting.catatan_kelengkapan_alat,
                         id_alat: dataKatalog["data_alat"][i]['id_alat'],
-                        id_user: data_user.id,
+                        id_user: userBanget.id,
                     }
                     console.log('lagi loading mich')
                     await fetch(
@@ -121,15 +122,17 @@ const PinjamTotal = () => {
     }
     async function fetchMyAPI() {
         if (isloading) {
+            let token = Math.floor(Date.now() * Math.random()).toString()
             for (let i = 0; i < len; i++) {
                 console.log('ini looping ke ' + i)
                 if (route.counter[i] >= 1) {
+
                     for (let j = 0; j < route.counter[i]; j++) {
                         //setIdAlat(dataKatalog["data_alat"][i]['id_alat'])
                         //console.log(dataKatalog["data_alat"][i]['id_alat'])
                         let fixposting = {
-                            token_order: Math.floor(Date.now() * Math.random()).toString(),
-                            tanggal_peminjaman: '2022-04-08T10:18:00+07:00',
+                            token_order: token,
+                            tanggal_peminjaman: Date.now(),
                             tanggal_pengembalian: posting.tanggal_pengembalian,
                             status_order: 'Proses',
                             alasan_meminjam: posting.alasan_meminjam,
@@ -304,7 +307,7 @@ const PinjamTotal = () => {
                         />
 
                         <View style={styles.enter20} />
-                        <TouchableOpacity style={styles.botton} onPress={submit}>
+                        <TouchableOpacity style={check && textDate != 'Tanggal Pengembalian' && posting.alasan_meminjam != '' ? styles.botton : styles.bottonAbu} onPress={check && textDate != 'Tanggal Pengembalian' && posting.alasan_meminjam != '' ? submit : console.log('tidak bisa')}>
                             <Text style={styles.textBarcount}>Pinjam</Text>
                         </TouchableOpacity>
                     </View>
