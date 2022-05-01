@@ -71,9 +71,14 @@ class UserLoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Incorrect Credentials")
     
 class OrderSerializer(serializers.ModelSerializer):
+    nama_alat = serializers.ReadOnlyField(source='id_alat.nama_alat')
+    gambar_alat = serializers.ImageField(source='id_alat.gambar_alat', read_only=True)
     class Meta:
         model = OrderLog
-        fields = '__all__'
+        fields = ('id', 'token_order', 'tanggal_peminjaman', 
+                'tanggal_pengembalian', 'tanggal_update_data', 
+                'status_order', 'alasan_meminjam', 'keterangan_ditolak',
+                'keterangan_ditolak', 'id_alat','nama_alat', 'gambar_alat', 'id_user')
         
     # def update(self, instance, validated_data, partial=True):
     #     if validated_data.get('status_order') is not None:

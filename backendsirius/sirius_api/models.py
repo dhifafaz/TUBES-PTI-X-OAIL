@@ -123,7 +123,7 @@ class Alat(models.Model):
     level_peminjam = models.CharField(max_length=2, blank=True, default=1, choices=LEVEL)
     
     def __str__(self):
-        return self.nama_alat
+        return self.id_alat
 
 
 class OrderLog(models.Model):
