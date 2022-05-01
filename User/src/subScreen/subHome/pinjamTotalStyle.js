@@ -119,6 +119,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
+    bottonAbu: {
+        height: 40,
+        backgroundColor: '#A8A9A8',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
     textBarcount: {
         fontSize: 18,
         fontFamily: 'Ubuntu-Bold',
