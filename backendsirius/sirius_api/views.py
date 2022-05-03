@@ -148,7 +148,7 @@ class OrderLogView(viewsets.ModelViewSet):
     # permission_classes = [
     #     permissions.IsAuthenticated,
     # ]
-    http_method_names = ['get', 'post', 'put', 'head', 'options']
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
     queryset = OrderLog.objects.all()
     serializer_class = OrderSerializer
     
@@ -162,11 +162,46 @@ class OrderLogView(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
     
     
-class OrderLogPerUser(viewsets.ModelViewSet):
+class OrderLogList(APIView):
     # permission_classes = [
     #     permissions.IsAuthenticated,
     # ]
-    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+    
+    def get(self, request, *args, **kwargs):
+        queryset = OrderLog.objects.exclude(status_order='tolak').exclude(status_order='sudah-dikembalikan').order_by('-tanggal_peminjaman')
+        serializer = OrderSerializer(queryset, many=True)
+        peminjam_list = []
+        token_order_list = []
+        for item in serializer.data:
+            for key in item:
+                datas = {
+                    'token_order': item['token_order'],
+                    'status_order': item['status_order'],
+                    'id_alat': item['id_alat'],
+                    'id_user': item['id_user'],
+                    'tanggal_peminjaman': item['tanggal_peminjaman'],
+                    'tanggal_pengembalian': item['tanggal_pengembalian'],
+                    'alasan_meminjam': item['alasan_meminjam'],
+                }
+                if key == 'token_order':
+                    if item[key] not in token_order_list:
+                        token_order_list.append(item[key])
+                        peminjam_list.append(datas)
+
+                
+        # token_counter = []        
+        counter = list(OrderLog.objects.values('token_order')
+                    .annotate(terhitung=Count('token_order'))
+                    .annotate(ditolak=Count('token_order',filter=Q(status_order='tolak')))
+                    .annotate(diterima=Count('token_order',filter=Q(status_order='terima')))
+                    )
+        # token_counter.append({
+        #     'token_order': token,
+        #     'jumlah_order': counter[0]['jumlah_order'],
+        # })
+                        
+        return Response({"data_peminjam" : peminjam_list, "jumlah_alat_dipinjam": counter}, status=status.HTTP_200_OK)
+    
     
 
 class LogBookView(viewsets.ModelViewSet):

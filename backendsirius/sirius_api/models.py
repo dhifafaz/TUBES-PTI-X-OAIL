@@ -137,7 +137,7 @@ class OrderLog(models.Model):
     catatan_kelengkapan_alat = models.TextField(max_length=2000, blank=True)
     id_alat = models.ForeignKey(Alat, on_delete=models.RESTRICT)
     id_user = models.ForeignKey(UserCore, on_delete=models.RESTRICT)
-
+    
     def __str__(self):
         return self.id_user.nama
 
