@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getLoading } from '../../redux/action';
 import AppLoader from '../../component/loading/apploader';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment'
 
 const PinjamTotal = () => {
 
@@ -51,30 +52,13 @@ const PinjamTotal = () => {
         id_user: userBanget.id,
     })
 
-    const randomToken = () => {
-        return Math.floor(Date.now() * Math.random()).toString();
-    }
-    let temporarty = true
-
-    // setInterval(() => {
-    //     setCheckMasuk(isloading)
-    // }, 0);
-
-    // useEffect(() => {
-
-    //     if (isloading && temporarty) {
-    //         console.log('uda masuk kok ini')
-    //         temporarty = false
-    //         fetchMyAPI()
-    //     }
-
-
-
-    // }, [])
 
     const submit = async () => {
         dispatch(getLoading(true))
         let tokenRendom = Math.floor(Date.now() * Math.random()).toString()
+        let tokenfix = tokenRendom + '-' + userBanget.id
+        let CurrentDate = moment().format('YYYY-MM-DDThh:mm:ss.Z');
+        console.log(CurrentDate)
         for (let i = 0; i < len; i++) {
             console.log('ini looping ke ' + i)
             if (route.counter[i] >= 1) {
@@ -82,10 +66,10 @@ const PinjamTotal = () => {
                     //setIdAlat(dataKatalog["data_alat"][i]['id_alat'])
                     //console.log(dataKatalog["data_alat"][i]['id_alat'])
                     let fixposting = {
-                        token_order: tokenRendom,
-                        tanggal_peminjaman: '2022-04-08T10:18:00+07:00',
+                        token_order: tokenfix,
+                        tanggal_peminjaman: CurrentDate,
                         tanggal_pengembalian: posting.tanggal_pengembalian,
-                        status_order: 'Proses',
+                        status_order: 'proses',
                         alasan_meminjam: posting.alasan_meminjam,
                         keterangan_ditolak: '',
                         catatan_kelengkapan_alat: posting.catatan_kelengkapan_alat,
@@ -120,52 +104,6 @@ const PinjamTotal = () => {
 
 
     }
-    async function fetchMyAPI() {
-        if (isloading) {
-            let token = Math.floor(Date.now() * Math.random()).toString()
-            for (let i = 0; i < len; i++) {
-                console.log('ini looping ke ' + i)
-                if (route.counter[i] >= 1) {
-
-                    for (let j = 0; j < route.counter[i]; j++) {
-                        //setIdAlat(dataKatalog["data_alat"][i]['id_alat'])
-                        //console.log(dataKatalog["data_alat"][i]['id_alat'])
-                        let fixposting = {
-                            token_order: token,
-                            tanggal_peminjaman: Date.now(),
-                            tanggal_pengembalian: posting.tanggal_pengembalian,
-                            status_order: 'Proses',
-                            alasan_meminjam: posting.alasan_meminjam,
-                            keterangan_ditolak: '',
-                            catatan_kelengkapan_alat: posting.catatan_kelengkapan_alat,
-                            id_alat: dataKatalog["data_alat"][i]['id_alat'],
-                            id_user: data_user.id,
-                        }
-                        console.log('lagi loading mich')
-                        await fetch(
-                            'http://192.168.43.140:8000/sirius_api/order_log/',
-                            {
-                                method: 'post',
-                                body: JSON.stringify(fixposting),
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                            }
-
-                        ).then(response => response.json())
-                            // .then(response => console.log(response))
-                            .then((json) => console.log(json))
-                            .catch(error => console.log(error))
-                        console.log(fixposting)
-                    }
-                }
-                dispatch(getLoading(false))
-
-                navigation.navigate('MainContainer')
-
-            }
-        }
-    }
 
 
     const handleTextChanges = (mytextname) => {
@@ -175,27 +113,6 @@ const PinjamTotal = () => {
     }
 
 
-
-
-    // const insertData = async () => {
-
-
-    //     return await fetch(
-    //         'http://192.168.43.140:8000/sirius_api/order_log/',
-    //         {
-    //             method: 'post',
-    //             body: JSON.stringify(posting),
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         }
-
-    //     ).then(response => response.json())
-    //         // .then(response => console.log(response))
-    //         .then((json) => console.log(json))
-    //         .catch(error => console.log(error))
-
-    // }
 
     let keys = Object.keys(dataKatalog['data_alat'])
     let len = keys.length

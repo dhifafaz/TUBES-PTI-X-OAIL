@@ -22,6 +22,7 @@
     "@react-navigation/native-stack": "^6.5.0",
     "firebase": "^9.6.11",
     "lottie-react-native": "^5.0.1",
+    "moment": "^2.29.3",
     "react": "17.0.2",
     "react-native": "0.67.3",
     "react-native-date-picker": "^4.2.0",

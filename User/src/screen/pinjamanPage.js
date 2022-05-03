@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -18,17 +18,18 @@ import Proses from '../component/proses/proses';
 import { getDataOrderLog, getPinjamAlat } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 
-let check = 0
 
 const PinjamanPage = () => {
 
-    const { dataOrderLog, data_user, pinjamAlat, userBanget } = useSelector(state => state.userReducer);
+    const { dataOrderLog, data_user, pinjamAlat, userBanget, ip } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
+    const [check, setCheck] = useState(0)
 
     useEffect(() => {
         dispatch(getDataOrderLog())
         dispatch(getPinjamAlat())
     }, [])
+    const [isProses, setProses] = useState(false)
 
 
     let itemlist = []
@@ -36,6 +37,7 @@ const PinjamanPage = () => {
     //console.log(typeof itemlist[3])
 
     console.log(pinjamAlat.id_alat)
+    //console.log(check)
 
     return (
         <SafeAreaView style={styles.color}>
@@ -45,36 +47,69 @@ const PinjamanPage = () => {
                 <ProfilBar />
                 <View style={styles.enter30} />
 
+                {
+                    isProses ? <Ambil /> : null
+                }
+
                 <FlatList
                     data={dataOrderLog}
                     renderItem={({ item, index, separators }) => {
-                        if (item.id_user === null) {
-                            if (typeof itemlist[index] !== 'object') {
-                                dispatch(getPinjamAlat(item.id_alat))
-                                //console.log(pinjamAlat.id_alat)
-                                itemlist[index] = pinjamAlat
-                                console.log(itemlist[index])
+                        if (item.id_user === userBanget.id) {
+                            setCheck(1)
+                            if (item.status_order === 'terima' || item.status_order === 'tolak') {
+                                if (item.status_order === 'terima') {
+                                    setProses(true)
+                                }
+                                return (
+                                    <View>
+                                        <View style={styles.listView}>
+
+                                            <Image source={{ uri: ip + item.gambar_alat }} style={styles.listImage} />
+                                            <View style={styles.listboxtext}>
+                                                <View>
+                                                    <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
+                                                    <Text style={styles.listTextsub}>Jumlah : 1</Text>
+                                                </View>
+                                            </View>
+                                            {
+                                                item.status_order === 'Terima' ? <Acc /> : <Ditolak />
+                                            }
+                                        </View>
+                                        <View style={styles.enter20} />
+                                    </View>
+                                )
+                            }
+                        }
+                    }}
+                    keyExtractor={item => item.id}
+                />
+
+                <FlatList
+                    data={dataOrderLog}
+                    renderItem={({ item, index, separators }) => {
+                        if (item.id_user === userBanget.id) {
+
+                            if (item.status_order === 'proses') {
+                                setCheck(1)
+                                return (
+                                    <View>
+                                        <View style={styles.listView}>
+
+                                            <Image source={{ uri: ip + item.gambar_alat }} style={styles.listImage} />
+                                            <View style={styles.listboxtext}>
+                                                <View>
+                                                    <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
+                                                    <Text style={styles.listTextsub}>Jumlah : 1</Text>
+                                                </View>
+                                            </View>
+                                            <Proses />
+                                        </View>
+                                        <View style={styles.enter20} />
+
+                                    </View>
+                                )
                             }
 
-                            check += 1
-                            return (
-                                <View>
-
-                                    <View style={styles.listView}>
-
-                                        <Image source={{ uri: itemlist[index].gambar_alat }} style={styles.listImage} />
-                                        <View style={styles.listboxtext}>
-                                            <View>
-                                                <Text style={styles.listTextTitle}>{itemlist[index].nama_alat}</Text>
-                                                <Text style={styles.listTextsub}>Jumlah : 1</Text>
-                                            </View>
-                                        </View>
-                                        <Proses />
-                                    </View>
-                                    <View style={styles.enter20} />
-
-                                </View>
-                            )
                         }
                     }}
                     keyExtractor={item => item.id}
@@ -97,35 +132,7 @@ const Ambil = () => {
                     <Text style={styles.ambilText}>Ambil</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.enter30} />
-            <View style={styles.listView}>
-
-                <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                <View style={styles.listboxtext}>
-                    <View>
-                        <Text style={styles.listTextTitle}>Teleskop Mahal Oail</Text>
-                        <Text style={styles.listTextsub}>Jumlah : 1</Text>
-
-                    </View>
-                </View>
-
-                <Ditolak />
-            </View>
-            <View style={styles.enter20} />
-
-            <View style={styles.listView}>
-
-                <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                <View style={styles.listboxtext}>
-                    <View>
-                        <Text style={styles.listTextTitle}>Teleskop Mahal Oail</Text>
-                        <Text style={styles.listTextsub}>Jumlah : 1</Text>
-
-                    </View>
-                </View>
-
-                <Acc />
-            </View>
+            <View style={styles.enter40} />
         </View>
     )
 }

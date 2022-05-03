@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu-Light',
         fontSize: 16,
     },
-    buttonOut:{
+    buttonOut: {
         height: 40,
         backgroundColor: '#FF0000',
         justifyContent: 'center',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#ECECEC',
     },
-    
+
 })
 
 export default styles;
