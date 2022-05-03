@@ -23,7 +23,10 @@ class AlatSerializer(serializers.ModelSerializer):
     # instansi = InstansiSerializer(many=False)
     class Meta:
         model = Alat
-        fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan', 'bisa_dipinjam', 'level_peminjam')
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 
+                'gambar_alat', 'status_alat', 'kategori_alat', 
+                'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 
+                'keterangan', 'bisa_dipinjam', 'level_peminjam')
 
 class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSerializer):
     class Meta:
