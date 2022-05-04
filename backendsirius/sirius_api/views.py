@@ -149,14 +149,23 @@ class OrderLogView(viewsets.ModelViewSet):
     #     permissions.IsAuthenticated,
     # ]
     http_method_names = ['get', 'post', 'patch', 'head', 'options']
-    queryset = OrderLog.objects.all()
-    serializer_class = OrderSerializer
+    queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
+    serializer_class = OrderSerializer 
     
-    def list(self, request, *args, **kwargs):
-        queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
-        serializer = OrderSerializer(queryset, many=True)
-        return Response(serializer.data)
-    
+    # def list(self, request, *args, **kwargs):
+    #     serializer = OrderSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+    def get_queryset(self):
+        #bentuk url yang perlu di upload kira kira beginin
+        #http://127.0.0.1:8000/sirius_api/order_log/?token=12379416812387-53&user=1
+        token_order = self.request.query_params.get('token')
+        user_id = self.request.query_params.get('user')
+        if token_order is not None and user_id is not None:    
+            queryset = OrderLog.objects.filter(Q(token_order=token_order)).filter(Q(id_user=user_id))
+        else:
+            queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
+        return queryset
+
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
@@ -204,8 +213,10 @@ class OrderLogList(APIView):
                         
         return Response({"data_peminjam" : peminjam_list, "jumlah_alat_dipinjam": counter}, status=status.HTTP_200_OK)
     
+# class OrderLogDetail(APIView):
     
-
+#     def get
+    
 class LogBookView(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'head', 'options']
     queryset = LogBook.objects.all()
