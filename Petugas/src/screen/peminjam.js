@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -16,8 +16,19 @@ import PeminjamanButton from '../component/peminjamanButton/peminjamanButton';
 import PengembalianButton from '../component/pengembalianButton/pengembalian';
 import PengambilanButton from '../component/pengambilanButton/pengambilan';
 import DigunakanButton from '../component/digunakanButton/digunakan';
+import { getDaftarPeminjam } from '../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
 
 const PeminjamanPage = ({ navigation }) => {
+
+    const { daftarPeminjman, ip } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getDaftarPeminjam())
+        console.log(ip)
+    }, [])
+
     return (
         <SafeAreaView style={styles.color}>
             <ScrollView style={styles.margin}>
@@ -34,20 +45,48 @@ const PeminjamanPage = ({ navigation }) => {
                     <SearchingBar />
                     <View style={styles.enter30} />
 
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PeminjamanButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
-                    <View style={styles.listView}>
+
+                    <FlatList
+                        data={daftarPeminjman["data_peminjam"]}
+                        renderItem={({ item, index, separators }) => {
+
+
+                            return (
+                                <View>
+                                    <View style={styles.listView}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
+                                            <View style={styles.listViewText}>
+                                                <Text style={styles.listText}>{item.nama_user}</Text>
+                                                <Text style={styles.listText}>{item.token_order}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.listViewText}>
+                                            {
+                                                item.status_order === 'proses' ? <PeminjamanButton items={item} tokens={item.token_order} /> : null
+                                            }
+                                            {
+                                                item.status_order === 'meminta-pengambilan' ? <PengambilanButton /> : null
+                                            }
+                                            {
+                                                item.status_order === 'meminta-pengembalian' ? <PengembalianButton /> : null
+                                            }
+                                            {
+                                                item.status_order === 'digunakan' ? <DigunakanButton /> : null
+                                            }
+
+                                        </View>
+                                    </View>
+                                    <View style={styles.enter20} />
+                                </View>
+                            )
+                        }
+                        }
+                        keyExtractor={item => item.token_order}
+                    />
+
+
+                    {/* <View style={styles.listView}>
                         <View style={{ flexDirection: 'row' }}>
                             <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
                             <View style={styles.listViewText}>
@@ -86,7 +125,7 @@ const PeminjamanPage = ({ navigation }) => {
                         <View style={styles.listViewText}>
                             <DigunakanButton />
                         </View>
-                    </View>
+                    </View> */}
                     <View style={styles.enter20} />
 
                 </View>

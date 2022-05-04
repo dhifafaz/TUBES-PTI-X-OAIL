@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     },
     profileBar: {
         flexDirection: "row",
+        //justifyContent: 'space-between',
         alignItems: "stretch",
         marginVertical: 20,
     },
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 10,
+        marginRight: 30,
     },
     profileDetail: {
         marginHorizontal: 20,
@@ -91,8 +93,8 @@ const styles = StyleSheet.create({
     },
     theButton: {
         flexDirection: 'column',
-        marginRight: "1%", 
-        alignItems: 'center', 
+        marginRight: "1%",
+        alignItems: 'center',
     },
 })
 

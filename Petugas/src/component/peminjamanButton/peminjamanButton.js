@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -10,13 +10,22 @@ import {
     StyleSheet,
     Pressable,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-const PeminjamanButton = () => {
+
+
+const PeminjamanButton = (props) => {
+    const item = props.items
+    const token = props.tokens
     const navigation = useNavigation();
+    console.log(token)
+
 
     const toDetailPeminjaman = () => {
-        navigation.navigate('DetailPeminjaman', {})
+        navigation.navigate('DetailPeminjaman', {
+            item: item,
+            token: token
+        })
     }
 
     return (
