@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -11,8 +11,24 @@ import {
 import { Image, Icon } from 'react-native-elements';
 import styles from './detailPeminjamanStyle';
 import TheButton from '../../component/terimaTolakButton/terimaTolakButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { getOrderLog } from '../../redux/action';
+import { useRoute } from '@react-navigation/native';
 
 const DetailPeminjaman = ({ navigation }) => {
+
+    const { orderLog, ip } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
+
+    const route = useRoute().params
+
+
+
+    useEffect(() => {
+        dispatch(getOrderLog())
+        console.log(ip)
+    }, [])
+
     return (
         <SafeAreaView style={styles.color}>
             <ScrollView style={styles.margin}>
@@ -23,9 +39,9 @@ const DetailPeminjaman = ({ navigation }) => {
                     </Text>
                 </View>
                 <View style={styles.profileBar}>
-                    <Image source={require('../../assets/images/profil.jpg')} style={styles.image} />
+                    <Image source={{ uri: route.item.profile_pic }} style={styles.image} />
                     <View style={styles.profileDetail}>
-                        <Text style={styles.textDetail}>Alexander Giovani</Text>
+                        <Text style={styles.textDetail}>{route.item.nama_user}</Text>
                         <Text style={styles.textsub}>Mahasiswa</Text>
                         <Text style={styles.textsub}>Bandar Lampung</Text>
                         <Text style={styles.textsub}>0978891234678</Text>
@@ -33,7 +49,7 @@ const DetailPeminjaman = ({ navigation }) => {
                 </View>
                 <View style={styles.card}>
                     <Text style={styles.textTittle}>Alasan Peminjaman</Text>
-                    <Text style={styles.textsub}>Kebutuhan Proyek untuk meriset penelitian kemahasiswaaan yang berkaitan dangan bintang yang sangat indah, jadi saya pengen meminjam itu untuk penelitian yang saya teliti.</Text>
+                    <Text style={styles.textsub}>{route.item.alasan_meminjam}</Text>
                 </View>
                 <View style={styles.card}>
                     <Text style={styles.textTittle}>Alat Yang Dipinjam</Text>
@@ -44,8 +60,8 @@ const DetailPeminjaman = ({ navigation }) => {
                             <Text style={styles.textBoxTittle}>Teleskop Mahal Oail</Text>
                             <Text style={styles.textBox}>Jumlah : 1</Text>
                         </View>
-                        <View style={styles.theButton}> 
-                            <TheButton/>
+                        <View style={styles.theButton}>
+                            <TheButton />
                         </View>
                     </View>
                 </View>

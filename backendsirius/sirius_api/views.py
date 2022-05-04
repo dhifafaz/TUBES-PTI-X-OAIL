@@ -179,6 +179,8 @@ class OrderLogList(APIView):
                     'status_order': item['status_order'],
                     'id_alat': item['id_alat'],
                     'id_user': item['id_user'],
+                    'nama_user': item['nama_user'],
+                    'profile_pic': item['profile_pic'],
                     'tanggal_peminjaman': item['tanggal_peminjaman'],
                     'tanggal_pengembalian': item['tanggal_pengembalian'],
                     'alasan_meminjam': item['alasan_meminjam'],

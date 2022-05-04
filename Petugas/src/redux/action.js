@@ -1,6 +1,8 @@
 export const GET_DATA_KATALOG = 'SET_DATA_KATALOG';
 export const GET_USER_BANGET = 'GET_USER_BANGET'
 export const DATA_USER = 'DATA_USER'
+export const GET_DAFTAR_PEMINJAM = 'GET_DAFTAR_PEMINJAM'
+export const GET_ORDER_LOG = 'GET_ORDER_LOG'
 
 export const getDataKatalog = () => {
     try {
@@ -40,6 +42,55 @@ export const getUserBanget = (id) => {
             if (json) {
                 dispatch({
                     type: GET_USER_BANGET,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getDaftarPeminjam = () => {
+    try {
+        return async dispatch => {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/daftar_peminjam/', {
+                'method': 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: GET_DAFTAR_PEMINJAM,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getOrderLog = () => {
+    try {
+        return async dispatch => {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/order_log/', {
+                'method': 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: GET_ORDER_LOG,
                     payload: json
                 });
             } else {
