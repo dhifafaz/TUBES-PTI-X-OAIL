@@ -21,6 +21,7 @@ class InstansiSerializer(serializers.ModelSerializer):
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
     # instansi = InstansiSerializer(many=False)
+    # gambar_alat = 
     class Meta:
         model = Alat
         fields = ('id_alat', 'nama_alat', 'deskripsi', 
@@ -84,7 +85,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ('id', 'token_order', 'tanggal_peminjaman', 
                 'tanggal_pengembalian', 'tanggal_update_data', 
                 'status_order', 'alasan_meminjam', 'keterangan_ditolak',
-                'keterangan_ditolak', 'id_alat','nama_alat', 'gambar_alat', 'id_user', 'nama_user', 'profile_pic')
+                'catatan_kelengkapan_alat', 'id_alat','nama_alat', 'gambar_alat', 'id_user', 'nama_user', 'profile_pic')
         
     # def update(self, instance, validated_data, partial=True):
     #     if validated_data.get('status_order') is not None:
@@ -97,3 +98,15 @@ class LogBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogBook
         fields = '__all__'
+        
+        
+class StatusAlatUpdateSerializer(serializers.ModelSerializer):
+    # instansi 
+    # instansi = InstansiSerializer(many=False)
+    gambar_alat = serializers.ImageField(read_only=True)
+    class Meta:
+        model = Alat
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 
+                'gambar_alat', 'status_alat', 'kategori_alat', 
+                'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 
+                'keterangan', 'bisa_dipinjam', 'level_peminjam')

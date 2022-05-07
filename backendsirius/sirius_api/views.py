@@ -23,6 +23,7 @@ from .serializers import (
     OrderSerializer,
     UserLoginSerializer,
     LogBookSerializer,
+    StatusAlatUpdateSerializer,
 )
 from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
@@ -140,7 +141,7 @@ class AlatsCounter(APIView):
                         .annotate(jumlah_alat_tersedia=Count('status_alat',filter=Q(status_alat='tersedia')))
                         .annotate(jumlah_alat_dipinjam=Count('status_alat',filter=Q(status_alat='dipinjam')))
                         .annotate(alat_rusak_total=Count('kondisi_alat',filter=Q(kondisi_alat='RT')))
-                        .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses peminjaman'))))
+                        .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses'))))
         return Response({"data_alat" : alat_list, "ketersediaan_alat" : result_list}, status=status.HTTP_200_OK)
     
 
@@ -160,8 +161,12 @@ class OrderLogView(viewsets.ModelViewSet):
         #http://127.0.0.1:8000/sirius_api/order_log/?token=12379416812387-53&user=1
         token_order = self.request.query_params.get('token')
         user_id = self.request.query_params.get('user')
+        #http://127.0.0.1:8000/sirius_api/order_log/?token=12379416812387-53&id_alat=112093103
+        id_alat = self.request.query_params.get('id_alat')
         if token_order is not None and user_id is not None:    
             queryset = OrderLog.objects.filter(Q(token_order=token_order)).filter(Q(id_user=user_id))
+        elif token_order is not None and id_alat is not None:
+            queryset = OrderLog.objects.filter(Q(token_order=token_order)).filter(Q(id_alat=id_alat))
         else:
             queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
         return queryset
@@ -223,3 +228,11 @@ class LogBookView(viewsets.ModelViewSet):
     serializer_class = LogBookSerializer
     
     
+class AlatStatusUpdate(viewsets.ModelViewSet):
+    http_method_names = ['get', 'patch', 'head', 'options']
+    queryset = Alat.objects.all()
+    serializer_class = StatusAlatUpdateSerializer
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
+   
