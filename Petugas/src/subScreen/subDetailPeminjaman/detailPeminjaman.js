@@ -7,13 +7,22 @@ import {
     FlatList,
     ScrollView,
     Pressable,
+    TouchableWithoutFeedback,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    Modal,
+    TextInput,
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import styles from './detailPeminjamanStyle';
-import TheButton from '../../component/terimaTolakButton/terimaTolakButton';
+//import TheButton from '../../component/terimaTolakButton/terimaTolakButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrderLog } from '../../redux/action';
 import { useRoute } from '@react-navigation/native';
+
+let statusTrimaTolak = []
+let alasanTolak = []
+let idUser = []
 
 const DetailPeminjaman = ({ navigation }) => {
 
@@ -25,9 +34,46 @@ const DetailPeminjaman = ({ navigation }) => {
 
 
     useEffect(() => {
-        dispatch(getOrderLog())
+        dispatch(getOrderLog(route.item.token_order, route.item.id_user))
         console.log(ip)
     }, [])
+
+    console.log(orderLog)
+    console.log(route.item.token_order)
+    console.log(route.item.id_user)
+
+    const input = async () => {
+
+        for (let i = 0; i < len; i++) {
+            console.log('masuk' + i)
+            let text = {
+                status_order: statusTrimaTolak[i],
+                alasan_meminjam: alasanTolak[i]
+            }
+
+            await fetch(
+                'http://192.168.43.140:8000/sirius_api/order_log/' + idUser[i] + '/',
+                {
+                    method: 'patch',
+                    body: JSON.stringify(text),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            ).then(response => response.json())
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+
+            if (i >= len) {
+                navigation.navigate('MainContainer', {})
+            }
+
+        }
+    }
+
+    let keys = Object.keys(orderLog)
+    let len = keys.length
+    //console.log(len)
 
     return (
         <SafeAreaView style={styles.color}>
@@ -51,23 +97,43 @@ const DetailPeminjaman = ({ navigation }) => {
                     <Text style={styles.textTittle}>Alasan Peminjaman</Text>
                     <Text style={styles.textsub}>{route.item.alasan_meminjam}</Text>
                 </View>
-                <View style={styles.card}>
-                    <Text style={styles.textTittle}>Alat Yang Dipinjam</Text>
-                    <View style={styles.cardAlat}>
-                        <Image source={require('../../assets/images/pixel_google.jpg')} style={styles.image2} />
 
-                        <View style={styles.boxText}>
-                            <Text style={styles.textBoxTittle}>Teleskop Mahal Oail</Text>
-                            <Text style={styles.textBox}>Jumlah : 1</Text>
-                        </View>
-                        <View style={styles.theButton}>
-                            <TheButton />
-                        </View>
-                    </View>
-                </View>
+                <Text style={styles.textTittle}>Alat Yang Dipinjam</Text>
+
+                <FlatList
+
+                    data={orderLog}
+                    renderItem={({ item, index, separators }) => {
+                        idUser[index] = item.id
+                        return (
+                            <View>
+                                <View style={styles.card}>
+
+                                    <View style={styles.cardAlat}>
+                                        <Image source={{ uri: item.gambar_alat }} style={styles.image2} />
+
+                                        <View style={styles.boxText}>
+                                            <Text style={styles.textBoxTittle}>{item.nama_alat}</Text>
+                                            <Text style={styles.textBox}>Jumlah : 1</Text>
+                                        </View>
+                                        <View style={styles.theButton}>
+                                            <TheButton index={index} />
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        )
+                    }
+                    } keyExtractor={item => item.id}
+                />
+
+
                 <View>
                     <Pressable style={styles.button} onPress={() => {
-                        console.log('KIRIM');
+                        // console.log(idUser);
+                        // console.log(alasanTolak);
+                        // console.log(statusTrimaTolak)
+                        input()
                     }}>
                         <Text style={styles.buttonText}>Kirim</Text>
                     </Pressable>
@@ -75,6 +141,84 @@ const DetailPeminjaman = ({ navigation }) => {
 
             </ScrollView>
         </SafeAreaView>
+    )
+}
+
+const TheButton = (props) => {
+
+    let index = props.index
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [text, onChangeText] = useState("Tidak Ditolak");
+
+    const [status, setStatus] = useState();
+    const setStatusFilter = status => {
+        setStatus(status)
+    }
+
+    const terima = () => {
+        statusTrimaTolak[index] = 'terima'
+        setStatusFilter('Terima')
+    }
+
+    const tolak = () => {
+        statusTrimaTolak[index] = 'tolak'
+        setModalVisible(!modalVisible);
+        setStatusFilter('Tolak');
+    }
+
+    useEffect(() => {
+        alasanTolak[index] = text
+    })
+
+    return (
+        <>
+            <Modal
+                animationType='slide'
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <KeyboardAvoidingView
+                    behavior="position"
+                    enable>
+                    <TouchableWithoutFeedback
+                        onPress={() => setModalVisible(!modalVisible)}
+                    >
+                        <View style={styles.modal}>
+                            <TextInput
+                                style={styles.note}
+                                placeholder="Catatan ..."
+                                onChangeText={onChangeText}
+                                value={text}
+                                multiline={true}
+                            />
+                            <Pressable style={styles.button} onPress={() => {
+                                console.log(alasanTolak);
+                            }}>
+                                <Text style={styles.buttonText}>Kirim</Text>
+                            </Pressable>
+                        </View>
+
+                    </TouchableWithoutFeedback>
+                </KeyboardAvoidingView>
+            </Modal>
+
+            <Pressable
+                style={[status === 'Terima' ? styles.terimaButton : styles.defaultButton]}
+                onPress={() => terima()}>
+                <Text style={[status === 'Terima' ? styles.selectedText : styles.textButton]}>Terima</Text>
+            </Pressable>
+            <Pressable
+                style={[status === 'Tolak' ? styles.tolakButton : styles.defaultButton]}
+                onPress={() => tolak()}>
+                <Text style={[status === 'Tolak' ? styles.selectedText : styles.textButton]}>Tolak</Text>
+            </Pressable>
+        </>
     )
 }
 

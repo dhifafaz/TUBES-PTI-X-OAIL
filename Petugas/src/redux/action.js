@@ -78,10 +78,10 @@ export const getDaftarPeminjam = () => {
         console.log(error);
     }
 }
-export const getOrderLog = () => {
+export const getOrderLog = (token, id) => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/order_log/', {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/order_log/?token=' + token + '&user=' + id, {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',

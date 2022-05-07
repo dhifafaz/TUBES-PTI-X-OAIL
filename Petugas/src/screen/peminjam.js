@@ -50,82 +50,42 @@ const PeminjamanPage = ({ navigation }) => {
                         data={daftarPeminjman["data_peminjam"]}
                         renderItem={({ item, index, separators }) => {
 
-
-                            return (
-                                <View>
-                                    <View style={styles.listView}>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
+                            if (item.status_order === 'proses' || item.status_order === 'meminta-pengambilan' || item.status_order === 'meminta-pengembalian' || item.status_order === 'digunakan') {
+                                return (
+                                    <View>
+                                        <View style={styles.listView}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
+                                                <View style={styles.listViewText}>
+                                                    <Text style={styles.listText}>{item.nama_user}</Text>
+                                                    <Text style={styles.listText}>{item.token_order}</Text>
+                                                </View>
+                                            </View>
                                             <View style={styles.listViewText}>
-                                                <Text style={styles.listText}>{item.nama_user}</Text>
-                                                <Text style={styles.listText}>{item.token_order}</Text>
+                                                {
+                                                    item.status_order === 'proses' ? <PeminjamanButton items={item} tokens={item.token_order} /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'meminta-pengambilan' ? <PengambilanButton items={item} tokens={item.token_order} /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'meminta-pengembalian' ? <PengembalianButton /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'digunakan' ? <DigunakanButton /> : null
+                                                }
+
                                             </View>
                                         </View>
-                                        <View style={styles.listViewText}>
-                                            {
-                                                item.status_order === 'proses' ? <PeminjamanButton items={item} tokens={item.token_order} /> : null
-                                            }
-                                            {
-                                                item.status_order === 'meminta-pengambilan' ? <PengambilanButton /> : null
-                                            }
-                                            {
-                                                item.status_order === 'meminta-pengembalian' ? <PengembalianButton /> : null
-                                            }
-                                            {
-                                                item.status_order === 'digunakan' ? <DigunakanButton /> : null
-                                            }
-
-                                        </View>
+                                        <View style={styles.enter20} />
                                     </View>
-                                    <View style={styles.enter20} />
-                                </View>
-                            )
+                                )
+                            }
+
                         }
                         }
                         keyExtractor={item => item.token_order}
                     />
-
-
-                    {/* <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PengambilanButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
-
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PengembalianButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
-
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <DigunakanButton />
-                        </View>
-                    </View> */}
                     <View style={styles.enter20} />
 
                 </View>

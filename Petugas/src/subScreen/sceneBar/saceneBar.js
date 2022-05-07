@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -14,14 +14,40 @@ import { Image, Icon } from 'react-native-elements';
 import styles from './sceneBarStyle';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { getOrderLog } from '../../redux/action';
 
-const ScenePage = ({ navigation }) => {
+const ScenePage = () => {
+
+    const route = useRoute().params
+
+    const navigation = useNavigation();
+
+    const { orderLog, ip } = useSelector(state => state.userReducer);
+
+    const dispatch = useDispatch()
+
     const [text, onChangeText] = React.useState("");
 
+    const [cheking, setCheking] = useState('Letakkan Barcode Dalam Bingkai')
+
     const onSuccess = (e) => {
-        Linking.openURL(e.data).catch(err =>
-            console.error('An error occured', err)
-        );
+
+        let object = e.data
+        let temporary = JSON.parse(object)
+        console.log(temporary['id_alat'])
+        console.log(route.item.id_alat)
+
+        if (temporary['id_alat'] == route.item.id_alat) {
+            setCheking(temporary['nama_alat'])
+        } else {
+            setCheking('Alat Yang di Cari SALAH')
+        }
+
+
+
     };
 
     return (
@@ -52,7 +78,7 @@ const ScenePage = ({ navigation }) => {
                     <View style={styles.enter10} />
 
                     <Text style={styles.sceneText}>
-                        Letakkan Barcode Dalam Bingkai
+                        {cheking}
                     </Text>
                 </View>
                 <View style={styles.enter30} />
