@@ -21,6 +21,7 @@ class InstansiSerializer(serializers.ModelSerializer):
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
     # instansi = InstansiSerializer(many=False)
+    # gambar_alat = 
     class Meta:
         model = Alat
         fields = ('id_alat', 'nama_alat', 'deskripsi', 
@@ -97,3 +98,15 @@ class LogBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogBook
         fields = '__all__'
+        
+        
+class StatusAlatUpdateSerializer(serializers.ModelSerializer):
+    # instansi 
+    # instansi = InstansiSerializer(many=False)
+    gambar_alat = serializers.ImageField(read_only=True)
+    class Meta:
+        model = Alat
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 
+                'gambar_alat', 'status_alat', 'kategori_alat', 
+                'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 
+                'keterangan', 'bisa_dipinjam', 'level_peminjam')
