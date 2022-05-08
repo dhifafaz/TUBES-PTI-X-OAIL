@@ -15,7 +15,7 @@ import { Image, Icon } from 'react-native-elements';
 import { getDataOrderLog, getPinjamAlat } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 
-
+let status = []
 
 const PengembalianPage = ({ navigation }) => {
 
@@ -28,6 +28,12 @@ const PengembalianPage = ({ navigation }) => {
         dispatch(getDataOrderLog())
 
     }, [])
+
+    const inputToAPI = async () => {
+        for (let i = 0; i < status.length; i++) {
+
+        }
+    }
 
     return (
         <SafeAreaView style={styles.color}>
@@ -53,6 +59,7 @@ const PengembalianPage = ({ navigation }) => {
                         data={dataOrderLog}
                         renderItem={({ item, index, separators }) => {
                             if (item.status_order === 'digunakan') {
+                                status[index] = item.id
                                 setCheck(1)
                                 return (
                                     <View>
