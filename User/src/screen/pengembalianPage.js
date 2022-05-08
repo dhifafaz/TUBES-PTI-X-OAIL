@@ -7,6 +7,7 @@ import {
     FlatList,
     TouchableOpacity,
     ScrollView,
+    RefreshControl,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import styles from '../style/pengembalianStyle';
@@ -18,12 +19,26 @@ import { useSelector, useDispatch } from 'react-redux';
 let status = []
 let idUser = []
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const PengembalianPage = ({ navigation }) => {
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        dispatch(getDataOrderLog())
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
 
     const [check, setCheck] = useState(0)
 
-    const { dataOrderLog, data_user, pinjamAlat, userBanget, ip } = useSelector(state => state.userReducer);
+    const { dataOrderLog, data_user, pinjamAlat, userBanget, ip, counter } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
+
+    console.log(counter)
 
     useEffect(() => {
         dispatch(getDataOrderLog())
@@ -55,7 +70,15 @@ const PengembalianPage = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.color}>
-            <ScrollView>
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 <View style={styles.margin}>
 
                     <Text style={styles.textKatalog}>Pengembalian</Text>

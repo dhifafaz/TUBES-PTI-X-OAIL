@@ -8,6 +8,7 @@ import ScenePage from './src/subScreen/sceneBar/saceneBar';
 import DetailPeminjaman from './src/subScreen/subDetailPeminjaman/detailPeminjaman';
 import DetailPengambilan from './src/subScreen/subDetailPengambilan/detailPengambilan';
 import DetailPengembalian from './src/subScreen/subDetailPengembalian/detailPengembalian';
+import ScenePegembalian from './src/subScreen/scanePengembalian/scanePengembalian';
 import Login from './src/screen/loginPetugas';
 import { Provider } from 'react-redux';
 import { Store } from './src/redux/store';
@@ -31,6 +32,7 @@ const App = () => {
           <Stack.Screen name="DetailPeminjaman" component={DetailPeminjaman} />
           <Stack.Screen name="DetailPengambilan" component={DetailPengambilan} />
           <Stack.Screen name="DetailPengembalian" component={DetailPengembalian} />
+          <Stack.Screen name="ScenePegembalian" component={ScenePegembalian} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

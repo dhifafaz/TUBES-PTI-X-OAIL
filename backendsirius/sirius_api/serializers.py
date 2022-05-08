@@ -79,13 +79,20 @@ class OrderSerializer(serializers.ModelSerializer):
     gambar_alat = serializers.ImageField(source='id_alat.gambar_alat', read_only=True)
     nama_user = serializers.ReadOnlyField(source='id_user.nama')
     profile_pic = serializers.ReadOnlyField(source='id_user.profile_pic')
+    role = serializers.ReadOnlyField(source='id_user.role')
+    email = serializers.ReadOnlyField(source='id_user.email')
+    alamat = serializers.ReadOnlyField(source='id_user.profiles.alamat')
+    prodi_unit_institusi = serializers.ReadOnlyField(source='id_user.profiles.prodi_unit_institusi')
+    NRK_NIK_NIP_NIM = serializers.ReadOnlyField(source='id_user.profiles.NRK_NIK_NIP_NIM')
     # profiles = UserProfileSerializer(source='id_user.profiles', read_only=True)
     class Meta:
         model = OrderLog
         fields = ('id', 'token_order', 'tanggal_peminjaman', 
                 'tanggal_pengembalian', 'tanggal_update_data', 
                 'status_order', 'alasan_meminjam', 'keterangan_ditolak',
-                'catatan_kelengkapan_alat', 'id_alat','nama_alat', 'gambar_alat', 'id_user', 'nama_user', 'profile_pic')
+                'catatan_kelengkapan_alat', 'id_alat','nama_alat', 
+                'gambar_alat', 'id_user', 'nama_user', 'role',
+                'email', 'alamat', 'prodi_unit_institusi', 'NRK_NIK_NIP_NIM', 'profile_pic')
         
     # def update(self, instance, validated_data, partial=True):
     #     if validated_data.get('status_order') is not None:

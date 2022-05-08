@@ -13,13 +13,19 @@ import styles from './detailPengambilanStyle';
 import ScanButton from '../../component/scanButton/scanButton'
 import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrderLog } from '../../redux/action';
+import { getOrderLog, getCaounter } from '../../redux/action';
+import { getCounter } from '../../redux/action';
+import { useNavigation } from '@react-navigation/native';
 
+let idUser = []
+let status = []
 
-
-const DetailPengambilan = ({ navigation }) => {
-    const { orderLog, ip } = useSelector(state => state.userReducer);
+const DetailPengambilan = () => {
+    const { orderLog, ip, counter } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
+    console.log(counter)
+
+    const navigation = useNavigation();
 
     const route = useRoute().params
 
@@ -28,9 +34,38 @@ const DetailPengambilan = ({ navigation }) => {
         console.log(ip)
     }, [])
 
-    console.log(orderLog)
-    console.log(route.item.token_order)
-    console.log(route.item.id_user)
+    const inputToAPI = async () => {
+        let statusUpdate = {
+            status_order: 'digunakan'
+        }
+        console.log('ini total yak : ' + idUser.length)
+        for (let i = 0; i < idUser.length; i++) {
+            console.log(i)
+            console.log(status[i])
+            if (status[i] == "meminta-pengambilan") {
+                await fetch(
+                    'http://192.168.43.140:8000/sirius_api/order_log/' + idUser[i] + '/',
+                    {
+                        method: 'patch',
+                        body: JSON.stringify(statusUpdate),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                ).then(response => response.json())
+                    .then(response => console.log(response))
+                    .catch(error => console.log(error))
+
+            }
+            if (i >= idUser.length - 1) {
+                dispatch(getCounter(0))
+                navigation.goBack()
+            }
+
+
+
+        }
+    }
 
     return (
         <SafeAreaView style={styles.color}>
@@ -45,7 +80,7 @@ const DetailPengambilan = ({ navigation }) => {
                     <Image source={{ uri: route.item.profile_pic }} style={styles.image} />
                     <View style={styles.profileDetail}>
                         <Text style={styles.textDetail}>{route.item.nama_user}</Text>
-                        <Text style={styles.textsub}>Mahasiswa</Text>
+                        <Text style={styles.textsub}>{route.item.role}</Text>
                         <Text style={styles.textsub}>Bandar Lampung</Text>
                         <Text style={styles.textsub}>0978891234678</Text>
                     </View>
@@ -57,35 +92,39 @@ const DetailPengambilan = ({ navigation }) => {
                 <FlatList
                     data={orderLog}
                     renderItem={({ item, index, separators }) => {
-                        return (
-                            <View>
-                                <View style={styles.card}>
+                        if (item.status_order == "meminta-pengambilan") {
+                            idUser[index] = item.id
+                            status[index] = item.status_order
+                            return (
+                                <View>
+                                    <View style={styles.card}>
 
-                                    <View style={styles.cardAlat}>
-                                        <Image source={{ uri: item.gambar_alat }} style={styles.image2} />
+                                        <View style={styles.cardAlat}>
+                                            <Image source={{ uri: item.gambar_alat }} style={styles.image2} />
 
-                                        <View style={styles.boxText}>
-                                            <Text style={styles.textBoxTittle}>{item.nama_alat}</Text>
-                                            <Text style={styles.textBox}>Jumlah : 1</Text>
-                                        </View>
-                                        <View style={styles.theButton}>
-                                            <ScanButton item={item} index={index} />
+                                            <View style={styles.boxText}>
+                                                <Text style={styles.textBoxTittle}>{item.nama_alat}</Text>
+                                                <Text style={styles.textBox}>Jumlah : 1</Text>
+                                            </View>
+                                            <View style={styles.theButton}>
+                                                <ScanButton item={item} index={index} />
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
-                        )
+                            )
+                        }
+
                     }}
+                    keyExtractor={item => item.id_alat}
                 />
 
 
-                {/* <View>
-                    <Pressable style={styles.button} onPress={() => {
-                        console.log('KIRIM');
-                    }}>
+                <View>
+                    <Pressable style={styles.button} onPress={inputToAPI}>
                         <Text style={styles.buttonText}>Kirim</Text>
                     </Pressable>
-                </View> */}
+                </View>
 
             </ScrollView>
         </SafeAreaView>

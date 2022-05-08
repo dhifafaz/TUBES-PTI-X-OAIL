@@ -15,7 +15,9 @@ import { useRoute } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import storage, { firebase } from '@react-native-firebase/storage';
-import { getLoading } from '../redux/action';
+import { getLoading } from '../../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
+import AppLoader from '../../component/loading/apploader';
 
 const CatatanAlat = () => {
 
@@ -23,6 +25,9 @@ const CatatanAlat = () => {
     console.log(route.item.id)
 
     const navigation = useNavigation();
+
+    const { isloading } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
 
     //console.log(route)
 
@@ -63,6 +68,7 @@ const CatatanAlat = () => {
 
     }
     const uploadPhoto = async () => {
+        dispatch(getLoading(true))
 
         const uri = imagePicker
         const fileName = uri.substring(uri.lastIndexOf('/') + 1);
@@ -71,17 +77,7 @@ const CatatanAlat = () => {
 
         await storage().ref('/catatan_user/' + fileName).putFile(uploadUri)
 
-        // akses.on('state_changed', snapshot => {
-        //     setTransferred(
-        //         Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
-        //     );
-        // });
 
-        // try {
-        //     await task
-        // } catch (e) {
-        //     console.error(e);
-        // }
 
         setTimeout(() => {
             let imageProfileRef = firebase.storage().ref('/catatan_user/' + fileName)
@@ -121,65 +117,69 @@ const CatatanAlat = () => {
             .then((json) => console.log(json))
             .catch(error => console.log(error))
             .finally(() => {
-
+                dispatch(getLoading(false))
                 navigation.navigate("MainContainer", {})
             })
     }
 
     return (
-        <SafeAreaView style={styles.color}>
-            <ScrollView style={styles.margin}>
-                <View style={styles.row} >
-                    <Icon name='arrow-back-ios' color={'#ECECEC'} size={30} onPress={() => navigation.goBack()} />
-                    <Text style={styles.textKatalog}>
-                        Catatan Alat
+        <>
+            <SafeAreaView style={styles.color}>
+                <ScrollView style={styles.margin}>
+                    <View style={styles.row} >
+                        <Icon name='arrow-back-ios' color={'#ECECEC'} size={30} onPress={() => navigation.goBack()} />
+                        <Text style={styles.textKatalog}>
+                            Catatan Alat
+                        </Text>
+                    </View>
+
+                    <View style={styles.enter30} />
+                    <Image source={{ uri: route.item.gambar_alat }} style={styles.listImage} />
+                    <View style={styles.enter20} />
+                    <Text style={styles.textDetail}>{route.item.nama_alat}</Text>
+                    <View style={styles.enter20} />
+                    <Text style={styles.textsub}>
+                        {route.item.alasan_meminjam}
                     </Text>
-                </View>
 
-                <View style={styles.enter30} />
-                <Image source={{ uri: route.item.gambar_alat }} style={styles.listImage} />
-                <View style={styles.enter20} />
-                <Text style={styles.textDetail}>{route.item.nama_alat}</Text>
-                <View style={styles.enter20} />
-                <Text style={styles.textsub}>
-                    {route.item.alasan_meminjam}
-                </Text>
+                    <View style={styles.enter20} />
 
-                <View style={styles.enter20} />
+                    <View style={styles.paragrafView}>
+                        <TextInput
 
-                <View style={styles.paragrafView}>
-                    <TextInput
+                            onChangeText={onChangeText}
+                            placeholder="Catatan alat"
+                            value={text}
+                            multiline
+                            editable
+                            maxLength={150}
+                        />
+                    </View>
+                    <View style={styles.enter20} />
 
-                        onChangeText={onChangeText}
-                        placeholder="Catatan alat"
-                        value={text}
-                        multiline
-                        editable
-                        maxLength={150}
-                    />
-                </View>
-                <View style={styles.enter20} />
+                    <View style={styles.imagesPushView}>
 
-                <View style={styles.imagesPushView}>
+                        <TouchableOpacity style={styles.imageTouch} onPress={() => {
+                            openGalery()
+                        }}>
+                            <Text style={styles.imagesText}>Pilih Gambar</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.imagesInputan}>{imagePicker !== null ? imagePicker : 'Pilih foto'}</Text>
 
-                    <TouchableOpacity style={styles.imageTouch} onPress={() => {
-                        openGalery()
+                    </View>
+
+                    <View style={styles.enter20} />
+                    <TouchableOpacity style={styles.botton} onPress={() => {
+                        uploadPhoto()
+
                     }}>
-                        <Text style={styles.imagesText}>Pilih Gambar</Text>
+                        <Text style={styles.textBarcount}>Simpan</Text>
                     </TouchableOpacity>
-                    <Text style={styles.imagesInputan}>{imagePicker !== null ? imagePicker : 'Pilih foto'}</Text>
+                </ScrollView>
+            </SafeAreaView>
 
-                </View>
-
-                <View style={styles.enter20} />
-                <TouchableOpacity style={styles.botton} onPress={() => {
-                    uploadPhoto()
-
-                }}>
-                    <Text style={styles.textBarcount}>Simpan</Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </SafeAreaView>
+            {isloading ? <AppLoader /> : null}
+        </>
     )
 
 }

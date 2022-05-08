@@ -17,7 +17,7 @@ import { RNCamera } from 'react-native-camera';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrderLog } from '../../redux/action';
+import { getCaounter } from '../../redux/action';
 
 const ScenePage = () => {
 
@@ -25,11 +25,12 @@ const ScenePage = () => {
 
     const navigation = useNavigation();
 
-    const { orderLog, ip } = useSelector(state => state.userReducer);
+    const { orderLog, ip, counter } = useSelector(state => state.userReducer);
 
     const dispatch = useDispatch()
 
     const [text, onChangeText] = React.useState("");
+    const [idAlat, setIdAlat] = useState(null)
 
     const [cheking, setCheking] = useState('Letakkan Barcode Dalam Bingkai')
 
@@ -38,10 +39,12 @@ const ScenePage = () => {
         let object = e.data
         let temporary = JSON.parse(object)
         console.log(temporary['id_alat'])
+
         console.log(route.item.id_alat)
 
-        if (temporary['id_alat'] == route.item.id_alat) {
+        if (temporary['nama_alat'] == route.item.nama_alat) {
             setCheking(temporary['nama_alat'])
+            setIdAlat(temporary['id_alat'])
         } else {
             setCheking('Alat Yang di Cari SALAH')
         }
@@ -49,6 +52,48 @@ const ScenePage = () => {
 
 
     };
+    const inputToAPI = async () => {
+        let updateStatus = {
+            status_alat: "digunakan"
+        }
+        let orderLogAlat = {
+            id_alat: idAlat
+        }
+        console.log('masuk1')
+        await fetch(
+            'http://192.168.43.140:8000/sirius_api/order_log/' + route.id + '/',
+            {
+                method: 'patch',
+                body: JSON.stringify(orderLogAlat),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        ).then(response => response.json())
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+
+        console.log('masuk2')
+
+        await fetch(
+            'http://192.168.43.140:8000/sirius_api/update_status_alat/' + idAlat + '/',
+            {
+                method: 'patch',
+                body: JSON.stringify(updateStatus),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        ).then(response => response.json())
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+            .finally(() => {
+                console.log('masuk3')
+                dispatch(getCaounter(counter + 1))
+                console.log('masuk4')
+                navigation.goBack()
+            })
+    }
 
     return (
         <SafeAreaView style={styles.color}>
@@ -84,13 +129,13 @@ const ScenePage = () => {
                 <View style={styles.enter30} />
 
                 <Text style={styles.textmainL}>
-                    Teleskop Mahal OAIL
+                    {route.item.nama_alat}
                 </Text>
 
                 <View style={styles.enter10} />
 
                 <Text style={styles.textmainL}>
-                    T-012
+                    Free
                 </Text>
                 <View style={styles.enter10} />
                 <View style={styles.paragrafView}>
@@ -106,7 +151,9 @@ const ScenePage = () => {
                 </View>
                 <View style={styles.enter20} />
                 <TouchableOpacity style={styles.botton} onPress={() => {
-                    console.log('matap');
+                    if (cheking == route.item.nama_alat) {
+                        inputToAPI()
+                    }
                 }}>
                     <Text style={styles.textBarcount}>Pinjam</Text>
                 </TouchableOpacity>

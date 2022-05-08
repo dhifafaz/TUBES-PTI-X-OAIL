@@ -6,7 +6,8 @@ import {
     ActivityIndicator,
     FlatList,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import styles from '../style/peminjamStyle';
@@ -19,7 +20,19 @@ import DigunakanButton from '../component/digunakanButton/digunakan';
 import { getDaftarPeminjam } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const PeminjamanPage = ({ navigation }) => {
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        dispatch(getDaftarPeminjam())
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
 
     const { daftarPeminjman, ip } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
@@ -31,7 +44,15 @@ const PeminjamanPage = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.color}>
-            <ScrollView style={styles.margin}>
+            <ScrollView style={styles.margin}
+                //contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 <View >
                     <View style={styles.katalog}>
                         <Text style={styles.textKatalog}>Daftar Peminjaman</Text>
@@ -58,7 +79,7 @@ const PeminjamanPage = ({ navigation }) => {
                                                 <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
                                                 <View style={styles.listViewText}>
                                                     <Text style={styles.listText}>{item.nama_user}</Text>
-                                                    <Text style={styles.listText}>{item.token_order}</Text>
+                                                    <Text style={styles.listText}>{item.role}</Text>
                                                 </View>
                                             </View>
                                             <View style={styles.listViewText}>
@@ -69,7 +90,7 @@ const PeminjamanPage = ({ navigation }) => {
                                                     item.status_order === 'meminta-pengambilan' ? <PengambilanButton items={item} tokens={item.token_order} /> : null
                                                 }
                                                 {
-                                                    item.status_order === 'meminta-pengembalian' ? <PengembalianButton /> : null
+                                                    item.status_order === 'meminta-pengembalian' ? <PengembalianButton items={item} tokens={item.token_order} /> : null
                                                 }
                                                 {
                                                     item.status_order === 'digunakan' ? <DigunakanButton /> : null

@@ -19,12 +19,14 @@ import styles from './detailPeminjamanStyle';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrderLog } from '../../redux/action';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 let statusTrimaTolak = []
 let alasanTolak = []
 let idUser = []
 
-const DetailPeminjaman = ({ navigation }) => {
+const DetailPeminjaman = () => {
+    const navigation = useNavigation();
 
     const { orderLog, ip } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
@@ -48,7 +50,7 @@ const DetailPeminjaman = ({ navigation }) => {
             console.log('masuk' + i)
             let text = {
                 status_order: statusTrimaTolak[i],
-                alasan_meminjam: alasanTolak[i]
+                keterangan_ditolak: alasanTolak[i]
             }
 
             await fetch(
@@ -64,7 +66,7 @@ const DetailPeminjaman = ({ navigation }) => {
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
 
-            if (i >= len) {
+            if (i >= statusTrimaTolak.length) {
                 navigation.navigate('MainContainer', {})
             }
 
@@ -198,7 +200,7 @@ const TheButton = (props) => {
                                 multiline={true}
                             />
                             <Pressable style={styles.button} onPress={() => {
-                                console.log(alasanTolak);
+                                setModalVisible(!modalVisible);
                             }}>
                                 <Text style={styles.buttonText}>Kirim</Text>
                             </Pressable>

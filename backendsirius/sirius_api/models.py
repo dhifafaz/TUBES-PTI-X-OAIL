@@ -144,7 +144,8 @@ class OrderLog(models.Model):
 
 class LogBook(models.Model):
     catatan = models.CharField(max_length=2000)
-    foto_catatan_penggunaan = models.ImageField(upload_to='foto_catatan_penggunaan/')
+    # foto_catatan_penggunaan = models.ImageField(upload_to='foto_catatan_penggunaan/')
+    foto_catatan_penggunaan = models.URLField(max_length=300, blank=True)
     tanggal_pembuatan = models.DateTimeField(auto_now_add=True)
     tanggal_update = models.DateTimeField(auto_now=True)
     id_order = models.ForeignKey(OrderLog, on_delete=models.CASCADE)

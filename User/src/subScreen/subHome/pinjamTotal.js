@@ -8,6 +8,7 @@ import {
     ScrollView,
     TextInput,
     TouchableOpacity,
+    RefreshControl,
 } from 'react-native';
 import { Image, Icon, CheckBox } from 'react-native-elements';
 import styles from './pinjamTotalStyle';
@@ -20,7 +21,19 @@ import AppLoader from '../../component/loading/apploader';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment'
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
 const PinjamTotal = () => {
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
 
     const navigation = useNavigation();
 
@@ -55,9 +68,11 @@ const PinjamTotal = () => {
 
     const submit = async () => {
         dispatch(getLoading(true))
-        let tokenRendom = Math.floor(Date.now() * Math.random()).toString()
-        let tokenfix = tokenRendom + '-' + userBanget.id
         let CurrentDate = moment().format('YYYY-MM-DDThh:mm:ss.Z');
+        let tokenDate = moment().format('YYYY-MM-DDThh');
+        let tokenRendom = Math.floor(Date.now() * Math.random()).toString()
+        let tokenfix = tokenRendom + '-' + userBanget.id + '-' + tokenDate
+
         console.log(CurrentDate)
         for (let i = 0; i < len; i++) {
             console.log('ini looping ke ' + i)
@@ -126,7 +141,12 @@ const PinjamTotal = () => {
     return (
         <>
             <SafeAreaView style={styles.color}>
-                <ScrollView >
+                <ScrollView refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}
+                >
                     <View style={styles.margin}>
                         <View style={styles.row} >
                             <Icon name='arrow-back-ios' color={'#ECECEC'} size={30} onPress={() => navigation.goBack()} />
@@ -192,7 +212,7 @@ const PinjamTotal = () => {
                                         <View>
                                             <View style={styles.listView}>
 
-                                                <Image source={{ uri: item.gambar_alat }} style={styles.listImage} />
+                                                <Image source={{ uri: Ipgambar }} style={styles.listImage} />
                                                 <View style={styles.listboxtext}>
                                                     <View>
                                                         <Text style={styles.listTextTitle}>{item.nama_alat}</Text>

@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     },
     modal: {
         backgroundColor: "#ffff",
-        minHeight: "50%",
+        minHeight: "70%",
         marginTop: "80%",
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,

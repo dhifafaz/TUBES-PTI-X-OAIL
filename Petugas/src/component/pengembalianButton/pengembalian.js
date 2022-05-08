@@ -11,12 +11,19 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const PengembalianButton = () => {
+const PengembalianButton = (props) => {
+    console.log('testingggggg')
 
     const navigation = useNavigation();
 
+    const item = props.items
+    const token = props.tokens
+
     const toDetailPengembalian = () => {
-        navigation.navigate('DetailPengembalian', {})
+        navigation.navigate('DetailPengembalian', {
+            item: item,
+            token: token
+        })
     }
 
     return (
