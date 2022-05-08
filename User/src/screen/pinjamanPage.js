@@ -24,12 +24,17 @@ const PinjamanPage = () => {
     const { dataOrderLog, data_user, pinjamAlat, userBanget, ip } = useSelector(state => state.userReducer);
     const dispatch = useDispatch()
     const [check, setCheck] = useState(0)
+    const navigation = useNavigation();
 
     useEffect(() => {
         dispatch(getDataOrderLog())
         dispatch(getPinjamAlat())
     }, [])
     const [isProses, setProses] = useState(false)
+
+    const toCatatan = () => {
+        navigation.navigate('CatatanAlat', {})
+    }
 
 
     let itemlist = []
@@ -55,16 +60,18 @@ const PinjamanPage = () => {
                     data={dataOrderLog}
                     renderItem={({ item, index, separators }) => {
                         if (item.id_user === userBanget.id) {
-                            setCheck(1)
+
                             if (item.status_order === 'terima' || item.status_order === 'tolak') {
                                 if (item.status_order === 'terima') {
                                     setProses(true)
+
                                 }
+                                setCheck(1)
                                 return (
                                     <View>
                                         <View style={styles.listView}>
 
-                                            <Image source={{ uri: ip + item.gambar_alat }} style={styles.listImage} />
+                                            <Image source={{ uri: item.gambar_alat }} style={styles.listImage} />
                                             <View style={styles.listboxtext}>
                                                 <View>
                                                     <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
@@ -74,6 +81,32 @@ const PinjamanPage = () => {
                                             {
                                                 item.status_order === 'Terima' ? <Acc /> : <Ditolak />
                                             }
+                                        </View>
+                                        <View style={styles.enter20} />
+                                    </View>
+                                )
+                            } else if (item.status_order === 'digunakan') {
+                                setCheck(1)
+                                return (
+                                    <View>
+                                        <View style={styles.listView}>
+
+                                            <Image source={{ uri: item.gambar_alat }} style={styles.listImage} />
+                                            <View style={styles.listboxtext}>
+                                                <View>
+                                                    <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
+                                                    <Text style={styles.listTextsub}>Jumlah : 1</Text>
+                                                    <TouchableOpacity style={styles.botton} onPress={
+                                                        () => navigation.navigate('CatatanAlat', {
+                                                            item: item
+                                                        })
+                                                    }>
+                                                        <Text style={styles.textBarcount}>Catatan</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+
+                                            <Acc />
                                         </View>
                                         <View style={styles.enter20} />
                                     </View>

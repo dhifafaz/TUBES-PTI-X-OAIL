@@ -192,7 +192,7 @@ const PinjamTotal = () => {
                                         <View>
                                             <View style={styles.listView}>
 
-                                                <Image source={{ uri: Ipgambar }} style={styles.listImage} />
+                                                <Image source={{ uri: item.gambar_alat }} style={styles.listImage} />
                                                 <View style={styles.listboxtext}>
                                                     <View>
                                                         <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
