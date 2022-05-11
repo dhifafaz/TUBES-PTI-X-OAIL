@@ -14,6 +14,7 @@ from .models import (
     UserCore,
     UserProfile,
     OrderLog,
+    LogBook,
 )
 from .serializers import (
     AlatSerializer,
@@ -21,6 +22,8 @@ from .serializers import (
     UserProfileSerializer,
     OrderSerializer,
     UserLoginSerializer,
+    LogBookSerializer,
+    StatusAlatUpdateSerializer,
 )
 from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
@@ -138,7 +141,7 @@ class AlatsCounter(APIView):
                         .annotate(jumlah_alat_tersedia=Count('status_alat',filter=Q(status_alat='tersedia')))
                         .annotate(jumlah_alat_dipinjam=Count('status_alat',filter=Q(status_alat='dipinjam')))
                         .annotate(alat_rusak_total=Count('kondisi_alat',filter=Q(kondisi_alat='RT')))
-                        .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses peminjaman'))))
+                        .annotate(jumlah_proses_peminjaman=Count('status_alat',filter=Q(status_alat='proses'))))
         return Response({"data_alat" : alat_list, "ketersediaan_alat" : result_list}, status=status.HTTP_200_OK)
     
 
@@ -146,23 +149,141 @@ class OrderLogView(viewsets.ModelViewSet):
     # permission_classes = [
     #     permissions.IsAuthenticated,
     # ]
-    http_method_names = ['get', 'post', 'put', 'head', 'options']
-    queryset = OrderLog.objects.all()
-    serializer_class = OrderSerializer
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+    queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
+    serializer_class = OrderSerializer 
     
-    def list(self, request, *args, **kwargs):
-        queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
-        serializer = OrderSerializer(queryset, many=True)
-        return Response(serializer.data)
-    
+    # def list(self, request, *args, **kwargs):
+    #     serializer = OrderSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+    def get_queryset(self):
+        #bentuk url yang perlu di upload kira kira beginin
+        #http://127.0.0.1:8000/sirius_api/order_log/?token=12379416812387-53&user=1
+        token_order = self.request.query_params.get('token')
+        user_id = self.request.query_params.get('user')
+        #http://127.0.0.1:8000/sirius_api/order_log/?token=12379416812387-53&id_alat=112093103
+        id_alat = self.request.query_params.get('id_alat')
+        if token_order is not None and user_id is not None:    
+            queryset = OrderLog.objects.filter(Q(token_order=token_order)).filter(Q(id_user=user_id))
+        elif token_order is not None and id_alat is not None:
+            queryset = OrderLog.objects.filter(Q(token_order=token_order)).filter(Q(id_alat=id_alat))
+        else:
+            queryset = OrderLog.objects.all().order_by('-tanggal_peminjaman')
+        return queryset
+
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
     
     
-class OrderLogPerUser(viewsets.ModelViewSet):
+class OrderLogList(APIView):
     # permission_classes = [
     #     permissions.IsAuthenticated,
     # ]
-    http_method_names = ['get', 'post', 'put', 'head', 'options']
+    
+    def get(self, request, *args, **kwargs):
+        queryset = OrderLog.objects.exclude(status_order='tolak').exclude(status_order='sudah-dikembalikan').order_by('-tanggal_peminjaman')
+        serializer = OrderSerializer(queryset, many=True)
+        peminjam_list = []
+        token_order_list = []
+        for item in serializer.data:
+            for key in item:
+                datas = {
+                    'token_order': item['token_order'],
+                    'status_order': item['status_order'],
+                    'id_alat': item['id_alat'],
+                    'id_user': item['id_user'],
+                    'role': item['role'],
+                    'nama_user': item['nama_user'],
+                    'profile_pic': item['profile_pic'],
+                    'tanggal_peminjaman': item['tanggal_peminjaman'],
+                    'tanggal_pengembalian': item['tanggal_pengembalian'],
+                    'alasan_meminjam': item['alasan_meminjam'],
+                }
+                if key == 'token_order':
+                    if item[key] not in token_order_list:
+                        token_order_list.append(item[key])
+                        peminjam_list.append(datas)
+
+                
+        # token_counter = []        
+        counter = list(OrderLog.objects.values('token_order')
+                    .annotate(terhitung=Count('token_order'))
+                    .annotate(ditolak=Count('token_order',filter=Q(status_order='tolak')))
+                    .annotate(diterima=Count('token_order',filter=Q(status_order='terima')))
+                    )
+        # token_counter.append({
+        #     'token_order': token,
+        #     'jumlah_order': counter[0]['jumlah_order'],
+        # })
+                        
+        return Response({"data_peminjam" : peminjam_list, "jumlah_alat_dipinjam": counter}, status=status.HTTP_200_OK)
+    
+# class OrderLogDetail(APIView):
+    
+#     def get
+    
+class LogBookView(viewsets.ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
+    queryset = LogBook.objects.all()
+    serializer_class = LogBookSerializer
+    
+    
+class AlatStatusUpdate(viewsets.ModelViewSet):
+    http_method_names = ['get', 'patch', 'head', 'options']
+    queryset = Alat.objects.all()
+    serializer_class = StatusAlatUpdateSerializer
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
+
+
+class OrderLogHistory(APIView):
+    # permission_classes = [
+    #     permissions.IsAuthenticated,
+    # ]
+    
+    def get(self, request, *args, **kwargs):
+        queryset = OrderLog.objects.filter(Q(status_order='sudah-dikembalikan')).order_by('-tanggal_pengembalian')
+        serializer = OrderSerializer(queryset, many=True)
+        peminjam_list = []
+        token_order_list = []
+        for item in serializer.data:
+            for key in item:
+                datas = {
+                    'token_order': item['token_order'],
+                    'status_order': item['status_order'],
+                    'id_alat': item['id_alat'],
+                    'id_user': item['id_user'],
+                    'role': item['role'],
+                    'nama_user': item['nama_user'],
+                    'email_user': item['email'],
+                    'alamat_user': item['alamat'],
+                    'prodi_unit_institusi': item['prodi_unit_institusi'],
+                    'NRK_NIK_NIP_NIM': item['NRK_NIK_NIP_NIM'],
+                    'profile_pic': item['profile_pic'],
+                    'tanggal_peminjaman': item['tanggal_peminjaman'],
+                    'tanggal_pengembalian': item['tanggal_pengembalian'],
+                    'alasan_meminjam': item['alasan_meminjam'],
+                }
+                if key == 'token_order':
+                    if item[key] not in token_order_list:
+                        token_order_list.append(item[key])
+                        peminjam_list.append(datas)
+
+                
+        # token_counter = []        
+        counter = list(OrderLog.objects.values('token_order')
+                    .annotate(terhitung=Count('token_order'))
+                    .annotate(ditolak=Count('token_order',filter=Q(status_order='tolak')))
+                    .annotate(sudah_dikembalikan=Count('token_order',filter=Q(status_order='sudah-dikembalikan')))
+                    .annotate(diterima=Count('token_order',filter=Q(status_order='terima')))
+                    )
+        # token_counter.append({
+        #     'token_order': token,
+        #     'jumlah_order': counter[0]['jumlah_order'],
+        # })
+                        
+        return Response({"data_peminjam" : peminjam_list, "jumlah_alat_dipinjam": counter}, status=status.HTTP_200_OK)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
     

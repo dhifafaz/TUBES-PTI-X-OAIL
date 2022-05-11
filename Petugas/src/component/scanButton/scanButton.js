@@ -12,11 +12,18 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const ScanButton = () => {
+const ScanButton = (props) => {
+
+    const item = props.item
+    const index = props.index
+    console.log(item.id_alat)
     const navigation = useNavigation();
 
     const toScan = () => {
-        navigation.navigate('ScenePage', {})
+        navigation.navigate('ScenePage', {
+            item: item,
+            index: index
+        })
     }
 
     return (

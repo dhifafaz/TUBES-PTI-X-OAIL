@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -6,7 +6,8 @@ import {
     ActivityIndicator,
     FlatList,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import styles from '../style/peminjamStyle';
@@ -16,11 +17,42 @@ import PeminjamanButton from '../component/peminjamanButton/peminjamanButton';
 import PengembalianButton from '../component/pengembalianButton/pengembalian';
 import PengambilanButton from '../component/pengambilanButton/pengambilan';
 import DigunakanButton from '../component/digunakanButton/digunakan';
+import { getDaftarPeminjam } from '../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
+
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const PeminjamanPage = ({ navigation }) => {
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        dispatch(getDaftarPeminjam())
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
+    const { daftarPeminjman, ip } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getDaftarPeminjam())
+        console.log(ip)
+    }, [])
+
     return (
         <SafeAreaView style={styles.color}>
-            <ScrollView style={styles.margin}>
+            <ScrollView style={styles.margin}
+                //contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 <View >
                     <View style={styles.katalog}>
                         <Text style={styles.textKatalog}>Daftar Peminjaman</Text>
@@ -34,59 +66,47 @@ const PeminjamanPage = ({ navigation }) => {
                     <SearchingBar />
                     <View style={styles.enter30} />
 
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PeminjamanButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PengambilanButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
 
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <PengembalianButton />
-                        </View>
-                    </View>
-                    <View style={styles.enter20} />
+                    <FlatList
+                        data={daftarPeminjman["data_peminjam"]}
+                        renderItem={({ item, index, separators }) => {
 
-                    <View style={styles.listView}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                            <View style={styles.listViewText}>
-                                <Text style={styles.listText}>Arifudin Satria darma susuf</Text>
-                                <Text style={styles.listText}>119201213</Text>
-                            </View>
-                        </View>
-                        <View style={styles.listViewText}>
-                            <DigunakanButton />
-                        </View>
-                    </View>
+                            if (item.status_order === 'proses' || item.status_order === 'meminta-pengambilan' || item.status_order === 'meminta-pengembalian' || item.status_order === 'digunakan') {
+                                return (
+                                    <View>
+                                        <View style={styles.listView}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
+                                                <View style={styles.listViewText}>
+                                                    <Text style={styles.listText}>{item.nama_user}</Text>
+                                                    <Text style={styles.listText}>{item.role}</Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.listViewText}>
+                                                {
+                                                    item.status_order === 'proses' ? <PeminjamanButton items={item} tokens={item.token_order} /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'meminta-pengambilan' ? <PengambilanButton items={item} tokens={item.token_order} /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'meminta-pengembalian' ? <PengembalianButton items={item} tokens={item.token_order} /> : null
+                                                }
+                                                {
+                                                    item.status_order === 'digunakan' ? <DigunakanButton /> : null
+                                                }
+
+                                            </View>
+                                        </View>
+                                        <View style={styles.enter20} />
+                                    </View>
+                                )
+                            }
+
+                        }
+                        }
+                        keyExtractor={item => item.token_order}
+                    />
                     <View style={styles.enter20} />
 
                 </View>

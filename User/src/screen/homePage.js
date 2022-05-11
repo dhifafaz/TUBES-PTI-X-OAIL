@@ -6,19 +6,32 @@ import {
     ActivityIndicator,
     FlatList,
     TouchableOpacity,
+    ScrollView,
+    RefreshControl,
 } from 'react-native';
 import styles from '../style/homeStyle';
 import ProfilBar from '../component/profilBar/profilBar';
 import SearchingBar from '../component/searchingBar/searchingBar';
 import { Image, Icon } from 'react-native-elements';
-import { getCounter, getDataKatalog, getTotal } from '../redux/action';
+import { getCounter, getDataKatalog, getTotal, getLoading } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import AppLoader from '../component/loading/apploader';
 
-
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 let temporaty = []
+
 const HomePage = ({ navigation }) => {
-    const { dataKatalog, totalCounter, ip } = useSelector(state => state.userReducer);
+    const { dataKatalog, totalCounter, ip, isloading } = useSelector(state => state.userReducer);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
 
 
     const toTotalPinjaman = () => {
@@ -36,6 +49,7 @@ const HomePage = ({ navigation }) => {
 
 
     useEffect(() => {
+
         dispatch(getDataKatalog())
         console.log(ip)
     }, [])
@@ -43,49 +57,60 @@ const HomePage = ({ navigation }) => {
 
     return (
 
-        <SafeAreaView style={styles.color}>
-
-            <View style={styles.margin}>
-                <View style={styles.katalog}>
-                    <Text style={styles.textKatalog}>Katalog</Text>
-                </View>
-                <View style={styles.enter40} />
-
-                <ProfilBar />
-                <View style={styles.enter30} />
-                <View style={styles.viewEnd}>
-                    <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
-
-                        <Text style={styles.Viewcountertext}>Total Pinjam</Text>
-
-                        <View style={styles.viewBarColorcount}>
-                            <Text style={styles.textBarcount}>{totalCounter}</Text>
+        <>
+            <SafeAreaView style={styles.color}>
+                <ScrollView
+                    contentContainerStyle={styles.scrollView}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                >
+                    <View style={styles.margin}>
+                        <View style={styles.katalog}>
+                            <Text style={styles.textKatalog}>Katalog</Text>
                         </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.enter20} />
+                        <View style={styles.enter40} />
+
+                        <ProfilBar />
+                        <View style={styles.enter30} />
+                        <View style={styles.viewEnd}>
+                            <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
+
+                                <Text style={styles.Viewcountertext}>Total Pinjam</Text>
+
+                                <View style={styles.viewBarColorcount}>
+                                    <Text style={styles.textBarcount}>{totalCounter}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.enter20} />
 
 
-                <SearchingBar />
-                <View style={styles.enter30} />
+                        <SearchingBar />
+                        <View style={styles.enter30} />
 
-                <FlatList
+                        <FlatList
 
-                    data={dataKatalog['data_alat']}
-                    renderItem={({ item, index, separators }) => {
+                            data={dataKatalog['data_alat']}
+                            renderItem={({ item, index, separators }) => {
 
-                        return (
-                            <Katalog items={item} indexs={index} />
-                        )
-                    }
-                    }
-                    keyExtractor={item => item.id_alat}
+                                return (
+                                    <Katalog items={item} indexs={index} />
+                                )
+                            }
+                            }
+                            keyExtractor={item => item.id_alat}
 
-                />
+                        />
 
-            </View>
-
-        </SafeAreaView>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+            {isloading ? <AppLoader /> : null}
+        </>
 
     )
 }
@@ -99,25 +124,6 @@ const Katalog = (props) => {
 
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     dispatch({
-    //         type: 'ADD_COUNTER',
-    //         payload: {
-    //             label: hitung,
-    //             id: dataKatalog["data_alat"][index]['id_alat']
-    //         }
-    //     })
-    // }, [index])
-    const toTotalPinjaman = () => {
-        if (totalCounter >= 1) {
-            navigation.navigate('PinjamTotal', {
-                counter: temporaty
-            })
-        }
-        else { }
-
-
-    }
 
     const item = props.items
     const index = props.indexs

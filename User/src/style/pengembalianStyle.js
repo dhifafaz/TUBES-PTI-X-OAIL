@@ -103,6 +103,21 @@ const styles = StyleSheet.create({
         fontFamily: 'Ubuntu-Bold',
         color: '#ECECEC'
     },
+    tidakAda: {
+        height: 400,
+        width: '100%',
+        //backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    zonktImage: {
+        //backgroundColor: 'red',
+        height: 180,
+        width: 277,
+        margin: 10,
+        borderRadius: 10,
+
+    },
 
 })
 

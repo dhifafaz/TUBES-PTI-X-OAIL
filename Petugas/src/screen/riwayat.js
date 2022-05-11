@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     SafeAreaView,
     Text,
@@ -6,22 +6,56 @@ import {
     ActivityIndicator,
     FlatList,
     ScrollView,
-    Pressable
+    Pressable,
+    RefreshControl
 } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
 import styles from '../style/riwayatStyle';
 import ProfilBar from '../component/profilBar/profilBar';
 import SearchingBar from '../component/searchingBar/searchingBar';
+import { getDataKatalog, getRiwayat } from '../redux/action';
+import { useSelector, useDispatch } from 'react-redux';
+
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const RiwayatPage = ({ navigation }) => {
-    
+
+    useEffect(() => {
+        dispatch(getRiwayat())
+        console.log(ip)
+    }, [])
+
+    const { dataKatalog, ip, riwayat } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch()
+    console.log('hahah')
+    console.log(riwayat["data_peminjam"])
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
     const toDetailRiwayat = () => {
         navigation.navigate('DetailRiwayatPage', {})
     }
-    
+
+
+
     return (
         <SafeAreaView style={styles.color}>
-            <ScrollView style={styles.margin}>
+            <ScrollView style={styles.margin}
+                //contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 <View >
                     <View style={styles.katalog}>
                         <Text style={styles.textKatalog}>Riwayat Peminjaman</Text>
@@ -34,22 +68,40 @@ const RiwayatPage = ({ navigation }) => {
                     <SearchingBar />
                     <View style={styles.enter30} />
 
-                    <View style={styles.listView}>
-                        <Image source={require('../assets/images/pixel_google.jpg')} style={styles.listImage} />
-                        <View style={styles.listboxtext}>
-                            <Text style={styles.listTextTitle}>Alexander Geovani</Text>
-                            <Text style={styles.listTextsub}>Mahasiswa</Text>
-                            <Text style={styles.listTextsub}>Teknik Informatika</Text>
-                            <Text style={styles.listTextsub}>23-07-2021 : 26-07-2021</Text>
-                            <Pressable
-                                style={styles.detailButton}
-                                onPress={toDetailRiwayat}>
-                                <Text style={styles.textButton}
+                    <FlatList
+                        data={riwayat["data_peminjam"]}
+                        renderItem={({ item, index, separators }) => {
+                            let Ipgambar = ip + item.gambar_alat;
+                            return (
+                                <View>
 
-                                >Detail Riwayat</Text>
-                            </Pressable>
-                        </View>
-                    </View>
+                                    <View style={styles.listView}>
+                                        <Image source={{ uri: item.profile_pic }} style={styles.listImage} />
+                                        <View style={styles.listboxtext}>
+                                            <Text style={styles.listTextTitle}>{item.nama_user}</Text>
+                                            <Text style={styles.listTextsub}>{item.role}</Text>
+                                            <Text style={styles.listTextsub}>{item.prodi_unit_institusi}</Text>
+                                            <Text style={styles.listTextsub}>{item.tanggal_pengembalian}</Text>
+                                            <Pressable
+                                                style={styles.detailButton}
+                                                onPress={() => {
+                                                    navigation.navigate('DetailRiwayatPage', {
+                                                        item: item
+                                                    })
+                                                }}>
+                                                <Text style={styles.textButton}
+
+                                                >Detail Riwayat</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        }}
+                        keyExtractor={item => item.id_alat}
+                    />
+
+
                 </View>
             </ScrollView>
         </SafeAreaView>

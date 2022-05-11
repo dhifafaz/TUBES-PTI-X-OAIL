@@ -94,6 +94,20 @@ const styles = StyleSheet.create({
         marginRight: 10,
         alignItems: 'center',
     },
+    listBotton: {
+        paddingVertical: 5,
+        minWidth: 60,
+        borderRadius: 15,
+        backgroundColor: '#0DC964',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    listTextBotton: {
+        fontSize: 10,
+        fontFamily: 'Ubuntu-Bold',
+        color: '#FFFFFF',
+    },
 })
 
 export default styles;

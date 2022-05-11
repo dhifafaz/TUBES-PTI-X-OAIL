@@ -21,9 +21,13 @@ class InstansiSerializer(serializers.ModelSerializer):
 class AlatSerializer(serializers.ModelSerializer):
     # instansi 
     # instansi = InstansiSerializer(many=False)
+    # gambar_alat = 
     class Meta:
         model = Alat
-        fields = ('id_alat', 'nama_alat', 'deskripsi', 'gambar_alat', 'status_alat', 'kategori_alat', 'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 'keterangan', 'bisa_dipinjam', 'level_peminjam')
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 
+                'gambar_alat', 'status_alat', 'kategori_alat', 
+                'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 
+                'keterangan', 'bisa_dipinjam', 'level_peminjam')
 
 class UserProfileSerializer(WritableNestedModelSerializer,serializers.ModelSerializer):
     class Meta:
@@ -71,12 +75,45 @@ class UserLoginSerializer(serializers.Serializer):
         raise serializers.ValidationError("Incorrect Credentials")
     
 class OrderSerializer(serializers.ModelSerializer):
+    nama_alat = serializers.ReadOnlyField(source='id_alat.nama_alat')
+    gambar_alat = serializers.ImageField(source='id_alat.gambar_alat', read_only=True)
+    nama_user = serializers.ReadOnlyField(source='id_user.nama')
+    profile_pic = serializers.ReadOnlyField(source='id_user.profile_pic')
+    role = serializers.ReadOnlyField(source='id_user.role')
+    email = serializers.ReadOnlyField(source='id_user.email')
+    alamat = serializers.ReadOnlyField(source='id_user.profiles.alamat')
+    prodi_unit_institusi = serializers.ReadOnlyField(source='id_user.profiles.prodi_unit_institusi')
+    NRK_NIK_NIP_NIM = serializers.ReadOnlyField(source='id_user.profiles.NRK_NIK_NIP_NIM')
+    # profiles = UserProfileSerializer(source='id_user.profiles', read_only=True)
     class Meta:
         model = OrderLog
-        fields = '__all__'
+        fields = ('id', 'token_order', 'tanggal_peminjaman', 
+                'tanggal_pengembalian', 'tanggal_update_data', 
+                'status_order', 'alasan_meminjam', 'keterangan_ditolak',
+                'catatan_kelengkapan_alat', 'id_alat','nama_alat', 
+                'gambar_alat', 'id_user', 'nama_user', 'role',
+                'email', 'alamat', 'prodi_unit_institusi', 'NRK_NIK_NIP_NIM', 'profile_pic')
         
     # def update(self, instance, validated_data, partial=True):
     #     if validated_data.get('status_order') is not None:
     #         instance.status_order = validated_data.get('status_order')
     #         instance.save()
     #     return instance
+    
+
+class LogBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogBook
+        fields = '__all__'
+        
+        
+class StatusAlatUpdateSerializer(serializers.ModelSerializer):
+    # instansi 
+    # instansi = InstansiSerializer(many=False)
+    gambar_alat = serializers.ImageField(read_only=True)
+    class Meta:
+        model = Alat
+        fields = ('id_alat', 'nama_alat', 'deskripsi', 
+                'gambar_alat', 'status_alat', 'kategori_alat', 
+                'lokasi_alat', 'kondisi_alat', 'tanggal_masuk', 
+                'keterangan', 'bisa_dipinjam', 'level_peminjam')

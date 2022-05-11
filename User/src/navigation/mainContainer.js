@@ -21,8 +21,14 @@ const MainContainer = ({ navigation }) => {
             screenOptions={{
                 tabBarActiveTintColor: '#151D3B',
                 headerShown: false,
-                tabBarStyle: { height: 70, backgroundColor: '#ECECEC', position: 'absolute' },
+                tabBarStyle: {
+                    height: 70, backgroundColor: '#ECECEC', position: 'absolute', borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30,
+                },
+                tabBarShowLabel: false,
+                tabBarHideOnKeyboard: true,
             }}
+
 
         >
 
@@ -31,7 +37,7 @@ const MainContainer = ({ navigation }) => {
                 component={HomePage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={30} />
+                        <MaterialCommunityIcons name="home" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -39,7 +45,7 @@ const MainContainer = ({ navigation }) => {
                 component={PinjamanPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="inbox-arrow-down" color={color} size={30} />
+                        <MaterialCommunityIcons name="inbox-arrow-down" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -47,7 +53,7 @@ const MainContainer = ({ navigation }) => {
                 component={PengembalianPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="clipboard-arrow-left" color={color} size={30} />
+                        <MaterialCommunityIcons name="clipboard-arrow-left" color={color} size={35} />
                     ),
                 }} />
             <Tab.Screen
@@ -55,7 +61,7 @@ const MainContainer = ({ navigation }) => {
                 component={ProfilPage}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="account" color={color} size={30} />
+                        <MaterialCommunityIcons name="account" color={color} size={35} />
                     ),
                 }} />
         </Tab.Navigator>

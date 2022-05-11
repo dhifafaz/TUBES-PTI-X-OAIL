@@ -83,6 +83,11 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
     },
+    button1: {
+        backgroundColor: "fffff",
+        padding: 10,
+        borderRadius: 10,
+    },
     buttonText: {
         textAlign: "center",
         fontFamily: 'Ubuntu-Bold',

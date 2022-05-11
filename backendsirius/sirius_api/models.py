@@ -1,5 +1,3 @@
-import profile
-from secrets import choice
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -125,7 +123,7 @@ class Alat(models.Model):
     level_peminjam = models.CharField(max_length=2, blank=True, default=1, choices=LEVEL)
     
     def __str__(self):
-        return self.nama_alat
+        return self.id_alat
 
 
 class OrderLog(models.Model):
@@ -139,14 +137,15 @@ class OrderLog(models.Model):
     catatan_kelengkapan_alat = models.TextField(max_length=2000, blank=True)
     id_alat = models.ForeignKey(Alat, on_delete=models.RESTRICT)
     id_user = models.ForeignKey(UserCore, on_delete=models.RESTRICT)
-
+    
     def __str__(self):
         return self.id_user.nama
 
 
 class LogBook(models.Model):
     catatan = models.CharField(max_length=2000)
-    foto_catatan_penggunaan = models.ImageField(upload_to='foto_catatan_penggunaan/')
+    # foto_catatan_penggunaan = models.ImageField(upload_to='foto_catatan_penggunaan/')
+    foto_catatan_penggunaan = models.URLField(max_length=300, blank=True)
     tanggal_pembuatan = models.DateTimeField(auto_now_add=True)
     tanggal_update = models.DateTimeField(auto_now=True)
     id_order = models.ForeignKey(OrderLog, on_delete=models.CASCADE)
