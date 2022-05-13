@@ -10,7 +10,7 @@ import {
 
 const initialState = {
     dataKatalog: [],
-    ip: 'http://192.168.43.140:8000',
+    ip: 'http://192.168.42.216:8000',
     userBanget: [],
     data_user: [],
     daftarPeminjman: [],

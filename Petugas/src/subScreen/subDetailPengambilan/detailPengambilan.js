@@ -44,7 +44,7 @@ const DetailPengambilan = () => {
             console.log(status[i])
             if (status[i] == "meminta-pengambilan") {
                 await fetch(
-                    'http://192.168.43.140:8000/sirius_api/order_log/' + idUser[i] + '/',
+                    'http://192.168.42.219:8000/sirius_api/order_log/' + idUser[i] + '/',
                     {
                         method: 'patch',
                         body: JSON.stringify(statusUpdate),
