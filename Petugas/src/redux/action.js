@@ -9,7 +9,7 @@ export const GET_RIWAYAT = 'GET_RIWAYAT'
 export const getDataKatalog = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/katalog/', {
+            const result = await fetch('http://192.168.42.216:8000/sirius_api/katalog/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const getDataKatalog = () => {
 export const getRiwayat = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/riwayat_peminjaman/', {
+            const result = await fetch('http://192.168.42.216:8000/sirius_api/riwayat_peminjaman/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const getRiwayat = () => {
 export const getUserBanget = (id) => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/lihat_users/' + id + '/', {
+            const result = await fetch('http://192.168.42.216:8000/sirius_api/lihat_users/' + id + '/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const getUserBanget = (id) => {
 export const getDaftarPeminjam = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/daftar_peminjam/', {
+            const result = await fetch('http://192.168.42.216:8000/sirius_api/daftar_peminjam/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export const getDaftarPeminjam = () => {
 export const getOrderLog = (token, id) => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.43.140:8000/sirius_api/order_log/?token=' + token + '&user=' + id, {
+            const result = await fetch('http://192.168.42.216:8000/sirius_api/order_log/?token=' + token + '&user=' + id, {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
