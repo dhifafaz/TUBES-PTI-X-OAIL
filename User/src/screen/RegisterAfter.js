@@ -8,7 +8,7 @@ import {
     ScrollView,
     Alert,
 } from 'react-native';
-import styles from '../style/LoginPageStyles';
+import styles from '../style/RegisterPageStyles';
 import { Image, } from 'react-native-elements';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useRoute } from '@react-navigation/native';
@@ -56,7 +56,7 @@ const RegisterAfter = () => {
 
                 //dispatch(getLoading(false))
                 console.log('masuk handle masukkkkk database')
-                let ipMasuk = ('http://192.168.42.104:8000/sirius_api/register_user/' + route.id + '/').toLowerCase()
+                let ipMasuk = ('http://192.168.42.184:8000/sirius_api/register_user/' + route.id + '/').toLowerCase()
                 //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
                 console.log(ipMasuk)
                 return await fetch(

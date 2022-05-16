@@ -29,7 +29,7 @@ const KatalogPage = ({ navigation }) => {
 
     useEffect(() => {
         
-        fetch('http://192.168.42.104:8000/sirius_api/katalog/')
+        fetch('http://192.168.42.184:8000/sirius_api/katalog/')
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson.data_alat);
