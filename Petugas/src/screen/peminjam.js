@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     RefreshControl
 } from 'react-native';
-import { Image, Icon } from 'react-native-elements';
+import { Image, Icon, SearchBar } from 'react-native-elements';
 import styles from '../style/peminjamStyle';
 import SearchingBar from '../component/searchingBar/searchingBar';
 import ProfilBar from '../component/profilBar/profilBar';
@@ -135,7 +135,7 @@ const PeminjamanPage = ({ navigation }) => {
                             fontFamily: 'Ubuntu-Medium',
                         }}
                      />
-                    <View style={styles.enter30} />
+                    <View style={styles.enter20} />
 
 
                     <FlatList
