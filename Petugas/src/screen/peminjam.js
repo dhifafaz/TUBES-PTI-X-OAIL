@@ -115,7 +115,7 @@ const PeminjamanPage = ({ navigation }) => {
                         searchIcon={{ size: 24 }}
                         onChangeText={(text) => searchFilterFunction(text)}
                         onClear={(text) => searchFilterFunction('')}
-                        placeholder="Type Here..."
+                        placeholder="Cari disini"
                         value={search}
                         lightTheme
                         containerStyle={{

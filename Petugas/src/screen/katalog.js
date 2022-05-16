@@ -111,13 +111,13 @@ const KatalogPage = ({ navigation }) => {
                     <View style={styles.enter30} />
 
                     <SearchBar
+                        placeholder="Cari disini" 
                         round
                         searchIcon={{ size: 24 }}
                         onChangeText={(text) => searchFilterFunction(text)}
                         onClear={(text) => searchFilterFunction('')}
-                        placeholder="Type Here..."
                         value={search}
-                        lightTheme
+                        lightTheme 
                         containerStyle={{
                             width: "100%",
                             borderColor: 'none',
