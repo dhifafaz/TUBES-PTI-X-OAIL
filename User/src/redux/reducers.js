@@ -15,7 +15,7 @@ const initialState = {
     dataOrderLog: [],
     counter: [],
     totalCounter: 0,
-    ip: 'http://192.168.42.219:8000',
+    ip: 'http://192.168.42.104:8000',
     isloading: false,
     data_user: [],
     pinjamAlat: [],
