@@ -53,7 +53,7 @@ const Login = () => {
 
   const loginUser = (credentials) => {
 
-    return fetch(`http://192.168.42.104:8000/sirius_api/login_user/`, {
+    return fetch(`http://192.168.42.184:8000/sirius_api/login_user/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,6 +96,7 @@ const Login = () => {
           style={styles.inputArea}
           onChangeText={(text) => setPassword(text)}
           value={password}
+          secureTextEntry={true}
         />
       </View>
 

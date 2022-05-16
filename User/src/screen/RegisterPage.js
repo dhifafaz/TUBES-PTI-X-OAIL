@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import styles from '../style/LoginPageStyles';
+import styles from '../style/RegisterPageStyles';
 import { Image, } from 'react-native-elements';
 
 import { Picker } from "@react-native-picker/picker";
@@ -40,9 +40,8 @@ const Register = () => {
       NRK_NIK_NIP_NIM: '',
       status_verifikasi: '0',
     }
-
-
   })
+
   const handleTextChange = (textChange) => {
     return (val) => {
       setText({ ...text, [textChange]: val });
@@ -59,8 +58,6 @@ const Register = () => {
       })
     }
   }
-
-
 
   // useEffect(() => {
 
@@ -86,7 +83,7 @@ const Register = () => {
     dispatch(getLoading(true))
 
     return await fetch(
-      'http://192.168.42.104:8000/sirius_api/register_user/',
+      'http://192.168.42.184:8000/sirius_api/register_user/',
       {
         method: 'post',
         body: JSON.stringify(text),
@@ -108,8 +105,6 @@ const Register = () => {
       })
   }
 
-
-
   // console.log(text)
 
   return (
@@ -122,18 +117,23 @@ const Register = () => {
           />
         </View>
         <View style={styles.input}>
+          <Text style={styles.title2}>Nama Lengkap</Text>
           <TextInput
             placeholder='Nama Lengkap'
             style={styles.inputArea}
             onChangeText={handleTextChange('nama')}
             value={text.nama}
           />
+
+          <Text style={styles.title2}>Email</Text>
           <TextInput
             placeholder='Email'
             style={styles.inputArea}
             onChangeText={handleTextChange('email')}
             value={text.email}
           />
+
+          <Text style={styles.title2}>Password</Text>
           <TextInput
             placeholder='Password'
             secureTextEntry={true}
@@ -141,11 +141,16 @@ const Register = () => {
             onChangeText={handleTextChange('password')}
             value={text.password}
           />
+
+          <Text style={styles.title2}>Konfirmasi Password</Text>
           <TextInput
             placeholder='Konfirmasi Password'
             secureTextEntry={true}
             style={styles.inputArea}
-          />
+            value={text}
+          />          
+
+          <Text style={styles.title2}>Peran</Text>
           <View style={styles.inputArea1}>
             <Picker
               selectedValue={akhir}
@@ -162,18 +167,23 @@ const Register = () => {
             </Picker>
           </View>
 
+          <Text style={styles.title2}>Instansi/Unit/Program Studi</Text>
           <TextInput
             placeholder='Instansi/Unit/Program Studi'
             style={styles.inputArea}
             onChangeText={handleTextProfiles('prodi_unit_institusi')}
             value={text.instansi}
           />
+
+          <Text style={styles.title2}>NIK/NRK/NIP/NIM</Text>
           <TextInput
             placeholder='NIK/NRK/NIP/NIM'
             style={styles.inputArea}
             onChangeText={handleTextProfiles('NRK_NIK_NIP_NIM')}
             value={text.nik}
           />
+          
+          <Text style={styles.title2}>Alamat</Text>
           <TextInput
             placeholder='Alamat'
             style={styles.inputArea}

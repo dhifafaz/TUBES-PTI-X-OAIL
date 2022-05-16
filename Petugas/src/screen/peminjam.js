@@ -32,7 +32,7 @@ const PeminjamanPage = ({ navigation }) => {
 
     useEffect(() => {
         
-        fetch('http://192.168.42.104:8000/sirius_api/daftar_peminjam/')
+        fetch('http://192.168.42.184:8000/sirius_api/daftar_peminjam/')
         .then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson.data_peminjam);

@@ -52,7 +52,7 @@ const PengembalianPage = ({ navigation }) => {
                     status_order: 'meminta-pengembalian'
                 }
                 await fetch(
-                    'http://192.168.42.104:8000/sirius_api/order_log/' + idUser[i] + '/',
+                    'http://192.168.42.184:8000/sirius_api/order_log/' + idUser[i] + '/',
                     {
                         method: 'patch',
                         body: JSON.stringify(ubah),
