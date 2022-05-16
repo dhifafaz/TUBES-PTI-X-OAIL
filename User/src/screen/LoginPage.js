@@ -97,6 +97,7 @@ const Login = () => {
           value={email}
         />
         <TextInput
+          secureTextEntry={true}
           placeholder='Password'
           style={styles.inputArea}
           onChangeText={(text) => setPassword(text)}

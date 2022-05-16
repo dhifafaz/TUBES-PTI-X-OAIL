@@ -12,7 +12,7 @@ import {
 import styles from '../style/homeStyle';
 import ProfilBar from '../component/profilBar/profilBar';
 import SearchingBar from '../component/searchingBar/searchingBar';
-import { Image, Icon } from 'react-native-elements';
+import { Image, Icon, SearchBar } from 'react-native-elements';
 import { getCounter, getDataKatalog, getTotal, getLoading } from '../redux/action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -24,6 +24,54 @@ const wait = (timeout) => {
 let temporaty = []
 
 const HomePage = ({ navigation }) => {
+    
+    const [search, setSearch] = useState('');
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
+    const [masterDataSource, setMasterDataSource] = useState([]);
+
+    useEffect(() => {
+        
+        fetch('http://192.168.42.104:8000/sirius_api/katalog/')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson.data_alat);
+            setFilteredDataSource(responseJson.data_alat);
+            setMasterDataSource(responseJson.data_alat);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }, []);
+
+    const searchFilterFunction = (text) => {
+        // Check if searched text is not blank
+        if (text) {
+        // Inserted text is not blank
+        // Filter the masterDataSource
+        // Update FilteredDataSource
+        const newData = masterDataSource.filter(function (item) {
+            const itemData = item.nama_alat
+            ? item.nama_alat.toUpperCase()
+            : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+            
+        });
+        setFilteredDataSource(newData);
+        setSearch(text);
+        } else {
+        // Inserted text is blank
+        // Update FilteredDataSource with masterDataSource
+        setFilteredDataSource(masterDataSource);
+        setSearch(text);
+        }
+    };
+
+    const getItem = (item) => {
+        // Function for click on an item
+        alert('Id : ' + item.id_alat + ' Title : ' + item.nama_alat);
+    };
+
     const { dataKatalog, totalCounter, ip, isloading } = useSelector(state => state.userReducer);
 
     const [refreshing, setRefreshing] = React.useState(false);
@@ -81,7 +129,7 @@ const HomePage = ({ navigation }) => {
 
                                 <Text style={styles.Viewcountertext}>Total Pinjam</Text>
 
-                                <View style={styles.viewBarColorcount}>
+                                <View style={[totalCounter === 0 ? styles.zero : styles.viewBarColorcount]}>
                                     <Text style={styles.textBarcount}>{totalCounter}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -89,12 +137,36 @@ const HomePage = ({ navigation }) => {
                         <View style={styles.enter20} />
 
 
-                        <SearchingBar />
+                        <SearchBar
+                            placeholder="Cari disini" 
+                            round
+                            searchIcon={{ size: 24 }}
+                            onChangeText={(text) => searchFilterFunction(text)}
+                            onClear={(text) => searchFilterFunction('')}
+                            value={search}
+                            lightTheme 
+                            containerStyle={{
+                                width: "100%",
+                                borderColor: 'none',
+                                backgroundColor: '#ECECEC',
+                                border: 'none',
+                                height: 50,
+                                borderRadius: 10,
+                            }}
+                            inputContainerStyle={{
+                                height: 0,
+                                backgroundColor: '#ECECEC',
+                                borderRadius: 10,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontFamily: 'Ubuntu-Medium',
+                            }}
+                        />
                         <View style={styles.enter30} />
 
                         <FlatList
 
-                            data={dataKatalog['data_alat']}
+                            data={filteredDataSource}
                             renderItem={({ item, index, separators }) => {
 
                                 return (

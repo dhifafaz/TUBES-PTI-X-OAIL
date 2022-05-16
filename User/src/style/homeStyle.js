@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     },
     margin: {
         margin: 20,
+        marginBottom: 70,
     },
     textKatalog: {
         fontSize: 24,
@@ -35,10 +36,17 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         flexDirection: "row",
         justifyContent: 'flex-end',
-
     },
     viewBarColorcount: {
         backgroundColor: '#4B8BD4',
+        width: 40,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    zero: {
+        backgroundColor: '#595E60',
         width: 40,
         borderRadius: 10,
         alignItems: 'center',
