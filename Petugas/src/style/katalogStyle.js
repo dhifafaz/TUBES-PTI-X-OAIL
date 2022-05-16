@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     },
     margin: {
         margin: 20,
+        marginBottom: 70,
     },
     textKatalog: {
         fontSize: 24,

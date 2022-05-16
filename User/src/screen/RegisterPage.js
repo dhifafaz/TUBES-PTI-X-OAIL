@@ -136,12 +136,14 @@ const Register = () => {
           />
           <TextInput
             placeholder='Password'
+            secureTextEntry={true}
             style={styles.inputArea}
             onChangeText={handleTextChange('password')}
             value={text.password}
           />
           <TextInput
             placeholder='Konfirmasi Password'
+            secureTextEntry={true}
             style={styles.inputArea}
           />
           <View style={styles.inputArea1}>
