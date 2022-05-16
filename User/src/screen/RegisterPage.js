@@ -86,7 +86,7 @@ const Register = () => {
     dispatch(getLoading(true))
 
     return await fetch(
-      'http://192.168.42.219:8000/sirius_api/register_user/',
+      'http://192.168.42.104:8000/sirius_api/register_user/',
       {
         method: 'post',
         body: JSON.stringify(text),
