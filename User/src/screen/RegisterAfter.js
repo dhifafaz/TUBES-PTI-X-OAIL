@@ -56,7 +56,7 @@ const RegisterAfter = () => {
 
                 //dispatch(getLoading(false))
                 console.log('masuk handle masukkkkk database')
-                let ipMasuk = ('http://192.168.42.184:8000/sirius_api/register_user/' + route.id + '/').toLowerCase()
+                let ipMasuk = ('http://192.168.43.140:8000/sirius_api/register_user/' + route.id + '/').toLowerCase()
                 //let ipMasuk = ('https://sirius-oail.loca.lt/sirius_api/register_user/10/')
                 console.log(ipMasuk)
                 return await fetch(
@@ -243,9 +243,16 @@ const RegisterAfter = () => {
                     </View>
 
                     <TouchableOpacity
-                        style={styles.masukButton}
+                        style={
+                            imagePicker != null && imagePicker2 != null ? styles.masukButton1 : styles.masukButton
+                        }
                         //onPress={insertData}
-                        onPress={insertData}
+                        onPress={() => {
+                            if (imagePicker != null && imagePicker2 != null) {
+                                insertData()
+                            }
+
+                        }}
                     >
                         <Text style={styles.buttonText1}>Daftar</Text>
                     </TouchableOpacity>

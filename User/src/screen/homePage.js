@@ -24,46 +24,73 @@ const wait = (timeout) => {
 let temporaty = []
 
 const HomePage = ({ navigation }) => {
-    
+
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
 
+    const { dataKatalog, totalCounter, ip, isloading } = useSelector(state => state.userReducer);
+
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        
-        fetch('http://192.168.42.184:8000/sirius_api/katalog/')
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson.data_alat);
-            setFilteredDataSource(responseJson.data_alat);
-            setMasterDataSource(responseJson.data_alat);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        dispatch(getDataKatalog())
+
+
     }, []);
+
+
+    useEffect(() => {
+        dispatch(getDataKatalog())
+        changeUP()
+        // if (dataKatalog == null) {
+
+        //     dispatch(getDataKatalog())
+
+        // fetch('http://192.168.43.140:8000/sirius_api/katalog/')
+        //     .then((response) => response.json())
+        //     .then((responseJson) => {
+        //         dispatch(getDataKatalog())
+        //         console.log(responseJson.data_alat);
+        //         setFilteredDataSource(responseJson.data_alat);
+        //         setMasterDataSource(responseJson.data_alat);
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     })//.finally(() => dispatch(getDataKatalog()))
+
+
+        // }
+
+
+
+    }, []);
+
+
+    // setFilteredDataSource(dataKatalog['data_alat']);
+    //setMasterDataSource(dataKatalog['data_alat']);
 
     const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
-        // Inserted text is not blank
-        // Filter the masterDataSource
-        // Update FilteredDataSource
-        const newData = masterDataSource.filter(function (item) {
-            const itemData = item.nama_alat
-            ? item.nama_alat.toUpperCase()
-            : ''.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            
-        });
-        setFilteredDataSource(newData);
-        setSearch(text);
+            // Inserted text is not blank
+            // Filter the masterDataSource
+            // Update FilteredDataSource
+            const newData = masterDataSource.filter(function (item) {
+                const itemData = item.nama_alat
+                    ? item.nama_alat.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+
+            });
+            setFilteredDataSource(newData);
+            setSearch(text);
         } else {
-        // Inserted text is blank
-        // Update FilteredDataSource with masterDataSource
-        setFilteredDataSource(masterDataSource);
-        setSearch(text);
+            // Inserted text is blank
+            // Update FilteredDataSource with masterDataSource
+            setFilteredDataSource(masterDataSource);
+            setSearch(text);
         }
     };
 
@@ -72,12 +99,14 @@ const HomePage = ({ navigation }) => {
         alert('Id : ' + item.id_alat + ' Title : ' + item.nama_alat);
     };
 
-    const { dataKatalog, totalCounter, ip, isloading } = useSelector(state => state.userReducer);
+
 
     const [refreshing, setRefreshing] = React.useState(false);
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
+        dispatch(getDataKatalog())
+        //console.log(dataKatalog)
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
@@ -93,110 +122,133 @@ const HomePage = ({ navigation }) => {
 
     }
 
-    const dispatch = useDispatch()
+
+    const changeUP = () => {
+        fetch('http://192.168.43.140:8000/sirius_api/katalog/')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                dispatch(getDataKatalog())
+                console.log(responseJson.data_alat);
+                setFilteredDataSource(responseJson.data_alat);
+                setMasterDataSource(responseJson.data_alat);
+            })
+            .catch((error) => {
+                console.error(error);
+            })//.finally(() => dispatch(getDataKatalog()))
+    }
+
+    // useEffect(() => {
+
+    //     dispatch(getDataKatalog())
+    //     console.log(ip)
+    // }, [])
+    if (dataKatalog != null) {
+
+        console.log('mASUK SINI HARUS NYA')
+        return (
+
+            <>
+                <SafeAreaView style={styles.color}>
+                    <ScrollView
+                        contentContainerStyle={styles.scrollView}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}
+                            />
+                        }
+                    >
+                        <View style={styles.margin}>
+                            <View style={styles.katalog}>
+                                <Text style={styles.textKatalog}>Katalog</Text>
+                            </View>
+                            <View style={styles.enter40} />
+
+                            <ProfilBar />
+                            <View style={styles.enter30} />
+                            <View style={styles.viewEnd}>
+                                <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
+
+                                    <Text style={styles.Viewcountertext}>Total Pinjam</Text>
+
+                                    <View style={[totalCounter === 0 ? styles.zero : styles.viewBarColorcount]}>
+                                        <Text style={styles.textBarcount}>{totalCounter}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.enter20} />
 
 
-    useEffect(() => {
+                            <SearchBar
+                                placeholder="Cari disini"
+                                round
+                                searchIcon={{ size: 24 }}
+                                onChangeText={(text) => searchFilterFunction(text)}
+                                onClear={(text) => searchFilterFunction('')}
+                                value={search}
+                                lightTheme
+                                containerStyle={{
+                                    width: "100%",
+                                    borderColor: 'none',
+                                    backgroundColor: '#ECECEC',
+                                    border: 'none',
+                                    height: 50,
+                                    borderRadius: 10,
+                                }}
+                                inputContainerStyle={{
+                                    height: 0,
+                                    backgroundColor: '#ECECEC',
+                                    borderRadius: 10,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontFamily: 'Ubuntu-Medium',
+                                }}
+                            />
+                            <View style={styles.enter30} />
 
-        dispatch(getDataKatalog())
-        console.log(ip)
-    }, [])
+                            <FlatList
 
+                                data={filteredDataSource}
+                                renderItem={({ item, index, separators }) => {
+                                    //filteredDataSource
+                                    return (
+                                        <Katalog items={item} indexs={index} />
+                                    )
+                                }
+                                }
+                                keyExtractor={item => item.id_alat}
 
-    return (
+                            />
 
-        <>
-            <SafeAreaView style={styles.color}>
-                <ScrollView
-                    contentContainerStyle={styles.scrollView}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
-                    }
-                >
-                    <View style={styles.margin}>
-                        <View style={styles.katalog}>
-                            <Text style={styles.textKatalog}>Katalog</Text>
                         </View>
-                        <View style={styles.enter40} />
+                    </ScrollView>
+                </SafeAreaView>
+                {isloading ? <AppLoader /> : null}
+            </>
 
-                        <ProfilBar />
-                        <View style={styles.enter30} />
-                        <View style={styles.viewEnd}>
-                            <TouchableOpacity style={styles.viewBarCount} onPress={toTotalPinjaman}>
+        )
 
-                                <Text style={styles.Viewcountertext}>Total Pinjam</Text>
-
-                                <View style={[totalCounter === 0 ? styles.zero : styles.viewBarColorcount]}>
-                                    <Text style={styles.textBarcount}>{totalCounter}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.enter20} />
+    }
 
 
-                        <SearchBar
-                            placeholder="Cari disini" 
-                            round
-                            searchIcon={{ size: 24 }}
-                            onChangeText={(text) => searchFilterFunction(text)}
-                            onClear={(text) => searchFilterFunction('')}
-                            value={search}
-                            lightTheme 
-                            containerStyle={{
-                                width: "100%",
-                                borderColor: 'none',
-                                backgroundColor: '#ECECEC',
-                                border: 'none',
-                                height: 50,
-                                borderRadius: 10,
-                            }}
-                            inputContainerStyle={{
-                                height: 0,
-                                backgroundColor: '#ECECEC',
-                                borderRadius: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontFamily: 'Ubuntu-Medium',
-                            }}
-                        />
-                        <View style={styles.enter30} />
-
-                        <FlatList
-
-                            data={filteredDataSource}
-                            renderItem={({ item, index, separators }) => {
-
-                                return (
-                                    <Katalog items={item} indexs={index} />
-                                )
-                            }
-                            }
-                            keyExtractor={item => item.id_alat}
-
-                        />
-
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-            {isloading ? <AppLoader /> : null}
-        </>
-
-    )
 }
 
 const Katalog = (props) => {
+    const dispatch = useDispatch()
+
+    console.log('haloooooooooooo')
     const navigation = useNavigation();
+
 
     const { dataKatalog, counter, totalCounter, ip } = useSelector(state => state.userReducer);
 
     const [hitung, setHitung] = useState(0)
 
-    const dispatch = useDispatch()
+    // useEffect(() => {
+    //     dispatch(getDataKatalog())
 
-
+    // }, []);
+    //dispatch(getDataKatalog())
     const item = props.items
     const index = props.indexs
     let Ipgambar = ip + item.gambar_alat;

@@ -59,7 +59,7 @@ const ScenePegembalian = () => {
         console.log('masuk1')
 
         await fetch(
-            'http://192.168.42.219:8000/sirius_api/update_status_alat/' + idAlat + '/',
+            'http://192.168.43.140:8000/sirius_api/update_status_alat/' + idAlat + '/',
             {
                 method: 'patch',
                 body: JSON.stringify(updateStatus),

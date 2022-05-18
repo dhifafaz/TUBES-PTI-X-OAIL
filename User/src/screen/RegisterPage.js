@@ -29,6 +29,7 @@ const Register = () => {
   const [userData, setUserData] = useState(null)
 
   const [akhir, setAkhir] = useState('mahasiswa');
+  const [confirmasiPass, setConfirmPass] = useState('')
   const [text, setText] = useState({
     email: '',
     nama: '',
@@ -83,7 +84,7 @@ const Register = () => {
     dispatch(getLoading(true))
 
     return await fetch(
-      'http://192.168.42.184:8000/sirius_api/register_user/',
+      'http://192.168.43.140:8000/sirius_api/register_user/',
       {
         method: 'post',
         body: JSON.stringify(text),
@@ -94,15 +95,19 @@ const Register = () => {
 
     ).then(response => response.json())
       // .then(response => console.log(response))
-      .then((json) => setUserData(json))
-      .catch(error => console.log(error))
-      .finally(() => {
+      .then((json) => {
+        console.log(json['user']['id'])
         dispatch(getLoading(false))
-        console.log(userData.user.id)
         navigation.navigate("RegisterAfter", {
-          id: userData.user.id
+          id: json['user']['id']
         })
       })
+      .catch(error => console.log(error))
+    // .finally(() => {
+    //   dispatch(getLoading(false))
+    //   //console.log(userData.user.id)
+
+    // })
   }
 
   // console.log(text)
@@ -147,8 +152,9 @@ const Register = () => {
             placeholder='Konfirmasi Password'
             secureTextEntry={true}
             style={styles.inputArea}
-            value={text}
-          />          
+            onChangeText={setConfirmPass}
+            value={confirmasiPass}
+          />
 
           <Text style={styles.title2}>Peran</Text>
           <View style={styles.inputArea1}>
@@ -182,7 +188,7 @@ const Register = () => {
             onChangeText={handleTextProfiles('NRK_NIK_NIP_NIM')}
             value={text.nik}
           />
-          
+
           <Text style={styles.title2}>Alamat</Text>
           <TextInput
             placeholder='Alamat'
@@ -194,9 +200,17 @@ const Register = () => {
         </View>
 
         <TouchableOpacity
-          style={styles.masukButton}
-          onPress={insertData}
-        >
+          style={
+            text.email != '' && text.nama != '' && text.password != '' && confirmasiPass == text.password && text.profiles.NRK_NIK_NIP_NIM != '' && text.profiles.alamat != '' && text.profiles.prodi_unit_institusi != '' ?
+              styles.masukButton1 : styles.masukButton
+          }
+          onPress={() => {
+            if (text.email != '' && text.nama != '' && text.password != '' && confirmasiPass == text.password && text.profiles.NRK_NIK_NIP_NIM != '' && text.profiles.alamat != '' && text.profiles.prodi_unit_institusi != '') {
+              insertData()
+            }
+
+          }
+          }>
           <Text style={styles.buttonText1}>Selanjutnya</Text>
         </TouchableOpacity>
 

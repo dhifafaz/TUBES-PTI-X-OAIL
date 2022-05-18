@@ -31,40 +31,40 @@ const PeminjamanPage = ({ navigation }) => {
     const [masterDataSource, setMasterDataSource] = useState([]);
 
     useEffect(() => {
-        
-        fetch('http://192.168.42.184:8000/sirius_api/daftar_peminjam/')
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson.data_peminjam);
-            setFilteredDataSource(responseJson.data_peminjam);
-            setMasterDataSource(responseJson.data_peminjam);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+
+        fetch('http://192.168.43.140:8000/sirius_api/daftar_peminjam/')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.data_peminjam);
+                setFilteredDataSource(responseJson.data_peminjam);
+                setMasterDataSource(responseJson.data_peminjam);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, []);
 
     const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
-        // Inserted text is not blank
-        // Filter the masterDataSource
-        // Update FilteredDataSource
-        const newData = masterDataSource.filter(function (item) {
-            const itemData = item.nama_user
-            ? item.nama_user.toUpperCase()
-            : ''.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            
-        });
-        setFilteredDataSource(newData);
-        setSearch(text);
+            // Inserted text is not blank
+            // Filter the masterDataSource
+            // Update FilteredDataSource
+            const newData = masterDataSource.filter(function (item) {
+                const itemData = item.nama_user
+                    ? item.nama_user.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+
+            });
+            setFilteredDataSource(newData);
+            setSearch(text);
         } else {
-        // Inserted text is blank
-        // Update FilteredDataSource with masterDataSource
-        setFilteredDataSource(masterDataSource);
-        setSearch(text);
+            // Inserted text is blank
+            // Update FilteredDataSource with masterDataSource
+            setFilteredDataSource(masterDataSource);
+            setSearch(text);
         }
     };
 
@@ -134,7 +134,7 @@ const PeminjamanPage = ({ navigation }) => {
                             justifyContent: 'center',
                             fontFamily: 'Ubuntu-Medium',
                         }}
-                     />
+                    />
                     <View style={styles.enter20} />
 
 

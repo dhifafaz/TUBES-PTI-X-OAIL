@@ -13,7 +13,7 @@ export const GET_USER_BANGET = 'GET_USER_BANGET'
 export const getDataKatalog = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.42.184:8000/sirius_api/katalog/', {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/katalog/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export const getDataKatalog = () => {
 export const getUserBanget = (id) => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.42.184:8000/sirius_api/lihat_users/' + id + '/', {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/lihat_users/' + id + '/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export const getUserBanget = (id) => {
 export const getPinjamAlat = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.42.184:8000/sirius_api/pinjam_alat/', {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/pinjam_alat/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export const getPinjamAlat = () => {
 export const getDataOrderLog = () => {
     try {
         return async dispatch => {
-            const result = await fetch('http://192.168.42.184:8000/sirius_api/order_log/', {
+            const result = await fetch('http://192.168.43.140:8000/sirius_api/order_log/', {
                 'method': 'GET',
                 headers: {
                     'Content-Type': 'application/json',

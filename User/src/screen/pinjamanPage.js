@@ -73,7 +73,7 @@ const PinjamanPage = () => {
                     status_order: 'meminta-pengambilan'
                 }
                 await fetch(
-                    'http://192.168.42.184:8000/sirius_api/order_log/' + idUser[i] + '/',
+                    'http://192.168.43.140:8000/sirius_api/order_log/' + idUser[i] + '/',
                     {
                         method: 'patch',
                         body: JSON.stringify(ubah),
@@ -89,7 +89,7 @@ const PinjamanPage = () => {
                     status_order: 'telah-ditolak'
                 }
                 await fetch(
-                    'http://192.168.42.184:8000/sirius_api/order_log/' + idUser[i] + '/',
+                    'http://192.168.43.140:8000/sirius_api/order_log/' + idUser[i] + '/',
                     {
                         method: 'patch',
                         body: JSON.stringify(ubah),

@@ -28,40 +28,40 @@ const KatalogPage = ({ navigation }) => {
     const [masterDataSource, setMasterDataSource] = useState([]);
 
     useEffect(() => {
-        
-        fetch('http://192.168.42.184:8000/sirius_api/katalog/')
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson.data_alat);
-            setFilteredDataSource(responseJson.data_alat);
-            setMasterDataSource(responseJson.data_alat);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+
+        fetch('http://192.168.43.140:8000/sirius_api/katalog/')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.data_alat);
+                setFilteredDataSource(responseJson.data_alat);
+                setMasterDataSource(responseJson.data_alat);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, []);
 
     const searchFilterFunction = (text) => {
         // Check if searched text is not blank
         if (text) {
-        // Inserted text is not blank
-        // Filter the masterDataSource
-        // Update FilteredDataSource
-        const newData = masterDataSource.filter(function (item) {
-            const itemData = item.nama_alat
-            ? item.nama_alat.toUpperCase()
-            : ''.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-            
-        });
-        setFilteredDataSource(newData);
-        setSearch(text);
+            // Inserted text is not blank
+            // Filter the masterDataSource
+            // Update FilteredDataSource
+            const newData = masterDataSource.filter(function (item) {
+                const itemData = item.nama_alat
+                    ? item.nama_alat.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+
+            });
+            setFilteredDataSource(newData);
+            setSearch(text);
         } else {
-        // Inserted text is blank
-        // Update FilteredDataSource with masterDataSource
-        setFilteredDataSource(masterDataSource);
-        setSearch(text);
+            // Inserted text is blank
+            // Update FilteredDataSource with masterDataSource
+            setFilteredDataSource(masterDataSource);
+            setSearch(text);
         }
     };
 
@@ -111,13 +111,13 @@ const KatalogPage = ({ navigation }) => {
                     <View style={styles.enter30} />
 
                     <SearchBar
-                        placeholder="Cari disini" 
+                        placeholder="Cari disini"
                         round
                         searchIcon={{ size: 24 }}
                         onChangeText={(text) => searchFilterFunction(text)}
                         onClear={(text) => searchFilterFunction('')}
                         value={search}
-                        lightTheme 
+                        lightTheme
                         containerStyle={{
                             width: "100%",
                             borderColor: 'none',
@@ -134,7 +134,7 @@ const KatalogPage = ({ navigation }) => {
                             justifyContent: 'center',
                             fontFamily: 'Ubuntu-Medium',
                         }}
-                     />
+                    />
                     <View style={styles.enter20} />
                     <FlatList
                         data={filteredDataSource}

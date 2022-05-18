@@ -4,7 +4,9 @@ import {
   SafeAreaView,
   View,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
+  Pressable
 } from 'react-native';
 import styles from '../style/LoginPageStyles';
 import { Image, } from 'react-native-elements';
@@ -19,23 +21,25 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     getData();
   }, []);
 
-  const setData = async () => {
-    if (checkToken != null) {
-      try {
-        var user = {
-          id: checkToken.user['id'],
-          token: checkToken.token
-        }
-        await AsyncStorage.setItem('token', JSON.stringify(user));
-        navigation.navigate('MainContainer')
-      } catch (error) {
-        console.log(error);
+  const setData = async (respons) => {
+    //if (checkToken != null) {
+    try {
+      var user = {
+        id: respons.user['id'],
+        token: respons.token
       }
+      await AsyncStorage.setItem('token', JSON.stringify(user));
+      navigation.navigate('MainContainer')
+    } catch (error) {
+      console.log(error);
     }
+    //}
   }
 
   const getData = () => {
@@ -51,9 +55,9 @@ const Login = () => {
     }
   }
 
-  const loginUser = (credentials) => {
+  const loginUser = async (credentials) => {
 
-    return fetch(`http://192.168.42.184:8000/sirius_api/login_user/`, {
+    return await fetch(`http://192.168.43.140:8000/sirius_api/login_user/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,22 +66,51 @@ const Login = () => {
     }).then(response => response.json())
       .then(response => {
         setCheckToken(response)
-        console.log(checkToken)
-      })
-      .catch(error => console.log(error))
-      .finally(() => {
-        console.log(checkToken.user.role)
-        if (checkToken.user.role === 'admin') {
-          console.log('chek masuk gak nya')
-          setData()
+        console.log(response)
+        if (response.token != null) {
+          if (response.user.role === 'admin' && response.token != null) {
+            console.log('chek masuk gak nya')
+            setData(response)
+          } else {
+            console.log('Salah')
+            setModalVisible(true)
+          }
+        }
+        else if (response.non_field_errors[0] == "Incorrect Credentials") {
+          console.log('Salah')
+          setModalVisible(true)
         }
       })
+      .catch(error => console.log(error))
 
   };
 
 
   return (
     <SafeAreaView style={styles.container}>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Sandi atau Email Salah</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Masuk Lagi</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.logo}>
         <Image
           source={require('../assets/images/logo.png')}

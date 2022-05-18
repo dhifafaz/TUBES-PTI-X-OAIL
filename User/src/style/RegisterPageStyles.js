@@ -76,6 +76,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 20,
+        backgroundColor: '#595E60',
+        paddingVertical: 10,
+        borderRadius: 10,
+    }, masukButton1: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 20,
         backgroundColor: '#4B8BD4',
         paddingVertical: 10,
         borderRadius: 10,
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         backgroundColor: '#4B8BD4',
         paddingVertical: 10,
-        borderRadius: 10,        
+        borderRadius: 10,
     },
     uploadText: {
         fontWeight: "bold",
