@@ -66,7 +66,7 @@ const DetailPeminjaman = () => {
                 .then(response => console.log(response))
                 .catch(error => console.log(error))
 
-            if (i >= statusTrimaTolak.length) {
+            if (i >= statusTrimaTolak.length - 1) {
                 navigation.navigate('MainContainer', {})
             }
 

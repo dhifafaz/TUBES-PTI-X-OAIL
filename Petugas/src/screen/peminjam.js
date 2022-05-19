@@ -77,6 +77,16 @@ const PeminjamanPage = ({ navigation }) => {
 
     const onRefresh = React.useCallback(() => {
         dispatch(getDaftarPeminjam())
+        fetch('http://192.168.43.140:8000/sirius_api/daftar_peminjam/')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.data_peminjam);
+                setFilteredDataSource(responseJson.data_peminjam);
+                setMasterDataSource(responseJson.data_peminjam);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
     }, []);

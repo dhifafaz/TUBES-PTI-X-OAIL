@@ -26,20 +26,33 @@ const KatalogPage = ({ navigation }) => {
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
+    const { dataKatalog, ip } = useSelector(state => state.userReducer);
+    const [temporarty, setTemporary] = useState(null);
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(getDataKatalog())
+        //console.log(ip)
+    }, [])
 
-        fetch('http://192.168.43.140:8000/sirius_api/katalog/')
+    useEffect(() => {
+        //dispatch(getDataKatalog())
+        updateSeacrApi()
+    }, []);
+
+    const updateSeacrApi = async () => {
+        return await fetch('http://192.168.43.140:8000/sirius_api/katalog/')
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson.data_alat);
                 setFilteredDataSource(responseJson.data_alat);
                 setMasterDataSource(responseJson.data_alat);
+                setTemporary(responseJson.ketersediaan_alat)
             })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }
 
     const searchFilterFunction = (text) => {
         // Check if searched text is not blank
@@ -79,17 +92,13 @@ const KatalogPage = ({ navigation }) => {
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
-    const { dataKatalog, ip } = useSelector(state => state.userReducer);
-    const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getDataKatalog())
-        console.log(ip)
-    }, [])
+
+
 
     console.log(dataKatalog)
 
-
+    //if (dataKatalog != null) {
     return (
         <SafeAreaView style={styles.color}>
             <ScrollView
@@ -148,7 +157,7 @@ const KatalogPage = ({ navigation }) => {
                                         <View style={styles.listboxtext}>
                                             <View>
                                                 <Text style={styles.listTextTitle}>{item.nama_alat}</Text>
-                                                <Text style={styles.listTextsub}>Stok : {dataKatalog["ketersediaan_alat"][index]['jumlah_alat_tersedia']}</Text>
+                                                {/* <Text style={styles.listTextsub}>Stok : {temporarty.index.jumlah_alat_tersedia}</Text> */}
                                                 <Text
                                                     style={styles.listTextsub}
                                                     onPress={
@@ -174,6 +183,10 @@ const KatalogPage = ({ navigation }) => {
             </ScrollView>
         </SafeAreaView>
     )
+    //}
+
+
+
 }
 
 export default KatalogPage;

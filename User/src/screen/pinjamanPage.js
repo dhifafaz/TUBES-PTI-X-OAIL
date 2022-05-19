@@ -33,6 +33,7 @@ const PinjamanPage = () => {
     const [refreshing, setRefreshing] = React.useState(false);
 
     const onRefresh = React.useCallback(() => {
+        setProses(false)
         dispatch(getDataOrderLog())
         dispatch(getPinjamAlat())
         setRefreshing(true);

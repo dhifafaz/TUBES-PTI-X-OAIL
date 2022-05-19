@@ -28,6 +28,7 @@ const PengembalianPage = ({ navigation }) => {
     const [refreshing, setRefreshing] = React.useState(false);
 
     const onRefresh = React.useCallback(() => {
+        setCheck(0)
         dispatch(getDataOrderLog())
         setRefreshing(true);
         wait(2000).then(() => setRefreshing(false));
